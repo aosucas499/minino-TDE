@@ -7,7 +7,7 @@ Enlace de la última ISO: http://bit.ly/3fFx5xv
 
 #### +  Firefox v.83
 
-#### + # Firefox 68.9 ESR
+#### +  Firefox 68.9 ESR
 
 #### +  Chromium
 
