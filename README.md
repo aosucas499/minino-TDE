@@ -9,7 +9,7 @@ Enlace de la última ISO: http://bit.ly/3fFx5xv
 
 #### +  Firefox 68.9 ESR
 
-#### +  Chromium
+#### +  Chromium 57.0.2987 (soporta flash)
 
 #### +  Audacity
 
