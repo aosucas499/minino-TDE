@@ -3,7 +3,7 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
 
 Enlace de la última ISO: bit.ly/3fFx5xv
 
-#### Repositorios Debian Jessie limpios y funcionando
+#### + Repositorios Debian Jessie limpios y funcionando
 
 ### Firefox v.83
 
