@@ -5,20 +5,20 @@ Enlace de la última ISO: bit.ly/3fFx5xv
 
 #### + Repositorios Debian Jessie limpios y funcionando
 
-### Firefox v.83
+#### +  Firefox v.83
 
-### Firefox 68.9 ESR
+#### + # Firefox 68.9 ESR
 
-### Chromium
+#### +  Chromium
 
-### Audacity
+#### +  Audacity
 
-### Systemback
+#### +  Systemback
 
-### Aplicaciones educativas
+#### +  Aplicaciones educativas
 
-### Teclado virtual en pantalla - Mathbox
+#### +  Teclado virtual en pantalla - Mathbox
 
-### Conexión automática a la red Andared
+#### +  Conexión automática a la red Andared
 
-### Drivers impresoras Brothers
+#### +  Drivers impresoras Brothers
