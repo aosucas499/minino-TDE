@@ -3,6 +3,8 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
 
 Enlace de la última ISO: http://bit.ly/3fFx5xv
 
+Última fecha de generación de ISO: 26 noviembre 2020
+
 #### + Repositorios Debian Jessie limpios y funcionando
 
 #### +  Firefox v.83
