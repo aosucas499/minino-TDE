@@ -6,22 +6,22 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
 ### Última fecha de generación de ISO: 26 noviembre 2020
 
 
-#### + Repositorios Debian Jessie limpios y funcionando
+ + Repositorios Debian Jessie limpios y funcionando
 
-#### +  Firefox v.83
+ +  Firefox v.83
 
-#### +  Firefox 68.9 ESR
+ +  Firefox 68.9 ESR
 
-#### +  Chromium 57.0.2987 (soporta flash)
+ +  Chromium 57.0.2987 (soporta flash)
 
-#### +  Audacity
+ +  Audacity
 
-#### +  Systemback
+ +  Systemback
 
-#### +  Aplicaciones educativas
+ +  Aplicaciones educativas
 
-#### +  Teclado virtual en pantalla - Mathbox
+ +  Teclado virtual en pantalla - Mathbox
 
-#### +  Conexión automática a la red Andared
+ +  Conexión automática a la red Andared
 
-#### +  Drivers impresoras Brothers
+ +  Drivers impresoras Brothers
