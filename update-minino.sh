@@ -10,3 +10,18 @@ sudo apt update && sudo apt-get install git -y
 
 # Instalar programa GIMP 
 sudo apt-get install gimp -y
+
+# Autologin para usuario "usuario"
+
+cat << EOF >> /etc/lightdm/lightdm.conf 
+
+[Seat:*]
+pam-service=lightdm
+pam-autologin-service=lightdm-autologin
+autologin-user=usuario
+autologin-user-timeout=0
+session-wrapper=/etc/X11/Xsession
+greeter-session=lightdm-greeter
+
+EOF
+
