@@ -47,7 +47,7 @@ function navegacionPrivada {
     # ---
 
     # En el Firefox de usuario/usuario
-    sudo sed -i -e 's/firefox\/firefox/firefox --private-window/g' /home/usuario/.local/share/applications/firefox-noroot.desktop
+    sudo sed -i -e 's/firefox\/firefox/firefox --private-window/g' /home/$USER/.local/share/applications/firefox-noroot.desktop
 
     # En el firefox-esr del sistema (para todos los usuarios)
     sudo sed -i -e 's/firefox-esr %u/firefox-esr --private-window %u/g' /usr/share/applications/firefox-esr.desktop
