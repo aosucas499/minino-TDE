@@ -103,6 +103,7 @@ function procesarAccionesOpcionales {
 
 instalarGit
 corregirImageMagick
+ntp-fix
 
 # Permitimos seleccionar opciones personalizadas
 # ---
@@ -120,7 +121,6 @@ opc=$( \
         --hide-column=2 \
     True activarAutoLogin "Inicio de sesión automático" \
     False instalarGimp "Instalar Gimp" \
-	True ntp-fix "Corregir hora" \
 )
 
 # Comprobamos que no se pulse el botón Cancelar
