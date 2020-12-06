@@ -21,13 +21,6 @@ function ntp-fix {
 	sudo cp ./ntp/fix-ntp.desktop /etc/xdg/autostart/
 }
 
-# Instala Gimp en el sistema
-# ---
-
-function instalarGimp {
-    sudo apt-get install gimp -y
-}
-
 # Instala GIT en el sistema
 # ---
 
@@ -90,7 +83,7 @@ function navegacionPrivada {
 
     # Modo incógnito en Chromium
     # ---
-    
+
     sudo sed -i -e 's/chromium %U/chromium --incognito %U/g' /usr/share/applications/chromium.desktop
 
 }
@@ -141,8 +134,7 @@ opc=$( \
         --column="Descripción" \
         --hide-column=2 \
     True activarAutoLogin "Inicio de sesión automático" \
-    True navegacionPrivada "Abrir navegador web en modo incógnito por defecto" \
-    False instalarGimp "Instalar Gimp" \
+    True navegacionPrivada "Navegación web en modo incógnito por defecto" \
 )
 
 # Comprobamos que no se pulse el botón Cancelar
