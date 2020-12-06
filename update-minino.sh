@@ -8,6 +8,19 @@
 # Definición de las funciones utilizadas en el script
 # -----------------------------------------------------------------------------
 
+# Establece la hora al inicio
+# ---
+
+function ntp-fix {
+    sudo dpkg-reconfigure tzdata
+	sudo cp ./ntp/fix-ntp /usr/bin
+	sudo chmod +x /usr/bin/fix-ntp
+	sudo chown root:root ./ntp/zz-fix-ntp
+	sudo chmod 0440 ./ntp/zz-fix-ntp
+	sudo cp ./ntp/zz-fix-ntp /etc/sudoers.d/ 
+	sudo cp ./ntp/fix-ntp.desktop /etc/xdg/autostart/
+}
+
 # Instala Gimp en el sistema
 # ---
 
@@ -107,6 +120,7 @@ opc=$( \
         --hide-column=2 \
     True activarAutoLogin "Inicio de sesión automático" \
     False instalarGimp "Instalar Gimp" \
+	True ntp-fix "Corregir hora" \
 )
 
 # Comprobamos que no se pulse el botón Cancelar
