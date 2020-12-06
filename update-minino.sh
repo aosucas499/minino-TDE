@@ -74,6 +74,27 @@ function ejecutarAccionOpcional {
     ($1)
 }
 
+# Activa el modo incógnito tanto en Firefox como en Chromium
+# ---
+
+function navegacionPrivada {
+
+    # Modo incógnito en los Firefox del sistema
+    # ---
+
+    # En el Firefox de usuario/usuario
+    sudo sed -i -e 's/firefox\/firefox/firefox --private-window/g' /home/usuario/.local/share/applications/firefox-noroot.desktop
+
+    # En el firefox-esr del sistema (para todos los usuarios)
+    sudo sed -i -e 's/firefox-esr %u/firefox-esr --private-window %u/g' /usr/share/applications/firefox-esr.desktop
+
+    # Modo incógnito en Chromium
+    # ---
+    
+    sudo sed -i -e 's/chromium %U/chromium --incognito %U/g' /usr/share/applications/chromium.desktop
+
+}
+
 # Invocamos ("callback") las funciones asociadas a las opciones 
 # seleccionadas por el usuario
 # ---
@@ -120,6 +141,7 @@ opc=$( \
         --column="Descripción" \
         --hide-column=2 \
     True activarAutoLogin "Inicio de sesión automático" \
+    True navegacionPrivada "Abrir navegador web en modo incógnito por defecto" \
     False instalarGimp "Instalar Gimp" \
 )
 
