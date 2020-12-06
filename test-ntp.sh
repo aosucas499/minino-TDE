@@ -1,5 +1,6 @@
 #!/bin/bash
 
+dpkg-reconfigure tzdata
 sudo cp ./ntp/fix-ntp /usr/bin
 sudo chmod +x /usr/bin/fix-ntp
 sudo chown root:root ./ntp/zz-fix-ntp
