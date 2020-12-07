@@ -3,6 +3,6 @@ Name=customize-minino
 Comment[es]=Script para añadir mejoras al sistema
 Exec=customize-minino
 Icon=madexa
-Terminal=1
+Terminal=0
 Type=Application
 Categories=Minino;
