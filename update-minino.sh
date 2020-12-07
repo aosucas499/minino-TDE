@@ -8,6 +8,15 @@
 # Definición de las funciones utilizadas en el script
 # -----------------------------------------------------------------------------
 
+# Elimina el teclado virtual matchbox
+# ---
+
+function delete-matchbox {
+    sudo apt-get purge --remove matchbox-keyboard -y
+    sudo rm /usr/local/share/applications/minino/match-keyboard.desktop
+	sudo rm /home/$USER/Escritorio/minino-match-keyboard.desktop
+}
+
 # Establece la hora al inicio
 # ---
 
@@ -47,9 +56,11 @@ function corregirImageMagick {
 # Realizamos las opciones por defecto de nuestro script
 # ---
 
+delete-matchbox
 ntp-fix
 instalarGit
 corregirImageMagick
+
 
 
 
