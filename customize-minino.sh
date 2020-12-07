@@ -42,7 +42,7 @@ function ejecutarAccionOpcional {
 
 function accesoSSH {
 
-    sudo apt install openssh-server
+    sudo apt install openssh-server -y
 }
 
 # Activa el modo incógnito tanto en Firefox como en Chromium
