@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=customize-minino
+Comment[es]=Script para añadir mejoras al sistema
+Exec=customize-minino
+Icon=madexa
+Terminal=1
+Type=Application
+Categories=Minino;
