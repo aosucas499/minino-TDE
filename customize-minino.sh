@@ -28,7 +28,6 @@ EOF
 
 }
 
-
 # Ejecuta la función correspondiente a cada una de las opciones del script
 # ---
 
@@ -36,6 +35,14 @@ function ejecutarAccionOpcional {
 
     echo "Ejecutamos $1()"
     ($1)
+}
+
+# Instala SSHD para permitir la conexión remota por SSH a Minino-TDE
+# ---
+
+function accesoSSH {
+
+    sudo apt install openssh-server
 }
 
 # Activa el modo incógnito tanto en Firefox como en Chromium
@@ -103,6 +110,7 @@ opc=$( \
         --hide-column=2 \
     True activarAutoLogin "Inicio de sesión automático" \
     True navegacionPrivada "Navegación web en modo incógnito por defecto" \
+    False accesoSSH "Permitir conexión por SSH" \
 )
 
 # Comprobamos que no se pulse el botón Cancelar
