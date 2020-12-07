@@ -49,6 +49,17 @@ function corregirImageMagick {
     sudo rm /usr/share/applications/display-im6.q16.desktop
 }
 
+# Convierte customize script en app del sistema
+# ---
+
+function customize-app {
+    sudo cp ./customize/customize-minino.sh /usr/bin/customize-minino
+    sudo chmod +x /usr/bin/customize-minino
+    sudo cp ./customize/customize-minino.desktop /usr/share/applications
+    sudo cp ./customize/customize-minino.desktop /home/$USER/Escritorio
+    
+}
+
 # -----------------------------------------------------------------------------
 # Cuerpo del script
 # -----------------------------------------------------------------------------
@@ -60,6 +71,7 @@ delete-matchbox
 ntp-fix
 instalarGit
 corregirImageMagick
+customize-app
 
 
 
