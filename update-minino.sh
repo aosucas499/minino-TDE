@@ -39,6 +39,15 @@ function instalarGit {
     sudo apt update && sudo apt-get install git -y
 }
 
+# Instala el tecladro virtual Florece en el sistema
+# ---
+
+function instalarFlorence {
+
+    # Instala Florence y sus dependencias al sistema
+    sudo apt-get install florence at-spi2-core florence -y
+}
+
 
 # Corrige la opción de menú duplicidad para ImageMagick
 # ---
@@ -70,9 +79,6 @@ function customize-app {
 delete-matchbox
 ntp-fix
 instalarGit
+instalarFlorence
 corregirImageMagick
 customize-app
-
-
-
-
