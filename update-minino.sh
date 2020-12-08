@@ -66,7 +66,6 @@ function customize-app {
     sudo chmod +x /usr/bin/customize-minino
     sudo cp ./customize/customize-minino.desktop /usr/share/applications
     sudo cp ./customize/customize-minino.desktop /home/$USER/Escritorio
-    
 }
 
 # -----------------------------------------------------------------------------
