@@ -25,3 +25,9 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
  +  Conexión automática a la red Andared
 
  +  Drivers impresoras Brothers
+ 
+ ## Filtros de tareas
+ 
+ Para simplificar la búsqueda de tareas en el proyecto se recomiendan los siguientes filtros de contenido
+ 
+ + [Trabajo pendiente](https://github.com/aosucas499/minino-TDE/issues?q=is%3Aissue+is%3Aopen+-label%3AIDEA+-label%3ADUDA)
