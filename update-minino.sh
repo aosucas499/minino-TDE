@@ -36,7 +36,7 @@ function ntp-fix {
 function instalarGit {
 
     # Añadir paquete "git" para descargar directamente al sistema desde Github.
-    sudo apt update && sudo apt-get install git -y
+    sudo apt-get install git -y
 }
 
 # Instala el tecladro virtual Florece en el sistema
@@ -72,6 +72,11 @@ function customize-app {
 # -----------------------------------------------------------------------------
 # Cuerpo del script
 # -----------------------------------------------------------------------------
+
+# Aseguramos tener el sistema actualizado
+# ---
+
+sudo apt update
 
 # Realizamos las opciones por defecto de nuestro script
 # ---
