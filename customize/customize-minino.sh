@@ -53,8 +53,11 @@ function navegacionPrivada {
     # Modo incógnito en los Firefox del sistema
     # ---
 
-    # En el Firefox de usuario/usuario
-    sudo sed -i -e 's/firefox\/firefox/firefox --private-window/g' /home/$USER/.local/share/applications/firefox-noroot.desktop
+    # En el Firefox-latest de usuario/usuario
+	sudo sed -i -e 's/firefox\-latest\/firefox/firefox\-latest\/firefox --private-window/g' /home/$USER/Escritorio/firefox-latest.desktop
+
+	# En el Firefox-latest del sistema
+	sudo sed -i -e 's/firefox\-latest\/firefox/firefox\-latest\/firefox --private-window/g' /usr/share/applications/firefox-latest.desktop
 
     # En el firefox-esr del sistema (para todos los usuarios)
     sudo sed -i -e 's/firefox-esr %u/firefox-esr --private-window %u/g' /usr/share/applications/firefox-esr.desktop
