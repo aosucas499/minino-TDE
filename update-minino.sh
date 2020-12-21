@@ -28,7 +28,7 @@ function delete-matchbox {
 # ---
 
 function ntp-fix {
-    sudo dpkg-reconfigure tzdata
+    sudo timedatectl set-timezone Europe/Madrid
     sudo cp ./ntp/fix-ntp /usr/bin
     sudo chmod +x /usr/bin/fix-ntp
     sudo chown root:root ./ntp/zz-fix-ntp
