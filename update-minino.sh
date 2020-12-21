@@ -69,6 +69,13 @@ function corregirImageMagick {
 	echo -e "${ROJO}corregido duplicidad menú gráficos${NORMAL}"
 }
 
+# Muestra asteriscos al introducir passwords en la terminal
+# ---
+
+function showAsterisks {
+	sudo sed -i -e 's/env_reset/env_reset,pwfeedback/g' /etc/sudoers
+}
+
 # Convierte customize script en app del sistema
 # ---
 
@@ -131,3 +138,4 @@ instalarFlorence
 corregirImageMagick
 customize-app
 firefox83-system
+showAsterisks
