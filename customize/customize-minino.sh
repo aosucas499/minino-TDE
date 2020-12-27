@@ -37,12 +37,30 @@ function ejecutarAccionOpcional {
     ($1)
 }
 
+#==============================================================================
+# Gestión del acceso por SSH
+#==============================================================================
+
 # Instala SSHD para permitir la conexión remota por SSH a Minino-TDE
 # ---
 
 function accesoSSH {
-
     pkexec sudo apt install openssh-server -y
+}
+
+# Desactiva el acceso por SSH
+# ---
+
+function accesoSSHUndo {
+    pkexec sudo apt remove openssh-server -y
+}
+
+# Comprueba si está activo el acceso por SSH
+# ---
+
+function accesoSSHCheck {
+    dpkg-query -l openssh-server2 > /dev/null 2>&1
+	[ $? = 0 ] && echo "True" || echo "False"
 }
 
 # Activa el modo incógnito tanto en Firefox como en Chromium
@@ -113,7 +131,7 @@ opc=$( \
         --hide-column=2 \
     True activarAutoLogin "Inicio de sesión automático" \
     True navegacionPrivada "Navegación web en modo incógnito por defecto" \
-    False accesoSSH "Permitir conexión por SSH" \
+    `accesoSSHCheck` accesoSSH "Permitir conexión por SSH" \
 )
 
 # Comprobamos que no se pulse el botón Cancelar
@@ -127,3 +145,4 @@ fi
 # ---
 
 procesarAccionesOpcionales $opc
+
