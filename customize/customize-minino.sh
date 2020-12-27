@@ -59,7 +59,7 @@ function accesoSSHUndo {
 # ---
 
 function accesoSSHCheck {
-    dpkg-query -l openssh-server2 > /dev/null 2>&1
+    dpkg-query -l openssh-server > /dev/null 2>&1
 	[ $? = 0 ] && echo "True" || echo "False"
 }
 
@@ -118,6 +118,12 @@ function procesarAccionesOpcionales {
 # Permitimos seleccionar opciones personalizadas
 # ---
 
+# Preparamos la lista de opciones a mostrar
+
+opciones=("${opciones[@]}" True activarAutoLogin "Inicio de sesión automático")
+opciones=("${opciones[@]}" False navegacionPrivada "Navegación web en modo incógnito por defecto")
+opciones=("${opciones[@]}" `accesoSSHCheck` accesoSSH "Permitir conexión por SSH")
+
 # Mostramos las opciones personalizables
 
 opc=$( \
@@ -129,9 +135,7 @@ opc=$( \
         --column="funcionAEjecutar" \
         --column="Descripción" \
         --hide-column=2 \
-    True activarAutoLogin "Inicio de sesión automático" \
-    True navegacionPrivada "Navegación web en modo incógnito por defecto" \
-    `accesoSSHCheck` accesoSSH "Permitir conexión por SSH" \
+   "${opciones[@]}" \
 )
 
 # Comprobamos que no se pulse el botón Cancelar
