@@ -91,7 +91,7 @@ function navegacionPrivada {
 # seleccionadas por el usuario
 # ---
 
-function procesarAccionesOpcionales {
+function procesarAccionesSeleccionadas {
 
     # Dividimos (el separador es "|" ) las opciones seleccionadas por el usuario
     # ---
@@ -204,5 +204,5 @@ fi
 # Procesamos las opciones elegidas por el usuario
 # ---
 
-procesarAccionesOpcionales $opc
+procesarAccionesSeleccionadas $opc
 
