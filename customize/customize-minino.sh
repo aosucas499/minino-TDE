@@ -16,6 +16,10 @@ readonly DEBUG='y'
 # Definición de las funciones utilizadas en el script
 # -----------------------------------------------------------------------------
 
+#==============================================================================
+# Gestión del autologin en el sistema
+#==============================================================================
+
 # Activa el autologin para el usuario "usuario"
 # ---
 
@@ -33,6 +37,22 @@ greeter-session=lightdm-greeter
 
 EOF
 
+}
+
+# Desactiva el acceso automático al sistema
+# ---
+
+function activarAutoLoginUndo {
+    pkexec sudo sed -e '/\[Seat\:\*\]/,+7d' < /etc/lightdm/lightdm.conf > /tmp/lightdm.conf
+    pkexec sudo mv /tmp/lightdm.conf /etc/lightdm/lightdm.conf
+}
+
+# Comprueba si está activo el acceso automático al sistema
+# ---
+
+function activarAutoLoginCheck {
+    grep -q pam-autologin-service=lightdm-autologin /etc/lightdm/lightdm.conf > /dev/null 2>&1
+	[ $? = 0 ] && echo "True" || echo "False"
 }
 
 # Ejecuta la función correspondiente a cada una de las opciones del script
@@ -67,6 +87,10 @@ function accesoSSHCheck {
     dpkg-query -l openssh-server > /dev/null 2>&1
 	[ $? = 0 ] && echo "True" || echo "False"
 }
+
+#==============================================================================
+# Gestión del modo privado en los navegadores del sistema
+#==============================================================================
 
 # Activa el modo incógnito tanto en Firefox como en Chromium
 # ---
@@ -183,7 +207,7 @@ function getOpcionesDescartadas {
 
 # Preparamos la lista de opciones a mostrar
 
-opciones=("${opciones[@]}" True activarAutoLogin "Inicio de sesión automático")
+opciones=("${opciones[@]}" `activarAutoLoginCheck` activarAutoLogin "Inicio de sesión automático")
 opciones=("${opciones[@]}" False navegacionPrivada "Navegación web en modo incógnito por defecto")
 opciones=("${opciones[@]}" `accesoSSHCheck` accesoSSH "Permitir conexión por SSH")
 
@@ -211,7 +235,6 @@ if [[ "$?" != 0 ]]; then
 fi
 
 descartado=$(getOpcionesDescartadas $opciones[@] $opc)
-#echo $descartado
 
 # Procesamos las opciones elegidas por el usuario
 # ---
