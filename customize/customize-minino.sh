@@ -107,13 +107,67 @@ function procesarAccionesOpcionales {
 
 }
 
+# Concatena el contenido de un array usando el delimitador proporcionado
+# ---
+
+function join { 
+    local IFS="$1"; 
+    shift; 
+    echo "$*"; 
+}
+
+# Listamos opciones no elegidas
+# ---
+
+function getOpcionesDescartadas {
+
+    # Preparamos las variables a usar
+    # ---
+
+    elegidos=$2
+    opciones=$1
+
+    rsdo=()
+
+    # Procesamos los lotes de opciones
+    # ---
+
+    # Mientras queden lotes "de 3" elementos en el array
+
+    while [ ${#opciones[@]} -ge 3 ]
+    do
+        
+        # Obtenemos la nueva fila de valores
+
+        row=( ${opciones[@]:0:3} )
+
+        # Comprobamos si la opción no ha sido elegida
+
+        valor=${row[@]:1:1}
+
+        # Si no ha sido elegida, la añadimos a la lista
+
+        if [[ "$elegidos" != *"$valor"* ]]; then
+            rsdo=( "${rsdo[@]}" $valor )
+        fi
+
+        # Eliminamos la fila procesada
+
+        opciones=( "${opciones[@]:3}" )
+
+    done
+
+    # Devolvemos como resultado la lista de funciones no seleccionadas
+    # ---
+
+    aux=$(join \| ${rsdo[@]})
+    echo $aux
+
+}
+
 # -----------------------------------------------------------------------------
 # Cuerpo del script
 # -----------------------------------------------------------------------------
-
-# Realizamos las opciones por defecto de nuestro script
-# ---
-
 
 # Permitimos seleccionar opciones personalizadas
 # ---
