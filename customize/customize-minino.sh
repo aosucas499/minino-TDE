@@ -10,7 +10,7 @@
 
 # Constante que impide que se ejecuten las opciones elegidas
 
-readonly DEBUG='y'
+readonly DEBUG='n'
 
 # -----------------------------------------------------------------------------
 # Definición de las funciones utilizadas en el script
@@ -84,8 +84,8 @@ function accesoSSHUndo {
 # ---
 
 function accesoSSHCheck {
-    dpkg-query -l openssh-server > /dev/null 2>&1
-	[ $? = 0 ] && echo "True" || echo "False"
+    rsdo=$(dpkg --get-selections | grep openssh-server | grep deinstall | wc -l);
+	[ $rsdo = 0 ] && echo "True" || echo "False"
 }
 
 #==============================================================================
