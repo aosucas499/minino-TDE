@@ -32,8 +32,6 @@ EOF
 # ---
 
 function ejecutarAccionOpcional {
-
-    echo "Ejecutamos $1()"
     ($1)
 }
 
@@ -102,7 +100,12 @@ function procesarAccionesSeleccionadas {
 
     for i in "${vals[@]}"
     do
-        ejecutarAccionOpcional $i
+        aux=$(ejecutarAccionOpcional $i"Check")
+        if [[ $aux == "False" ]]; then
+            echo "Ejecutamos "$i"()"
+            # TODO quitar para que se ejecute
+            #ejecutarAccionOpcional $i
+        fi
     done
 
 }
@@ -201,8 +204,12 @@ if [[ "$?" != 0 ]]; then
     exit 0
 fi
 
+descartado=$(getOpcionesDescartadas $opciones[@] $opc)
+#echo $descartado
+
 # Procesamos las opciones elegidas por el usuario
 # ---
 
 procesarAccionesSeleccionadas $opc
-
+# TODO implementar (igual que la anterior pero al contrario: si True del ...Check, entonces se ejecuta)
+#procesarAccionesDescartadas $descartado
