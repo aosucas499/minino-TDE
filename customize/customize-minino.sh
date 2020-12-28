@@ -5,10 +5,17 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
+# Configuración del script
+# -----------------------------------------------------------------------------
+
+# Constante que impide que se ejecuten las opciones elegidas
+
+readonly DEBUG='y'
+
+# -----------------------------------------------------------------------------
 # Definición de las funciones utilizadas en el script
 # -----------------------------------------------------------------------------
-#
-#
+
 # Activa el autologin para el usuario "usuario"
 # ---
 
@@ -103,8 +110,7 @@ function procesarAccionesSeleccionadas {
         aux=$(ejecutarAccionOpcional $i"Check")
         if [[ $aux == "False" ]]; then
             echo "Ejecutamos "$i"()"
-            # TODO quitar para que se ejecute
-            #ejecutarAccionOpcional $i
+            [[ $DEBUG != 'y' ]] && ejecutarAccionOpcional $i || echo "No se ejecuta "$i"() por estar en modo DEBUG"
         fi
     done
 
