@@ -101,6 +101,30 @@ function navegacionPrivada {
     # ---
 
     # En el Firefox-latest de usuario/usuario
+	pkexec sudo sed -i -e 's/firefox\-latest\/firefox --private-window/firefox\-latest\/firefox/g' /home/$USER/Escritorio/firefox-latest.desktop
+
+	# En el Firefox-latest del sistema
+	pkexec sudo sed -i -e 's/firefox\-latest\/firefox --private-window/firefox\-latest\/firefox/g' /usr/share/applications/firefox-latest.desktop
+
+    # En el firefox-esr del sistema (para todos los usuarios)
+    pkexec sudo sed -i -e 's/firefox-esr --private-window %u/firefox-esr %u/g' /usr/share/applications/firefox-esr.desktop
+
+    # Modo incógnito en Chromium
+    # ---
+
+    pkexec sudo sed -i -e 's/chromium --incognito %U/chromium %U/g' /usr/share/applications/chromium.desktop
+
+}
+
+# Desactiva el modo incógnito en los navegadores del sistema
+# ---
+
+function navegacionPrivadaUndo {
+    
+    # Modo incógnito en los Firefox del sistema
+    # ---
+
+    # En el Firefox-latest de usuario/usuario
 	sudo sed -i -e 's/firefox\-latest\/firefox/firefox\-latest\/firefox --private-window/g' /home/$USER/Escritorio/firefox-latest.desktop
 
 	# En el Firefox-latest del sistema
@@ -114,6 +138,15 @@ function navegacionPrivada {
 
     sudo sed -i -e 's/chromium %U/chromium --incognito %U/g' /usr/share/applications/chromium.desktop
 
+}
+
+# Comprueba si está activo el modo incógnito en los navegadores del sistema
+# ---
+
+function navegacionPrivadaCheck {
+    # Nos limitaremos a comprobar que se cambió en el firefox-latest que hemos metido en el sistema
+    grep -q "\-\-private\-window" /usr/share/applications/firefox-latest.desktop > /dev/null 2>&1
+	[ $? = 0 ] && echo "True" || echo "False"
 }
 
 # Invocamos ("callback") las funciones asociadas a las opciones 
@@ -208,7 +241,7 @@ function getOpcionesDescartadas {
 # Preparamos la lista de opciones a mostrar
 
 opciones=("${opciones[@]}" `activarAutoLoginCheck` activarAutoLogin "Inicio de sesión automático")
-opciones=("${opciones[@]}" False navegacionPrivada "Navegación web en modo incógnito por defecto")
+opciones=("${opciones[@]}" `navegacionPrivadaCheck` navegacionPrivada "Navegación web en modo incógnito por defecto")
 opciones=("${opciones[@]}" `accesoSSHCheck` accesoSSH "Permitir conexión por SSH")
 
 # Mostramos las opciones personalizables
@@ -216,7 +249,7 @@ opciones=("${opciones[@]}" `accesoSSHCheck` accesoSSH "Permitir conexión por SS
 opc=$( \
     zenity \
         --list \
-        --title="Elija las personalizaciones que desea apliar" \
+        --title="Elija las personalizaciones que desea aplicar" \
         --checklist \
         --column="Aplicar" \
         --column="funcionAEjecutar" \
