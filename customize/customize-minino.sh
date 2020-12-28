@@ -189,6 +189,8 @@ opc=$( \
         --column="funcionAEjecutar" \
         --column="Descripción" \
         --hide-column=2 \
+        --width=500 \
+        --height=250 \
    "${opciones[@]}" \
 )
 
