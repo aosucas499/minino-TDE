@@ -92,10 +92,10 @@ function accesoSSHCheck {
 # Gestión del modo privado en los navegadores del sistema
 #==============================================================================
 
-# Activa el modo incógnito tanto en Firefox como en Chromium
+# Desactiva el modo incógnito en los navegadores del sistema
 # ---
 
-function navegacionPrivada {
+function navegacionPrivadaUndo {
 
     # Modo incógnito en los Firefox del sistema
     # ---
@@ -116,10 +116,10 @@ function navegacionPrivada {
 
 }
 
-# Desactiva el modo incógnito en los navegadores del sistema
+# Activa el modo incógnito tanto en Firefox como en Chromium
 # ---
 
-function navegacionPrivadaUndo {
+function navegacionPrivada {
     
     # Modo incógnito en los Firefox del sistema
     # ---
