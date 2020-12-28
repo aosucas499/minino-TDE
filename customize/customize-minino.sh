@@ -25,7 +25,7 @@ readonly DEBUG='y'
 
 function activarAutoLogin {
 
-cat << EOF >> /etc/lightdm/lightdm.conf 
+sudo cat << EOF >> /etc/lightdm/lightdm.conf 
 
 [Seat:*]
 pam-service=lightdm
@@ -43,8 +43,8 @@ EOF
 # ---
 
 function activarAutoLoginUndo {
-    pkexec sudo sed -e '/\[Seat\:\*\]/,+7d' < /etc/lightdm/lightdm.conf > /tmp/lightdm.conf
-    pkexec sudo mv /tmp/lightdm.conf /etc/lightdm/lightdm.conf
+    sudo sed -e '/\[Seat\:\*\]/,+7d' < /etc/lightdm/lightdm.conf > /tmp/lightdm.conf
+    sudo mv /tmp/lightdm.conf /etc/lightdm/lightdm.conf
 }
 
 # Comprueba si está activo el acceso automático al sistema
@@ -70,14 +70,14 @@ function ejecutarAccionOpcional {
 # ---
 
 function accesoSSH {
-    pkexec sudo apt install openssh-server -y
+     sudo apt install openssh-server -y
 }
 
 # Desactiva el acceso por SSH
 # ---
 
 function accesoSSHUndo {
-    pkexec sudo apt remove openssh-server -y
+     sudo apt remove openssh-server -y
 }
 
 # Comprueba si está activo el acceso por SSH
@@ -101,18 +101,18 @@ function navegacionPrivada {
     # ---
 
     # En el Firefox-latest de usuario/usuario
-	pkexec sudo sed -i -e 's/firefox\-latest\/firefox --private-window/firefox\-latest\/firefox/g' /home/$USER/Escritorio/firefox-latest.desktop
+	 sudo sed -i -e 's/firefox\-latest\/firefox --private-window/firefox\-latest\/firefox/g' /home/$USER/Escritorio/firefox-latest.desktop
 
 	# En el Firefox-latest del sistema
-	pkexec sudo sed -i -e 's/firefox\-latest\/firefox --private-window/firefox\-latest\/firefox/g' /usr/share/applications/firefox-latest.desktop
+	 sudo sed -i -e 's/firefox\-latest\/firefox --private-window/firefox\-latest\/firefox/g' /usr/share/applications/firefox-latest.desktop
 
     # En el firefox-esr del sistema (para todos los usuarios)
-    pkexec sudo sed -i -e 's/firefox-esr --private-window %u/firefox-esr %u/g' /usr/share/applications/firefox-esr.desktop
+     sudo sed -i -e 's/firefox-esr --private-window %u/firefox-esr %u/g' /usr/share/applications/firefox-esr.desktop
 
     # Modo incógnito en Chromium
     # ---
 
-    pkexec sudo sed -i -e 's/chromium --incognito %U/chromium %U/g' /usr/share/applications/chromium.desktop
+     sudo sed -i -e 's/chromium --incognito %U/chromium %U/g' /usr/share/applications/chromium.desktop
 
 }
 
@@ -168,6 +168,30 @@ function procesarAccionesSeleccionadas {
         if [[ $aux == "False" ]]; then
             echo "Ejecutamos "$i"()"
             [[ $DEBUG != 'y' ]] && ejecutarAccionOpcional $i || echo "No se ejecuta "$i"() por estar en modo DEBUG"
+        fi
+    done
+
+}
+
+# Invocamos ("callback") las funciones "undo" asociadas a las opciones 
+# NO seleccionadas por el usuario (las descartadas)
+# ---
+
+function procesarAccionesDescartadas {
+
+    # Dividimos (el separador es "|" ) las opciones seleccionadas por el usuario
+    # ---
+
+    IFS="|" read -a vals <<< $1
+
+    # Solicitamos (una a una) que se procesen dichas opciones
+
+    for i in "${vals[@]}"
+    do
+        aux=$(ejecutarAccionOpcional $i"Check")
+        if [[ $aux == "True" ]]; then
+            echo "Ejecutamos "$i"Undo()"
+            [[ $DEBUG != 'y' ]] && ejecutarAccionOpcional $i"Undo" || echo "No se ejecuta "$i"Undo() por estar en modo DEBUG"
         fi
     done
 
@@ -273,5 +297,4 @@ descartado=$(getOpcionesDescartadas $opciones[@] $opc)
 # ---
 
 procesarAccionesSeleccionadas $opc
-# TODO implementar (igual que la anterior pero al contrario: si True del ...Check, entonces se ejecuta)
-#procesarAccionesDescartadas $descartado
+procesarAccionesDescartadas $descartado
