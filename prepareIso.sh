@@ -27,3 +27,7 @@ sudo sed -i "s/Queiles/#TDE/g" "/usr/lib/refractasnapshot/iso/isolinux/menu_gl.c
 
 #borrar repo git
 cd ~ && sudo rm -r minino*
+
+#comandos para generar ISO
+#prev-mklive
+#sudo makelive
