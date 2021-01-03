@@ -26,4 +26,4 @@ sudo sed -i "s/Queiles/#TDE/g" "/usr/lib/refractasnapshot/iso/isolinux/menu_gl.c
 sudo sed -i "s/Queiles/#TDE/g" "/usr/lib/refractasnapshot/iso/isolinux/menu_gl.conf"
 
 #borrar repo git
-cd ~ && sudo rm -r minito-td*
+cd ~ && sudo rm -r minino*
