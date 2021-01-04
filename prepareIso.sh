@@ -25,6 +25,12 @@ sudo sed -i "s/Queiles/#TDE/g" "/usr/lib/refractasnapshot/iso/isolinux/menu_eu.c
 sudo sed -i "s/Queiles/#TDE/g" "/usr/lib/refractasnapshot/iso/isolinux/menu_gl.cfg"
 sudo sed -i "s/Queiles/#TDE/g" "/usr/lib/refractasnapshot/iso/isolinux/menu_gl.conf"
 
+#modificaciones del instalador
+sudo sed -i "s/minino/usuario/g" "/usr/local/bin/minino-installer-selector"
+sudo sed -i -e '311,312 s/#//g' /usr/local/sbin/makelive
+sudo sed -i -e '15,17 s/#//g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
+sudo sed -i '15,17 s/refractainstaller/minino-installer/g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
+
 #borrar repo git
 cd ~ && sudo rm -r minino*
 
