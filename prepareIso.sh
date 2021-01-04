@@ -34,6 +34,6 @@ sudo sed -i '15,17 s/refractainstaller/minino-installer/g' /usr/lib/refractainst
 #borrar repo git
 cd ~ && sudo rm -r minino*
 
-#comandos para generar ISO
-#prev-mklive
-#sudo makelive
+echo "comandos para generar ISO"
+echo "prev-mklive"
+echo "sudo makelive"
