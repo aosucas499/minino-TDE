@@ -1,9 +1,12 @@
 # minino-TDE
 ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para su uso en dispositivos antiguos. #TDE
 
-## Enlace de la última ISO: http://bit.ly/3fFx5xv
+## Enlace de la última ISO: http://bit.ly/2KOpodK 
+(enlace permanente aunque se actualice la ISO)
 
-### Última fecha de generación de ISO: 26 noviembre 2020
+## [Instrucciones de instalación](https://github.com/aosucas499/minino-TDE/wiki/Instalaci%C3%B3n)
+
+### Última fecha de generación de ISO: 7 enero 2021
 
  +  Aplicación para añadir mejoras "customize-minino" (acceso ssh, navegación privada,autologin...)
  
