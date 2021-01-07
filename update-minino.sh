@@ -154,7 +154,7 @@ function prepareIso {
 	sudo apt-get update -y
 
 	#borrar repo git
-	cd ~ && sudo rm -r minino*
+	cd /home/$USER/ && sudo rm -r minino*
 
 	echo -e "${AZUL}comandos para generar ISO${NORMAL}"
 	echo "prev-mklive"
