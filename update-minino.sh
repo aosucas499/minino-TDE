@@ -120,7 +120,7 @@ function firefox83-system {
 }
 
 function prepareIso {
-	echo -e "${AZUL}Preparando la ISO${NORMAL}"
+	echo -e "${ROJO}Preparando la ISO${NORMAL}"
 	#Borramos archivos innecesarios 
 	sudo rm ~/.local/share/applications/appimagekit-balena-etcher-electron.desktop
 	sudo rm -r /home/usuario/Descargas/*
@@ -156,7 +156,7 @@ function prepareIso {
 	#borrar repo git
 	cd ~ && sudo rm -r minino*
 
-	echo -e "${AZUL}comandos para generar ISO{NORMAL}"
+	echo -e "${AZUL}comandos para generar ISO${NORMAL}"
 	echo "prev-mklive"
 	echo "sudo makelive"
 }
