@@ -84,8 +84,20 @@ function accesoSSHUndo {
 # ---
 
 function accesoSSHCheck {
-    rsdo=$(dpkg --get-selections | grep openssh-server | grep deinstall | wc -l);
-	[ $rsdo = 0 ] && echo "True" || echo "False"
+
+	# Comprobaciones a realizar 
+	#---
+
+	# Paquete a comprobar
+	app=openssh-server;
+
+	# Paquete instalado
+    ins=$(dpkg --get-selections | grep $app | grep [^de]install | wc -l); 
+
+	# Situación actual
+	#---
+
+	[ $ins -eq 1 ] && echo "True" || echo "False";
 }
 
 #==============================================================================
@@ -291,10 +303,14 @@ if [[ "$?" != 0 ]]; then
     exit 0
 fi
 
+# Calculamos las opciones que ha desmarcado el usuario
+
 descartado=$(getOpcionesDescartadas $opciones[@] $opc)
 
 # Procesamos las opciones elegidas por el usuario
 # ---
+
+sudo apt update
 
 procesarAccionesSeleccionadas $opc
 procesarAccionesDescartadas $descartado
