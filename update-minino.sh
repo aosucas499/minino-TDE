@@ -154,8 +154,9 @@ function prepareIso {
 	sudo sed -i '170 s/minino/usuario/g' /usr/local/bin/minino-installer-selector
 	sudo sed -i -e '311,312 s/#//g' /usr/local/sbin/makelive
 	sudo sed -i '28 s/yes/no/g' /etc/refractainstaller.conf
-	#sudo sed -i -e '15,17 s/#//g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
-	#sudo sed -i '15,17 s/refractainstaller/minino-installer/g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
+	sudo sed -i '15,17 s/#//g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
+	sudo sed -i '15,17 s/refractainstaller/minino-installer/g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
+	sudo sed -i '15,17 s/Desktop/Escritorio/g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
 	#sudo sed -i '$a - /home/$USER/Escritorio/minino-installer.desktop' /usr/lib/refractainstaller/installer_exclude.list
 	
 	sudo apt-get update -y
