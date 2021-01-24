@@ -127,9 +127,12 @@ function prepareIso {
 	sudo rm -r /home/Systemback
 
 	#Instalamos refracta que desinstala systemback
-	wget https://sourceforge.net/projects/refracta/files/tools/refractasnapshot-base_10.2.10_all.deb
-	sudo dpkg -i refractasnapshot*
+	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-base_9.2.2_all.deb
+	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-gui_9.2.2_all.deb/download
+	sudo dpkg -i refractasnapshot-base*
+	sudo dpkg -i refractasnapshot-gui*
 	sudo apt-get install -f -y
+	sudo rm refracta*.deb
 
 	#modificamos opciones y texto del grub
 	sudo cp ./tools/splash.png /usr/lib/refractasnapshot/iso/isolinux/splash.png
