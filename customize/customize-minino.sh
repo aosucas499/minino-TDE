@@ -86,7 +86,7 @@ function accesoSSHUndo {
 function accesoSSHCheck {
 
 	# Comprobaciones a realizar 
-	#---
+	# ---
 
 	# Paquete a comprobar
 	app=openssh-server;
@@ -95,9 +95,68 @@ function accesoSSHCheck {
     ins=$(dpkg --get-selections | grep $app | grep [^de]install | wc -l); 
 
 	# Situación actual
-	#---
+	# ---
 
 	[ $ins -eq 1 ] && echo "True" || echo "False";
+}
+
+#==============================================================================
+# Gestión del problema de sonido en los Toshiba NB500 y Samsung N100SP
+#==============================================================================
+
+# Aplica parche de sonido al chip NM10/ICH7
+# ---
+
+function soundProblem {
+
+    # Evitamos el mute del sonido inicial
+    # --- 
+
+    # Quitamos el mute
+	amixer -c 0 set 'Headphone' unmute > /dev/null 2>&1
+
+	# Aseguramos un volumen aceptable
+	amixer -c 0 set 'Headphone' 60%  > /dev/null 2>&1
+	amixer -c 0 set 'Master' 60%  > /dev/null 2>&1
+
+    # Evitamos que pulseAudio elija el Speaker al quitar los auriculares
+    # --- 
+
+    sudo mv /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker.conf /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker.conf_tde > /dev/null 2>&1
+    sudo mv /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker-always.conf /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker-always.conf_tde > /dev/null 2>&1
+
+	# Matamos la instancia actual de pulseAudio para que se aplique el cambio
+
+	su - "$SUDO_USER" -c "pulseaudio -k"
+
+}
+
+# Deshace el parche de sonido
+# ---
+
+function soundProblemUndo {
+
+	# Dejamos la configuración como estaba originalmente
+	# ---
+
+    sudo mv /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker.conf_tde /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker.conf > /dev/null 2>&1
+    sudo mv /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker-always.conf_tde /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker-always.conf > /dev/null 2>&1
+
+	# Matamos la instancia actual de pulseAudio para que se aplique el cambio
+
+	su - "$SUDO_USER" -c "pulseaudio -k"
+}
+
+# Comprueba si está activo el parche de sonido
+# ---
+
+function soundProblemCheck {
+
+	# Comprobaciones a realizar 
+	#---
+
+    # Existe uno de los ficheros que hemos renombrado (backup del original)
+    [ -f /usr/share/pulseaudio/alsa-mixer/paths/analog-output-speaker.conf_tde ] && echo "True" || echo "False";
 }
 
 #==============================================================================
@@ -279,6 +338,7 @@ function getOpcionesDescartadas {
 opciones=("${opciones[@]}" `activarAutoLoginCheck` activarAutoLogin "Inicio de sesión automático")
 opciones=("${opciones[@]}" `navegacionPrivadaCheck` navegacionPrivada "Navegación web en modo incógnito por defecto")
 opciones=("${opciones[@]}" `accesoSSHCheck` accesoSSH "Permitir conexión por SSH")
+opciones=("${opciones[@]}" `soundProblemCheck` soundProblem "Corregir audio NB500/N100SP")
 
 # Mostramos las opciones personalizables
 
