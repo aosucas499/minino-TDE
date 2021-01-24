@@ -128,7 +128,7 @@ function prepareIso {
 
 	#Instalamos refracta que desinstala systemback
 	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-base_9.2.2_all.deb
-	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-gui_9.2.2_all.deb/download
+	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-gui_9.2.2_all.deb
 	sudo dpkg -i refractasnapshot-base*
 	sudo dpkg -i refractasnapshot-gui*
 	sudo apt-get install -f -y
