@@ -1,0 +1,819 @@
+#!/bin/bash
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
+
+# (c) Antonio Sánchez León, 2010, 2011, 2012, 2013, 2014 <introlinux[fix@]gmail[fix.]com>
+# (c) Miguel Anxo Bouzada, 2010, 2011, 2012, 2013, 2014 <mbouzada[fix@]gmail[fix.]com>
+# (c) GALPon MinNo Team, 2010, 2011, 2012, 2013, 2014 <minino[fix@]galpon[fix.]org>
+
+# Retocado para la Distribucion Ezaro, 2011,
+# por Guillermo Cordeiro <gcordeiro[fix@]tegnix[fix.]com>
+# Ampliado y revisado para MiniNo-v2 Ártabros, 2012, 2013, 2014
+# por el equipo de GALPon MiniNo <minino[fix@]galpon[fix.]org>
+
+## -
+
+
+Nombre="MININO"
+NucleoUsado=$(uname -r)
+BaseNucleo=`uname -r | awk -F"-" '{print $1,$2}' | sed "s/ /-/"` # v.g. "3.2.0-4"
+RefNucleo=`uname -r | awk -F"-" '{print $3}'` # v.g "486"
+kernel="vmlinuz-${NucleoUsado}"
+initrd="initrd.img-${NucleoUsado}"
+#USUARIO="minino"
+USUARIO=`pwd | cut -d"/" -f3`
+escritorio=`cat /home/${USUARIO}/.config/user-dirs.dirs |grep DESKTOP|cut -d"=" -f2|cut -d"\"" -f2|cut -d"/" -f2`
+
+
+# PREGUNTAMOS Y ESTABLECEMOS IDIOMA
+clear
+echo ""
+echo -e "Esculli el seu idioma.  Per  \033[1;31mcatalà CA\033[0m escrigui:  \033[1;31m ca \033[0m"
+echo -e "Escolla o seu idioma.   Para \033[1;32mgalego GL\033[0m escriba:   \033[1;32m gl \033[0m"
+echo -e "Hautatu zure hizkuntza. \033[1;33mEuskerarako EU\033[0m idatzi:    \033[1;33m eu \033[0m"
+echo -e "Escoja su idioma.       Para \033[1;34mespañol ES\033[0m escriba:  \033[1;34m es \033[0m"
+echo -e "Choose your language.   For  \033[1;35menglish US\033[0m write:    \033[1;35m en \033[0m"
+#echo -e "Escolha o seu idioma.   Para \033[1;36mportugês BR\033[0m escreba: \033[1;36m br \033[0m"
+echo ""
+
+while [ ${idioma:-void} == "void" ]
+do
+#   read -N 2 -p "! " idioma
+    read -p ": " idioma
+    echo -n ""
+
+    case $idioma in
+        ca | CA | Ca | cA )
+            LANG="ca_ES.UTF-8"
+            export LANG
+            echo "LANG=\"ca_ES.UTF-8\"" > /etc/default/locale
+        ;;
+
+        gl | GL | Gl | gL )
+            LANG="gl_ES.UTF-8"
+            export LANG
+            echo "LANG=\"gl_ES.UTF-8\"" > /etc/default/locale
+            echo "LANGUAGE=\"gl_ES;:gl:es_ES:es\"" >> /etc/default/locale
+        ;;
+
+        eu | EU | Eu | eU )
+            LANG="eu_ES.UTF-8"
+            export LANG
+            echo "LANG=\"eu_ES.UTF-8\"" > /etc/default/locale
+            echo "LANGUAGE=\"eu_ES;:eu:es_ES:es\"" >> /etc/default/locale
+        ;;
+
+        es | ES | Es | eS )
+            LANG="es_ES.UTF-8"
+            export LANG
+            echo "LANG=\"es_ES.UTF-8\"" > /etc/default/locale
+        ;;
+
+        en | EN | En | eN )
+            LANG="en_US.UTF-8"
+            export LANG          
+            echo "LANG=\"en_US.UTF-8\"" > /etc/default/locale
+        ;;
+
+#       br | BR | Br | bR )
+#           LANG="pt_BR.UTF-8"
+#           export LANG          
+#           echo "LANG=\"pt_BR.UTF-8\"" > /etc/default/locale
+#       ;;
+
+        * )
+            echo -e "\nIdioma incorrecto. / Wrong Language."
+            unset idioma
+    esac
+done
+
+clear
+
+## TRANSLATIONS / TRADUCCIONES /TRADUCIÓNS
+
+#Language=`echo $LANG | cut -d"_" -f1`
+#case $Language in
+case $LANG in
+    ca*)
+        MSG1="\033[1;33m ## Instalació de GALPon MiniNo «Queiles» ##\033[0m"
+        MSG2="Per instalar el sistema és necessària una partició Linux (ext4)"
+        MSG3="i és recomanable una partició d'intercanvi SWAP."
+        MSG4="Si ja té particionat el disc dur respongui no, « n »"
+        MSG5="a la següent pregunta."
+        MSG6="Vol particionar el disc dur?"
+        MSG7="A continuació es mostren les particions Linux disponibles."
+        MSG8="\033[1;32mEscriba\033[0m la partició on s'instal·larà GALPon MiniNo: "
+        MSG9="Per exemple, sda1: "
+        MSG10="\033[1;31m ## ¡¡¡ PRECAUCIÓ !!! ## \033[0m"
+        MSG11="Aquesta operació no té marxa enrere, en formatar es"
+        MSG12="perdran totes les dades de les particions en qüestió."
+        MSG13="Així ha quedat la taula de particions: "
+        MSG14="Es va a \033[1;31mformatar\033[0m la partició"
+        MSG15="per el sistema"
+        MSG16="i la partició"
+        MSG17="\033[1;42m interna en arxiu «swapfile» \033[0m per l'àrea d'intercanvi swap."
+        MSG18="per l'àrea de intercanvi swap."
+        MSG19="Esstà d'acord?"
+        MSG20="Continuar la instal·lació SENSE formatar les particions?"
+        MSG21="Es continua la instal·lació"
+        MSG22="sense formatar la partició"
+        MSG23="\033[1;42m Còpia de GALPon MiniNo realitzánt-se en \033[0m "
+        MSG24="\033[1;42m sigui pacient...                        \033[0m "
+        MSG25="\033[1;42m S'ha completat la instalació.                                   \033[0m "
+        MSG26="\033[1;42m Recordeu-vos de treure el CD/USB abans de reiniciar el sistema. \033[0m "
+        MSG27="Opció incorrecta."
+        MSG28="(s/n): "
+        MSG40="Pot optar per una instal·lació normal o una instal·lación automàtica:"
+        MSG41="A la instal·lació normal tindrà la possibilitat de particionar el"
+        MSG41a="disc al seu gust."
+        MSG42="A la instal·lació automàtica (desatesa) no se li preguntarà absolutament"
+        MSG42a="res, automàticament esborrarà \033[1;31mTOT\033[0m el contingut del primer disc"
+        MSG43="dur i al finalitzar \033[1;31mÚNICAMENT\033[0m quedarà al seu ordinador el sistema operatiu"
+        MSG44="GALPon MiniNo."
+        MSG45="Desitja una instal·lació \033[1;32mm\033[0manual o \033[1;32ma\033[0mutomàtica?"
+        MSG46="(m/a)"
+        MSG46="No hi ha prou espaci en disc per instal·lar GALPon MiniNo"
+        MSG48="\033[1;31mAVÍS:\033[0m"
+        MSG49="Es \033[1;31mformatejarà totalment\033[0m el disc"
+        MSG50="i \033[1;31ms'esborraran\033[0m totes les dades"
+        MSG51="Confirma que vol fer una instal·lació automàtica? escrigui «\033[1;32mSi\033[0m»"
+        MSG52="(respectant la majúscula inicial i sense accent)"
+        MSG53="Per fer una instal·lació manual escrigui «\033[1;32mm\033[0m»"
+        MSG54="(Si/m)"
+    ;;
+
+    es*)
+        MSG1="\033[1;33m ## Instalación de GALPon MiniNo «Queiles» ##\033[0m"
+        MSG2="Para instalar el sistema es necesaria una partición Linux (ext4)"
+        MSG3="y es recomendable una partición de intercambio SWAP."
+        MSG4="Si ya tiene particionado el disco duro responda no, « n »"
+        MSG5="a la siguiente pregunta."
+        MSG6="¿Quiere particionar el disco duro?"
+        MSG7="A continuación se muestran las particiones Linux disponibles."
+        MSG8="\033[1;32mEscriba\033[0m la partición donde se va a instalar GALPon MiniNo: "
+        MSG9="Por ejemplo, sda1: "
+        MSG10="\033[1;31m ## ¡¡¡ PRECAUCIÓN !!! ## \033[0m"
+        MSG11="Esta operación no tiene vuelta atrás, al formatear se"
+        MSG12="perderán todos los datos de las particiones en cuestión."
+        MSG13="Así ha quedado la tabla de particiones: "
+        MSG14="Se va a \033[1;31mformatear\033[0m la partición"
+        MSG15="para el sistema"
+        MSG16="y la partición"
+        MSG17="\033[1;42m interna en archivo «swapfile» \033[0m para el área de intercambio swap."
+        MSG18="para el área de intercambio swap."
+        MSG19="¿Está conforme?"
+        MSG20="¿Continuar la instalació*)n SIN formatear las particiones?"
+        MSG21="Se continúa la instalación"
+        MSG22="sin formatear la partición"
+        MSG23="\033[1;42m Copia de GALPon MiniNo realizándose en \033[0m "
+        MSG24="\033[1;42m sea paciente...                        \033[0m "
+        MSG25="\033[1;42m Se ha completado la instalación.                              \033[0m "
+        MSG26="\033[1;42m Acuérdese de extraer el CD/USB antes de reiniciar el sistema. \033[0m "
+        MSG27="Opción incorrecta."
+        MSG28="(s/n): "
+        MSG40="Puede optar por una instalación normal o una instalación automática:"
+        MSG41="En la instalación normal tendrá la posibilidad de particionar el"
+        MSG41a="disco a su gusto."
+        MSG42="En la instalación automática (desatendida) no se le preguntará absolutamente"
+        MSG42a="nada, automáticamente borrará \033[1;31mTODO\033[0m el contenido del primer disco"
+        MSG43="rígido y al finalizar \033[1;31mÚNICAMENTE\033[0m quedará en su ordenador el sistema operativo" 
+        MSG44="GALPon MiniNo."
+        MSG45="¿Desea una instalación \033[1;32mm\033[0manual o \033[1;32ma\033[0mutomática?"
+        MSG46="(m/a)"
+        MSG47="No hay suficiente espacio en disco para instalar GALPon MiniNo"
+        MSG48="\033[1;31mAVISO:\033[0m"
+        MSG49="Se va a \033[1;31mformatear totalmente\033[0m el disco"
+        MSG50="y se \033[1;31mborrarán\033[0m todos los datos"
+        MSG51="Confirma que quiere hacer una instalación automática? escriba «\033[1;32mSi\033[0m»"
+        MSG52="(respetando la mayúscula inicial y sin tilde)"
+        MSG53="Para hacer una instalación manual escriba «\033[1;32mm\033[0m»"
+        MSG54="(Si/m)"
+    ;;
+
+    eu*)
+        MSG1="\033[1;33m ## GALPon MiniNo «Queiles» instalazioa ##\033[0m"
+        MSG2="Sistema instalatzeko Linux partizio sistema (ext4) beharrezkoa da"
+        MSG3="eta SWAP elkartrukatze partizio bat gomedagarria da."
+        MSG4="Disko gogorak aldez aurretik partizioak eginda baditu, « e » sakatu"
+        MSG5="hurrengo galderan."
+        MSG6="Disko gogorran partizioak egin nahi dituzu?"
+        MSG7="Ondoren eskuragarri dauden Linux partizioak erakutsiko dira."
+        MSG8="\033[1;32mIdatzi\033[0m GALPon MiniNo idatziko den partizioaren izena: "
+        MSG9="Adibidez, sda1: "
+        MSG10="\033[1;31m ##  KONTUZ !!! ## \033[0m"
+        MSG11="Eragiketa honek ez du atzera bueltarik, formateatzerakoan"
+        MSG12="partizioen datu guztiak galduko dira."
+        MSG13="Honela geratu da partizio taula: "
+        MSG14="Partizioa \033[1;31mformateatuko da\033[0m "
+        MSG15="sistemarako"
+        MSG16="eta \033[1;42m barne partizioa"
+        MSG17="«swapfile» fitxategian \033[0m."
+        MSG18="Swap elkartrukatze partiziorako."
+        MSG19="Ados zaude?"
+        MSG20="Jarraitu instalazioa partizioak formateatu GABE?"
+        MSG21="Instalazioa aurrera jarraituko da"
+        MSG22="partizioa formateatu gabe"
+        MSG23="\033[1;42m GALPon MiniNoren kopia egiten ari da hemen:\033[0m "
+        MSG24="\033[1;42m itxaron pixkat...                          \033[0m "
+        MSG25="\033[1;42m Instalazioa burutu da.                          \033[0m "
+        MSG26="\033[1;42m CD/USB egotzi sistema berrabiarazi baino lehen. \033[0m "
+        MSG27="Aukera okerra."
+        MSG28="(b/e): "
+        MSG40="Instalazio arrunta ala automatikoa hautatu dezakezu:"
+        MSG41="Instalazio arruntarekin zure diskoan partizioak sortzeko"
+        MSG41a="aukera izango duzu."
+        MSG42="Arduragabeko instalazio automatikoan ez zaizu galderarik egingo"
+        MSG42a="automatikoki ezabatuko du \033[1;31mTODO\033[0m lehenengo diskoaren gogorraren"
+        MSG43="edukia eta bukatzean \033[1;31mSOILIK\033[0m geratuko da GALPon MiniNo " 
+        MSG44="sistema eraginkorra."
+        MSG45="\033[1;32me\033[0mskuzko ala \033[1;32ma\033[0mutomatikoa nahi duzu?"
+        MSG46="(e/a)"
+        MSG47="GALPon MiniNo instalatzeko leku nahikorik ez duzu."
+        MSG48="\033[1;31mOHARRA:\033[0m"
+        MSG49="Disko \033[1;31mOSOARI\033[0m emango zaio formatua."
+        MSG50="eta datu guztiak \033[1;31mezabatuko\033[0m dira."
+        MSG51="Instalazio automatikoa baimentzen duzu? idatzi «\033[1;32mBai\033[0m»"
+        MSG52="(Letra larria errespetatuz)"
+        MSG53="Eskuzko instalazio bat egiteko idatzi ezazu «\033[1;32me\033[0m»"
+        MSG54="(Bai/e)"
+    ;;
+
+    gl*)
+        MSG1="\033[1;33m ## Instalación de GALPon MiniNo «Queiles» ##\033[0m"
+        MSG2="Para instalar o sistema é necesaria unha partición Linux (ext4)"
+        MSG3="e é recomendábel unha partición de intercambio SWAP."
+        MSG4="Se xa ten particionado o disco ríxido responda non, « n »"
+        MSG5="á seguinte pregunta."
+        MSG6="Quere particionar o disco ríxido?"
+        MSG7="A continuación móstranse as particións Linux dispoñíbeis."
+        MSG8="\033[1;32mEscriba\033[0m a partición onde se vai a instalar GALPon MiniNo: "
+        MSG9="Por exemplo, sda1: "
+        MSG10="\033[1;31m ## PRECAUCIÓN !!! ## \033[0m"
+        MSG11="Esta operación non ten volta atrás, ao formatar perderanse"
+        MSG12="todos os datos das particións en cuestión."
+        MSG13="Así quedou a táboa de particións: "
+        MSG14="Vaise a \033[1;31mformatar\033[0m a partición"
+        MSG15="para o sistema"
+        MSG16="e a partición"
+        MSG17="\033[1;42minterna en ficheiro «swapfile»\033[0m para a área de intercambio swap."
+        MSG18="para a área de intercambio swap."
+        MSG19="Está de acordo?"
+        MSG20="Continuar a instalación SEN formatar as particións?"
+        MSG21="Continúase coa instalación"
+        MSG22="sen formatar a partición"
+        MSG23="\033[1;42m Copia de GALPon MiniNo realizándose en \033[0m "
+        MSG24="\033[1;42m sexa paciente...                       \033[0m "
+        MSG25="\033[1;42m Completouse a instalación.                                 \033[0m "
+        MSG26="\033[1;42m Lémbrese de extraer o CDvivo antes de reiniciar o sistema. \033[0m "
+        MSG27="Opción incorrecta."
+        MSG28="(s/n): "
+        MSG40="Pode escoller entre unha instalación normal ou unha instalación automática:"
+        MSG41="Na instalación normal terá a posibilidade de particionar o"
+        MSG41a="disco ao seu gusto."
+        MSG42="Na instalación automática (desatendida) non se lle preguntará absolutamente"
+        MSG42a="nada, automáticamente borrará \033[1;31mTODO\033[0m o contido do primeiro disco"
+        MSG43="ríxido e ao rematar \033[1;31mÚNICAMENTE\033[0m quedará no seu computador o sistema operativo" 
+        MSG44="GALPon MiniNo."
+        MSG45="Quere facer unha instalación \033[1;32mm\033[0manual ou unha \033[1;32ma\033[0mutomática?"
+        MSG46="(m/a)"
+        MSG47="Non hai espazo abondo no disco para instalar GALPon MiniNo"
+        MSG48="\033[1;31mAVISO:\033[0m"
+        MSG49="Vaise \033[1;31mformatar totalmente\033[0m o disco"
+        MSG50="e \033[1;31mborraranse\033[0m todos os datos"
+        MSG51="Confirma que quere facer unha instalación automática? escriba «\033[1;32mSi\033[0m»"
+        MSG52="(respectando a maiúscula inicial)"
+        MSG53="Para facer unha instalación manual escriba «\033[1;32mm\033[0m»"
+        MSG54="(Si/m)"
+    ;;
+
+#   pt)
+#   ;;
+
+    *)
+        MSG1="\033[1;33m ## GALPon MiniNo \"Artabros\" Installation ##\033[0m"
+        MSG2="It is necessary to have a Linux partition (ext4) for installing the system"
+        MSG3="and is recommend a SWAP linux partition."
+        MSG4="If you have already partitioned the hard disk, answer no, « n »"
+        MSG5="to the next question."
+        MSG6="Do you want to partition the hard disk?"
+        MSG7="Next, you can see the linux partitions available."
+        MSG8="\033[1;32mTo write\033[0m the partition where you want to install GALPon MiniNo: "
+        MSG9="For example, sda1: "
+        MSG10="\033[1;31m ## ¡¡¡ WARNING !!! ## \033[0m"
+        MSG11="This step is not reversible, ones formated the disk there's no return,"
+        MSG12="you'll LOST ALL DATAS in the partitions selected."
+        MSG13="Here you can see the Partition table: "
+        MSG14="The partition is going to be \033[1;31mformated\033[0m is"
+        MSG15="for the system"
+        MSG16="and the partition"
+        MSG17="\033[1;42m in file «swapfile» \033[0m for the swap memory area."
+        MSG18="for the swap memory area."
+        MSG19="Do you agree?"
+        MSG20="Continue the installation WITHOUT formating partitions?"
+        MSG21="It will continue the installing"
+        MSG22="without formating partition"
+        MSG23="\033[1;42m GALPon MiniNo is copying in \033[0m "
+        MSG24="\033[1;42m be patient...               \033[0m "
+        MSG25="\033[1;42m Installation has finished.                              \033[0m "
+        MSG26="\033[1;42m Remember to eject the CD/USB before restart the system. \033[0m "
+        MSG27="Not valid Option."
+        MSG28="(y/n): "
+        MSG40="You can choose between a manual (classic) or automatic (unattended) installation:"
+        MSG41="In the normal installation you will can partition your hard disk"
+        MSG41a="manually."
+        MSG42="In the automatic installation you won't be asked anything, your"
+        MSG42a="hard disk will be formated and you'll \033[1;31mLOST ALL\033[0m in it and"
+        MSG43="when it has finished you'll have in your computer" 
+        MSG44="GALPon MiniNo operating system \033[1;31mONLY\033[0m."
+        MSG45="Do you want a \033[1;32mm\033[0manual or \033[1;32ma\033[0mutomatic installation?"
+        MSG46="(m/a)"
+        MSG47="There is not disk space enough to install GALPon MiniNo"
+        MSG48="\033[1;31mWARNING:\033[0m"
+        MSG49="Your hard disk is going to be \033[1;31mcompletly formated \033[0m "
+        MSG50="and all datas will be \033[1;31mlost\033[0m "
+        MSG51="Are you sure you want an automatic install? write «\033[1;32mYes\033[0m»"
+        MSG52="(be careful with uppercase)"
+        MSG53="For a manual installing write «\033[1;32mm\033[0m»"
+        MSG54="(Yes/m)"
+    ;;
+esac
+
+#rm /home/${USUARIO}/${escritorio}/minino-installer.desktop
+
+#Desmontamos la SWAP que haya montado el CD/USB
+swapoff $(grep '^/dev' /proc/swaps | awk '{print $1}' | paste -s -d" ")
+clear
+
+
+function partauto(){
+    tipodeinstalacion=auto
+
+    ocupado=`mount|grep "/live/image"|cut -d " " -f1`
+
+    if [ "${ocupado}" != "/dev/sda1" ];then
+	discoduro=sda
+    else
+	discoduro=sdb
+    fi
+
+    RAM_QUE_TENGO=`free -mt | grep Mem | tail -1 | awk '{print $2}'`
+
+    if (( ${RAM_QUE_TENGO} >= 256 )); then
+
+        SWAP_SIZE="${RAM_QUE_TENGO}"
+    else
+        SWAP_SIZE="256"
+    fi
+
+    #TOTAL=`parted -sm /dev/${discoduro} unit MB print | grep "${discoduro}" | cut -d: -f2 | sed 's/MB$//'`
+    TOTAL=$((`sudo fdisk -l|grep /dev/${discoduro}|head -n1|cut -d" " -f5`/1000000))
+	
+    PARTI1=$((${TOTAL}-${SWAP_SIZE}))
+
+    if (( ${PARTI1} < 2256 ));then
+        echo ${MSG47}
+        exit 0
+    fi
+
+    parted -s /dev/"${discoduro}" mklabel msdos
+
+    # Con swap al principio
+    #parted -s /dev/"$discoduro" mkpart primary linux-swap "1 ${SWAP_SIZE}m"
+    #parted -s /dev/"$discoduro" mkpart primary ext2 "${SWAP_SIZE}m -1"
+
+    # Con swap al final
+    #parted -s /dev/"$discoduro" mkpart primary ext2 "1 ${PARTI1}m"
+    #parted -s /dev/"$discoduro" mkpart primary linux-swap "${PARTI1}m -1"
+
+    #parted -a optimal -s /dev/"$discoduro" mkpart primary ext2 "0 ${PARTI1}m"
+    #parted -a optimal -s /dev/"$discoduro" mkpart primary linux-swap "${PARTI1}m -0"
+
+
+    # Creamos las particiones
+    # Las lineas en blanco corresponden con «by default»
+    fdisk /dev/"${discoduro}" <<-EOF
+	n
+	p
+	1
+	
+	+${PARTI1}MB
+	n
+	p
+	2
+	
+	
+	t
+	2
+	82
+	w
+	EOF
+
+    mkfs.ext4 -L ${Nombre} /dev/${discoduro}1
+    partidestino=${discoduro}1                  #asignamos el nombre para partauto()
+    mkswap -L SWAP /dev/${discoduro}2
+
+    swap=$(fdisk -l /dev/${discoduro} | grep "swap" | cut -f1-d " " | cut -c 9)  #extrae el número de la partición swap    
+
+}
+
+
+# ¿QUIERE PARTICIONAR EL DISCO?
+
+function particiona(){
+    echo " "
+    echo -e ${MSG1}
+    echo " "
+    echo ${MSG2}
+    echo ${MSG3}
+    echo ${MSG4}
+    echo ${MSG5}
+    echo " "
+    echo -n ${MSG6}
+
+    while [ ${particionar:-void} == "void" ]
+    do
+#       read -N 1 -p "${MSG28}" particionar
+        read -p "${MSG28}" particionar
+        echo ""
+
+        case "$particionar" in
+            s | S | y | Y | b | B )
+#               tmpLANG=$LANG
+#               export LANG="en_EN.UTF-8"
+#				cfdisk
+#               LANG=${tmpLANG}
+#               export LANG
+				gparted
+            ;;
+
+            n | N | e | E )
+            ;;
+
+            * )
+                echo -e "\n${MSG27}"
+                unset particionar
+            ;;
+        esac
+    done
+
+    clear
+
+    echo " "
+    echo ${MSG7}
+    echo " "
+    echo ${MSG30}
+    fdisk -l | grep '^/dev' | grep -v "Linux swap / Solaris" | tr -d '*+' | awk '{print $1 " " $4 " " $6}' | while read disco tamanho tipo
+    do
+        ## Me quedo con la partición
+        disco=${disco/?dev?/}
+
+        if [ $((tamanho/(1024*1024*1024))) -ge 1 ]
+        then
+            tamanho="$(echo "scale = 2 ; $tamanho / ( 1024 * 1024 * 1024 )" | bc) GiB"
+        elif [ $((tamanho/(1024*1024))) -ge 1 ]
+        then
+            tamanho="$(echo "scale = 2 ; $tamanho / ( 1024 * 1024 )" | bc) MiB"
+        elif [ $((tamanho/1024)) -ge 1 ]
+        then
+            tamanho="$(echo "scale = 2 ; $tamanho / 1024" | bc) KiB"
+        else
+            tamanho="$tamanho B"
+        fi
+
+        ## Mostramos el texto formateado"
+        echo -e "${disco}\t${tamanho}\t${tipo}"
+    done
+
+    ## Vamos guardando todas las particiones para saber si se escogió una correcta.
+    particiones=( $(fdisk -l | grep '^/dev' | grep -v "Linux swap / Solaris" | tr -d '*+' | awk '{print $1}' | sed 's/^.dev.//' | paste -s) )
+
+    echo " "
+    echo " "
+    echo -e ${MSG8}
+
+    while [ "${partidestino:-void}" == "void" ]
+    do
+        read -p "${MSG9}" partidestino
+        echo ""
+
+        for testdisco in ${particiones[@]}
+        do
+           if [ "${testdisco}" == "${partidestino}" ]
+            then
+                particion="ok"
+                break
+            fi
+        done
+
+        [ "${particion:-void}" == "void" ] && unset partidestino
+    done
+
+    discoduro=${partidestino/%?/}                                                                  #en nuestro ejemplo, sda
+    swap=$(fdisk -l /dev/${discoduro} | grep "swap" | awk '{print $1}' | sed 's/.*\(.$\)/\1/')     #extrae el número de la partición swap
+    clear
+
+
+    # RESUMEN DE LO QUE SE VA A HACER CON LAS PARTICIONES
+
+    echo -e ${MSG10}
+    echo " "
+    echo ${MSG11}
+    echo ${MSG12}
+    echo ${MSG13}
+    echo " "
+    (fdisk -l /dev/${discoduro} | grep '[MKG]B') 2>/dev/null
+    echo " "
+    (fdisk -l /dev/${discoduro} | grep 'Id') 2>/dev/null
+    (fdisk -l /dev/${discoduro} | grep '^/dev') 2> /dev/null
+    echo " "
+    echo -e ${MSG14}
+    echo -e "\033[1;42m ${partidestino} \033[0m"${MSG15}
+    echo ${MSG16}
+    if [ ${swap:-void} == "void" ]
+    then
+        echo -e ${MSG17}
+    else
+        echo -e "\033[1;42m ${discoduro}${swap} \033[0m"${MSG18}
+    fi
+
+    echo ${MSG19}
+
+    while [ ${borra:-void} == "void" ]
+    do
+#		read -p "${MSG28}" -N1 borra
+        read -p "${MSG28}" borra
+        echo " "
+        case "$borra" in
+            s | S | y | Y | b | B )
+                borra="s"
+            ;;
+
+            n | N | e | E )
+                borra="n"
+            ;;
+
+            * )
+                echo -e "\n${MSG27}"
+                unset borra
+            ;;
+        esac
+    done
+
+    if [ "${borra:-void}" == "s" ]
+    then
+        mkfs.ext4 /dev/${partidestino}
+        e2label /dev/${partidestino} ${Nombre}
+        if [ "${swap:-void}" != "void" ]
+        then
+            mkswap -L SWAP /dev/"${discoduro}${swap}"
+        fi
+    else
+        echo " "
+        echo ${MSG20}
+
+        while [ ${sinformato:-void} == "void" ]
+        do
+#			read -N1 -p "${MSG28}" sinformato
+            read -p "${MSG28}" sinformato
+            echo ""
+
+            case "${sinformato}" in
+                n | N | e | E )
+                    exit
+                ;;
+
+                s | S | y | Y | b | B )
+                    e2label /dev/${partidestino} ${Nombre}
+                    if [ "${swap:-void}" != "void" ]
+                    then
+                        mkswap -L SWAP /dev/"${discoduro}${swap}"
+                    fi
+                    echo 
+                    echo ${MSG21}
+                    echo ${MSG22}
+                    echo ""
+                    sleep 3
+                ;;
+
+                * )
+                    echo -e "\n${MSG27}"
+                    sleep 10
+                    unset sinformato
+                ;;
+            esac
+        done
+    fi
+}
+
+# COPIA DE GALPon MiniNo en $partidestino
+function copia(){
+    echo " "
+    echo -e ${MSG23}"${partidestino} "
+    echo -e ${MSG24}
+    echo " "
+    sleep 4
+
+    mount -t auto -o rw /dev/${partidestino} /mnt/
+
+    rsync -acvxHAXRS --exclude="/var/run/*" --exclude="/var/tmp/*" --exclude="/var/log/*" --exclude="/tmp/*" --exclude="/live/*" --exclude="/proc/*" --exclude="/sys/*" --exclude="/dev/*" / /mnt/
+	rm -R /mnt/var/lib/sudo
+	rm /mnt/etc/sudoers.d/live
+    rm /mnt/var/lib/polkit-1/localauthority/10-vendor.d/*.pkla
+    escritorio=`cat /home/${USUARIO}/.config/user-dirs.dirs |grep DESKTOP|cut -d"=" -f2|cut -d"\"" -f2|cut -d"/" -f2`
+#    rm /mnt/home/${USUARIO}/${escritorio}/minino-installer.desktop
+	sed -i -e 's/#NotShowIn=LXDE;/NotShowIn=LXDE;/g' /mnt/usr/local/share/applications/minino/minino-installer.desktop
+	rm -r /mnt/home/${USUARIO}/.cache/*
+    rm /mnt/etc/init.d/.legacy-bootordering
+    #mv /mnt/etc/rc2.d/S??rc.local /mnt/etc/rc2.d/S04rc.local
+
+	# Corregimos /etc/inittab
+	cp /usr/share/sysvinit/inittab /etc/inittab
+	#sed -i -r -e 's/^2:23:respawn/#2:23:respawn/g' /mnt/etc/inittab
+	#sed -i -r -e 's/^3:23:respawn/#3:23:respawn/g' /mnt/etc/inittab
+	#sed -i -r -e 's/^4:23:respawn/#4:23:respawn/g' /mnt/etc/inittab
+	#sed -i -r -e 's/^5:23:respawn/#5:23:respawn/g' /mnt/etc/inittab
+	#sed -i -r -e 's/^6:23:respawn/#6m | M:23:respawn/g' /mnt/etc/inittab
+
+#   cp /live/rofs/filesystem.squashfs/usr/sbin/update-initramfs /mnt/usr/sbin/
+    if [ "$tipodeinstalacion" = "auto" ];then
+	rpl "GRUB_TIMEOUT=5" "GRUB_TIMEOUT=0" /mnt/etc/default/grub
+    fi
+
+    if [ "${swap:-void}" == "void" ]
+    then
+        dd if=/dev/zero of=/mnt/swapfile bs=1M count=100
+        mkswap /mnt/swapfile
+    fi
+
+    clear
+
+    # CREAMOS EL /etc/fstab acorde con los datos de particiones
+
+    swap=$(fdisk -l /dev/${discoduro} | grep "swap" | cut -f12 -d " " | cut -c 9)  #extrae el número de la partición swap
+
+    if [ "${swap:-void}" == "void" ]
+    then
+        swap_line="/swapfile  none  swap  sw  0 0"
+    else
+        swap_line="LABEL=SWAP  none  swap  sw  0  0"
+    fi
+
+########## ARCHIVO FSTAB (-EOF para [tab]ular las líneas)
+    cat <<-EOF >/mnt/etc/fstab
+	# /etc/fstab: static file system information.
+	# Format:
+	#  <file system>         <mount point>   <type>  <options>      <dump>  <pass>
+	#/dev/${partidestino}  /  ext4  defaults,errors=remount-ro,noatime,commit=60  0  1
+	LABEL=${Nombre}  /  ext4  defaults,errors=remount-ro,noatime,commit=60  0  1
+	${swap_line}
+	proc /proc  proc  defaults  0  0
+	#/dev/cdrom /media/cdrom0 udf,iso9660 user,noauto  0  0
+	#/dev/fd0 /floppy auto rw,user,nom | Mauto  0  0
+	
+	EOF
+
+
+
+# Comentado lo relativo a la limpieza de núcleo para Queiles
+# En principo solo puede llevar un núcleo cada ISO
+
+    ## FINALMENTE LIMPIAMOS NÚCLEO NO USADO E INSTALAMOS GRUB en el MBR
+
+    mount --bind /dev /mnt/dev
+    mount -t proc proc /mnt/proc
+    mount -t sysfs sysfs /mnt/sys
+
+#    NucleoUsado=`uname -r`
+#    BaseNucleo=`uname -r | awk -F"-" '{print $1,$2}' | sed "s/ /-/"`
+
+#    if [ "$NucleoUsado" = "${BaseNucleo}-686-pae" ];then
+#        limpiaNucleo="apt-get -y remove --purge linux-image-${BaseNucleo}-586"
+#    elif [ "$NucleoUsado" = "${BaseNucleo}-586" ];then
+#        limpiaNucleo="apt-get -y remove --purge linux-image-${BaseNucleo}-686-pae"
+#    fi
+
+#    chroot /mnt ${limpiaNucleo}
+#   chroot /mnt rm /usr/sbin/update-initramfs
+    chroot /mnt dpkg-divert --remove --rename --quiet /usr/sbin/update-initramfs
+    chroot /mnt update-initramfs -u -t
+#   chroot /mnt ${GrubInstall} /dev/${discoduro} 
+    chroot /mnt grub-install --force /dev/${discoduro}
+    chroot /mnt update-grub2
+    
+    ########## TERMINAMOS
+
+    # Establecemos idioma
+    cd /
+    cp /etc/default/locale /mnt/etc/default/
+    sync
+    umount -a
+    clear
+    echo ""
+    echo -e ${MSG25}
+    echo -e ${MSG26}
+    sleep 10
+
+}
+
+function confirma(){
+    clear
+    echo " "
+    echo " "
+    echo " "
+    echo -e ${MSG48}
+    echo " "
+    echo -e ${MSG49}
+    echo -e ${MSG50}
+    echo " "
+    echo -e ${MSG51}
+    echo -e ${MSG52}
+    echo " "
+    echo -e ${MSG53}
+    echo " "
+    echo -n ${MSG54}
+
+    while [ ${confirma:-void} == "void" ]
+    do
+        read -p ": " confirma
+        echo ""
+
+        case "$confirma" in
+            Si | Yes | Bai )
+				dpkg-reconfigure tzdata
+                partauto
+                copia
+		
+		
+            ;;
+
+            m | M | e | E )
+				dpkg-reconfigure tzdata
+                particiona
+                copia
+            ;;
+
+            * )
+                echo -e "\n${MSG27}"
+                sleep 10
+                unset confirma
+                escojeModoInstal
+            ;;
+        esac
+    done
+}
+
+function escojeModoInstal(){
+    # INSTALACIÓN NORMAL O DESATENDIDA?
+    echo " "
+    echo -e ${MSG1}
+    echo " "
+    echo -e ${MSG40}
+    echo -e ${MSG41}
+    echo -e ${MSG41a}
+    echo -e ${MSG42}
+    echo -e ${MSG42a}
+    echo -e ${MSG43} 
+    echo -e ${MSG44}
+    echo " "
+    echo -e ${MSG45}
+    echo -n ${MSG46}
+
+    while [ ${instalacion:-void} == "void" ]
+    do
+#       read -N 1 -p ": " instalacion
+        read -p ": " instalacion
+        echo ""
+
+        case "$instalacion" in
+            m | M | e | E )
+				dpkg-reconfigure tzdata
+                particiona
+                copia
+            ;;
+
+            a | A )
+                confirma
+            ;;
+
+            * )
+                echo -e "\n${MSG27}"
+                unset instalacion
+                sleep 10
+                escojeModoInstal
+            ;;
+        esac
+    done
+}
+
+escojeModoInstal
