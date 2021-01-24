@@ -127,9 +127,12 @@ function prepareIso {
 	sudo rm -r /home/Systemback
 
 	#Instalamos refracta que desinstala systemback
-	wget https://sourceforge.net/projects/refracta/files/tools/refractasnapshot-base_10.2.10_all.deb
-	sudo dpkg -i refractasnapshot*
+	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-base_9.2.2_all.deb
+	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-gui_9.2.2_all.deb
+	sudo dpkg -i refractasnapshot-base*
+	sudo dpkg -i refractasnapshot-gui*
 	sudo apt-get install -f -y
+	sudo rm refracta*.deb
 
 	#modificamos opciones y texto del grub
 	sudo cp ./tools/splash.png /usr/lib/refractasnapshot/iso/isolinux/splash.png
@@ -153,9 +156,12 @@ function prepareIso {
 	sudo sed -i '133 s/minino/usuario/g' /usr/local/bin/minino-installer-selector
 	sudo sed -i '170 s/minino/usuario/g' /usr/local/bin/minino-installer-selector
 	sudo sed -i -e '311,312 s/#//g' /usr/local/sbin/makelive
-	sudo sed -i -e '15,17 s/#//g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
+	sudo sed -i '28 s/yes/no/g' /etc/refractainstaller.conf
+	sudo sed -i '15,17 s/#//g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
 	sudo sed -i '15,17 s/refractainstaller/minino-installer/g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
-	sudo sed -i '$a - /home/$USER/Escritorio/minino-installer.desktop' /usr/lib/refractainstaller/installer_exclude.list
+	sudo sed -i '15,17 s/Desktop/Escritorio/g' /usr/lib/refractainstaller/post-install/cleanup-install.sh
+	#sudo sed -i '$a - /home/$USER/Escritorio/minino-installer.desktop' /usr/lib/refractainstaller/installer_exclude.list
+	
 	sudo apt-get update -y
 
 	#borrar repo git
