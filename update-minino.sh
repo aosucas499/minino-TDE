@@ -58,6 +58,14 @@ function instalarFlorence {
 	echo -e "${ROJO}Teclado virtual Florence instalado${NORMAL}"
 }
 
+# Evita que se instale en el pendrive por error
+# ---
+
+function corregirInstalacionDesatendida {
+
+	# Aplicamos el parche que modifica el fichero de instalación desantendida
+    sudo patch /usr/local/bin/minino-installer-b ./tools/minino-install.patch
+}
 
 # Corrige la opción de menú duplicidad para ImageMagick
 # ---
@@ -190,6 +198,7 @@ ntp-fix
 instalarGit
 instalarFlorence
 corregirImageMagick
+corregirInstalacionDesatendida
 customize-app
 firefox83-system
 showAsterisks

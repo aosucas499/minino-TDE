@@ -1,0 +1,28 @@
+--- minino-installer-b	2021-01-30 17:10:31.220647900 +0000
++++ minino-installer-b-jasv	2021-01-30 17:13:03.507580546 +0000
+@@ -359,13 +359,19 @@
+ function partauto(){
+     tipodeinstalacion=auto
+ 
+-    ocupado=`mount|grep "/live/image"|cut -d " " -f1`
++    # Obtenemos información de los discos
++    # ---
+ 
+-    if [ "${ocupado}" != "/dev/sda1" ];then
+-	discoduro=sda
+-    else
+-	discoduro=sdb
+-    fi
++    # Anotamos los discos existentes en el equipo
++    lsblk -io KNAME,TYPE,SIZE,MODEL | grep disk | cut -d" " -f1 | sort > /tmp/disks.lst
++
++    # Anotamos los discos montados actualmente (sin incluir ruta al device ni números de partición)
++    mount | grep /dev/sd | cut -d " " -f1 | sed -e 's/\([0-9]\+\)//g' | sed -e 's/\/dev\///g' | uniq | sort > /tmp/mounts.lst
++
++    # Nos quedamos con el primer disco del equipo que no esté montando
++    # ---
++
++    discoduro=`comm -23 /tmp/disks.lst /tmp/mounts.lst | head -n 1`
+ 
+     RAM_QUE_TENGO=`free -mt | grep Mem | tail -1 | awk '{print $2}'`
+ 
