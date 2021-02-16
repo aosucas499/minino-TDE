@@ -50,9 +50,9 @@
   	sudo dpkg -i /tmp/erlang-mnesia_18.3-dfsg-1ubuntu3_i386.deb
  	sudo dpkg -i /tmp/erlang-runtime-tools_18.3-dfsg-1ubuntu3_i386.deb
 	sudo dpkg -i /tmp/erlang-public-key_18.3-dfsg-1ubuntu3_i386.deb
+	sudo dpkg -i /tmp/erlang-ssl_18.3-dfsg-1ubuntu3_i386.deb
 	sudo dpkg -i /tmp/erlang-inets_18.3-dfsg-1ubuntu3_i386.deb
-  	sudo dpkg -i /tmp/erlang-ssl_18.3-dfsg-1ubuntu3_i386.deb
-	sudo dpkg -i /tmp/erlang-odbc_18.3-dfsg-1ubuntu3_i386.deb
+  	sudo dpkg -i /tmp/erlang-odbc_18.3-dfsg-1ubuntu3_i386.deb
 	sudo dpkg -i /tmp/erlang-xmerl_18.3-dfsg-1ubuntu3_i386.deb
 	sudo dpkg -i /tmp/erlang-syntax-tools_18.3-dfsg-1ubuntu3_i386.deb  
 	sudo dpkg -i /tmp/erlang-edoc_18.3-dfsg-1ubuntu3_i386.deb 
