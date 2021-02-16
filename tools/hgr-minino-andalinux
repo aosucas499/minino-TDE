@@ -1,0 +1,24 @@
+#! /bin/bash
+
+# Instalamos dependencias
+	# ---
+
+	sudo apt install ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc ejabberd curl libc-ares2 rlwrap avahi-daemon setcd
+
+	# Descargamos los paquetes de Guadalinex que necesitamos
+	# ---
+
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/d/dex/dex_0.7-2_all.deb -O /tmp/dex_0.7-2_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/ejabberd-cgaconfig/ejabberd-cgaconfig_0.2-3_all.deb -O /tmp/ejabberd-cgaconfig_0.2-3_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/etherpad-lite/etherpad-lite_1.5.7-5_all.deb -O /tmp/etherpad-lite_1.5.7-5_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/n/nodejs/nodejs_0.10.37-1_i386.deb -O /tmp/nodejs_0.10.37-1_i386.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/c/cga-hga/cga-hga_0.1-19_all.deb -O /tmp/cga-hga_0.1-19_all.deb
+
+	# Instalamos los paquetes de Guadalinex
+	# ---
+
+	sudo dpkg -i /tmp/dex_0.7-2_all.deb 
+	sudo dpkg -i /tmp/ejabberd-cgaconfig_0.2-3_all.deb 
+	sudo dpkg -i /tmp/nodejs_0.10.37-1_i386.deb 
+	sudo dpkg -i /tmp/etherpad-lite_1.5.7-5_all.deb
+	sudo dpkg -i /tmp/cga-hga_0.1-19_all.deb
