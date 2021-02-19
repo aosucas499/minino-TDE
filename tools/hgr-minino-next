@@ -1,0 +1,88 @@
+#! /bin/bash
+
+# Instalamos dependencias
+	# ---
+
+	sudo apt install ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc ejabberd curl libc-ares2 rlwrap avahi-daemon setcd -y
+
+	# Descargamos los paquetes de Guadalinex que necesitamos
+	# ---
+
+
+
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-asn1_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-asn1_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-base_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-base_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-crypto_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-crypto_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-edoc_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-edoc_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-inets_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-inets_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-mnesia_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-mnesia_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-odbc_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-odbc_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-public-key_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-public-key_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-runtime-tools_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-runtime-tools_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-ssl_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-ssl_18.3-dfsg-1ubuntu3_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-syntax-tools_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-syntax-tools_18.3-dfsg-1ubuntu3_i386.deb 
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang/erlang-xmerl_18.3-dfsg-1ubuntu3_i386.deb -O /tmp/erlang-xmerl_18.3-dfsg-1ubuntu3_i386.deb 
+  
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang-p1-cache-tab/erlang-p1-cache-tab_1.0.2-2_i386.deb -O /tmp/erlang-p1-cache-tab_1.0.2-2_i386.deb
+ 	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang-p1-iconv/erlang-p1-iconv_0.2016.01.05-1_i386.deb -O /tmp/erlang-p1-iconv_0.2016.01.05-1_i386.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang-p1-stringprep/erlang-p1-stringprep_1.0.2-2_i386.deb -O /tmp/erlang-p1-stringprep_1.0.2-2_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang-p1-tls/erlang-p1-tls_1.0.0-1_i386.deb -O /tmp/erlang-p1-tls_1.0.0-1_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang-p1-utils/erlang-p1-utils_1.0.3-2_i386.deb -O /tmp/erlang-p1-utils_1.0.3-2_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang-p1-xml/erlang-p1-xml_1.1.2-1_i386.deb -O /tmp/erlang-p1-xml_1.1.2-1_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang-p1-yaml/erlang-p1-yaml_1.0.1-1_i386.deb -O /tmp/erlang-p1-yaml_1.0.1-1_i386.deb
+  	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/erlang-p1-zlib/erlang-p1-zlib_1.0.0-1_i386.deb -O /tmp/erlang-p1-zlib_1.0.0-1_i386.deb
+  
+ 	wget http://ftp.es.debian.org/debian/pool/main/n/ncurses/libtinfo5_6.0+20161126-1+deb9u2_i386.deb -O /tmp/libtinfo5_6.0+20161126-1+deb9u2_i386.deb
+ 	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/ejabberd/ejabberd_16.01-2_i386.deb  -O /tmp/ejabberd/ejabberd_16.01-2_i386.deb
+ 	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/d/dex/dex_0.7-2_all.deb -O /tmp/dex_0.7-2_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/ejabberd-cgaconfig/ejabberd-cgaconfig_0.2-3_all.deb -O /tmp/ejabberd-cgaconfig_0.2-3_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/etherpad-lite/etherpad-lite_1.5.7-5_all.deb -O /tmp/etherpad-lite_1.5.7-5_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/n/nodejs/nodejs_0.10.37-1_i386.deb -O /tmp/nodejs_0.10.37-1_i386.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/c/cga-hga/cga-hga_0.1-19_all.deb -O /tmp/cga-hga_0.1-19_all.deb
+
+	# Instalamos los paquetes de Guadalinex
+	# ---
+
+   	sudo dpkg -i /tmp/libtinfo5_6.0+20161126-1+deb9u2_i386.deb
+   	sudo dpkg -i /tmp/erlang-base_18.3-dfsg-1ubuntu3_i386.deb
+   	sudo dpkg -i /tmp/erlang-asn1_18.3-dfsg-1ubuntu3_i386.deb
+   	sudo dpkg -i /tmp/erlang-crypto_18.3-dfsg-1ubuntu3_i386.deb
+  	sudo dpkg -i /tmp/erlang-mnesia_18.3-dfsg-1ubuntu3_i386.deb
+ 	sudo dpkg -i /tmp/erlang-runtime-tools_18.3-dfsg-1ubuntu3_i386.deb
+	sudo dpkg -i /tmp/erlang-public-key_18.3-dfsg-1ubuntu3_i386.deb
+	sudo dpkg -i /tmp/erlang-ssl_18.3-dfsg-1ubuntu3_i386.deb
+	sudo dpkg -i /tmp/erlang-inets_18.3-dfsg-1ubuntu3_i386.deb
+  	sudo dpkg -i /tmp/erlang-odbc_18.3-dfsg-1ubuntu3_i386.deb
+	sudo dpkg -i /tmp/erlang-xmerl_18.3-dfsg-1ubuntu3_i386.deb
+	sudo dpkg -i /tmp/erlang-syntax-tools_18.3-dfsg-1ubuntu3_i386.deb  
+	sudo dpkg -i /tmp/erlang-edoc_18.3-dfsg-1ubuntu3_i386.deb 
+	sudo dpkg -i /tmp/erlang-p1-utils_1.0.3-2_i386.deb
+  	sudo dpkg -i /tmp/erlang-p1-cache-tab_1.0.2-2_i386.deb
+  	sudo dpkg -i /tmp/erlang-p1-iconv_0.2016.01.05-1_i386.deb
+  	sudo dpkg -i /tmp/erlang-p1-stringprep_1.0.2-2_i386.deb
+  	sudo dpkg -i /tmp/erlang-p1-tls_1.0.0-1_i386.deb
+  	sudo dpkg -i /tmp/erlang-p1-xml_1.1.2-1_i386.deb
+  	sudo dpkg -i /tmp/erlang-p1-zlib_1.0.0-1_i386.deb
+	sudo dpkg -i /tmp/erlang-p1-yaml_1.0.1-1_i386.deb
+	sudo dpkg -i /tmp/ejabberd/ejabberd_16.01-2_i386.deb
+  	sudo dpkg -i /tmp/dex_0.7-2_all.deb 
+	sudo dpkg -i /tmp/ejabberd-cgaconfig_0.2-3_all.deb 
+	sudo dpkg -i /tmp/nodejs_0.10.37-1_i386.deb 
+	sudo dpkg -i /tmp/etherpad-lite_1.5.7-5_all.deb
+	sudo dpkg -i /tmp/cga-hga_0.1-19_all.deb
+
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+ 
+  
+  
+	
