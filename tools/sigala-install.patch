@@ -1,0 +1,12 @@
+--- /tmp/davclient.py	2021-02-19 19:46:49.711549295 +0100
++++ /tmp/davclient-new.py	2021-02-19 19:49:41.812319843 +0100
+@@ -81,6 +81,9 @@
+         else:
+             raise Exception, 'Unsupported scheme'
+         
++        if '\r' in path:
++            path=path.replace('\r','')
++            
+         self._connection.request(method, path, body, headers)
+             
+         self.response = self._connection.getresponse()

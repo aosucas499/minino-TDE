@@ -103,7 +103,7 @@ function instalarSigala {
 	# Instalamos dependencias
 	# ---
 
-	sudo apt install ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc ejabberd curl libc-ares2 rlwrap avahi-daemon setcd
+	sudo apt install ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc ejabberd curl libc-ares2 rlwrap avahi-daemon setcd python-dnspython libnss-myhostname
 
 	# Descargamos los paquetes de Guadalinex que necesitamos
 	# ---
@@ -113,6 +113,7 @@ function instalarSigala {
 	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/etherpad-lite/etherpad-lite_1.5.7-5_all.deb -O /tmp/etherpad-lite_1.5.7-5_all.deb
 	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/n/nodejs/nodejs_0.10.37-1_i386.deb -O /tmp/nodejs_0.10.37-1_i386.deb
 	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/c/cga-hga/cga-hga_0.1-19_all.deb -O /tmp/cga-hga_0.1-19_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/p/python-sleekxmpp/python-sleekxmpp_1.3.1-6cga1_all.deb -O /tmp/python-sleekxmpp_1.3.1-6cga1_all.deb
 
 	# Instalamos los paquetes de Guadalinex
 	# ---
@@ -122,6 +123,12 @@ function instalarSigala {
 	sudo dpkg -i /tmp/nodejs_0.10.37-1_i386.deb 
 	sudo dpkg -i /tmp/etherpad-lite_1.5.7-5_all.deb
 	sudo dpkg -i /tmp/cga-hga_0.1-19_all.deb
+	sudo dpkg -i /tmp/python-sleekxmpp_1.3.1-6cga1_all.deb
+
+	# Aplicamos parche corrige encoding al compartir ficheros
+	# ---
+
+	sudo patch /usr/lib/python2.7/dist-packages/hga/controlcompartir/cliente/davclient.py ./tools/sigala-install.patch
 }
 
 function firefox83-system {
