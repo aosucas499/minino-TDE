@@ -160,6 +160,98 @@ function soundProblemCheck {
 }
 
 #==============================================================================
+# Gestión la instalación de HGR-Sigala
+#==============================================================================
+
+# Instala HGR-Sigala en Minino
+# ---
+
+# Instala por defecto HGR-Sigala del CGA en Minino-TDE
+# ---
+
+function instalarSigala {
+
+	# Instalamos dependencias
+	# ---
+
+	sudo apt install -y ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc ejabberd curl libc-ares2 rlwrap avahi-daemon setcd python-dnspython libnss-myhostname
+
+	# Descargamos los paquetes de Guadalinex que necesitamos
+	# ---
+
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/d/dex/dex_0.7-2_all.deb -O /tmp/dex_0.7-2_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/ejabberd-cgaconfig/ejabberd-cgaconfig_0.2-3_all.deb -O /tmp/ejabberd-cgaconfig_0.2-3_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/etherpad-lite/etherpad-lite_1.5.7-5_all.deb -O /tmp/etherpad-lite_1.5.7-5_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/n/nodejs/nodejs_0.10.37-1_i386.deb -O /tmp/nodejs_0.10.37-1_i386.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/c/cga-hga/cga-hga_0.1-19_all.deb -O /tmp/cga-hga_0.1-19_all.deb
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/p/python-sleekxmpp/python-sleekxmpp_1.3.1-6cga1_all.deb -O /tmp/python-sleekxmpp_1.3.1-6cga1_all.deb
+
+	# Instalamos los paquetes de Guadalinex
+	# ---
+
+	sudo dpkg -i /tmp/dex_0.7-2_all.deb 
+	sudo dpkg -i /tmp/ejabberd-cgaconfig_0.2-3_all.deb 
+	sudo dpkg -i /tmp/nodejs_0.10.37-1_i386.deb 
+	sudo dpkg -i /tmp/etherpad-lite_1.5.7-5_all.deb
+	sudo dpkg -i /tmp/cga-hga_0.1-19_all.deb
+	sudo dpkg -i /tmp/python-sleekxmpp_1.3.1-6cga1_all.deb
+
+	# Aplicamos parche corrige encoding al compartir ficheros
+	# ---
+
+    # TODO  pasar el patch como EOF y evitar el fichero tools/sigala-install.patch 
+    #       para que funcionen las actualizaciones automáticas actualmente (hasta que
+    #       no hagamos un "git pull" no podemos depender de ficheros adicionales)
+
+	sudo patch /usr/lib/python2.7/dist-packages/hga/controlcompartir/cliente/davclient.py ./tools/sigala-install.patch
+	
+	# Borramos acceso directo (cambiamos el nombre) del menú de aplicaciones hasta que resolvamos el funcionamiento de cga-hga-server
+	# ---
+	
+	sudo mv /usr/share/applications/cga-hgr-server.desktop /usr/share/applications/cga-hgr-server.desktop.save
+}
+
+# Deshace la instalación de HGR-Sigala
+# ---
+
+function instalarSigalaUndo {
+
+    # Se eliminan la mayoría de paquetes respetando aquellos (como curl o vnc) susceptibles de haber sido 
+    # instalados por el usuario para otros usos
+
+    sudo apt remove -y 
+            python-avahi python-qt4 python-qt4-dbus python-netifaces \
+            python-sleekxmpp python-webdav ejabberd libc-ares2 rlwrap \
+            avahi-daemon setcd python-dnspython libnss-myhostname dex \
+            ejabberd-cgaconfig nodejs etherpad-lite cga-hga python-sleekxmpp
+
+}
+
+# Comprueba si está instalado Sigala
+# ---
+
+# IDEA  esta comprobación se hace en varios sitios, sería interesante 
+#       abstraer la funcionalidad a una función que pudiésemos reutilizar
+#       simplemente proporcionándole como parámetro el paquete a comprobar
+
+function instalarSigalaCheck {
+
+	# Comprobaciones a realizar 
+	# ---
+
+	# Paquete a comprobar
+	app=cga-hga;
+
+	# Paquete instalado
+    ins=$(dpkg --get-selections | grep $app | grep [^de]install | wc -l); 
+
+	# Situación actual
+	# ---
+
+	[ $ins -eq 1 ] && echo "True" || echo "False";
+}
+
+#==============================================================================
 # Gestión del modo privado en los navegadores del sistema
 #==============================================================================
 
@@ -405,6 +497,7 @@ fi
 opciones=("${opciones[@]}" `activarAutoLoginCheck` activarAutoLogin "Inicio de sesión automático")
 opciones=("${opciones[@]}" `navegacionPrivadaCheck` navegacionPrivada "Navegación web en modo incógnito por defecto")
 opciones=("${opciones[@]}" `accesoSSHCheck` accesoSSH "Permitir conexión por SSH")
+opciones=("${opciones[@]}" `instalarSigalaCheck` instalarSigala "Instalar HGR-Sigala")
 opciones=("${opciones[@]}" `soundProblemCheck` soundProblem "Corregir audio NB500/N100SP")
 
 # Mostramos las opciones personalizables
