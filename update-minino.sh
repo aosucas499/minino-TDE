@@ -129,6 +129,11 @@ function instalarSigala {
 	# ---
 
 	sudo patch /usr/lib/python2.7/dist-packages/hga/controlcompartir/cliente/davclient.py ./tools/sigala-install.patch
+	
+	# Borramos acceso directo (cambiamos el nombre) del menú de aplicaciones hasta que resolvamos el funcionamiento de cga-hga-server
+	# ---
+	
+	sudo mv /usr/share/applications/cga-hgr-server.desktop /usr/share/applications/cga-hgr-server.desktop.save
 }
 
 function firefox83-system {
