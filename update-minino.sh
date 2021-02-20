@@ -103,7 +103,7 @@ function instalarSigala {
 	# Instalamos dependencias
 	# ---
 
-	sudo apt install ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc ejabberd curl libc-ares2 rlwrap avahi-daemon setcd python-dnspython libnss-myhostname
+	sudo apt install -y ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc ejabberd curl libc-ares2 rlwrap avahi-daemon setcd python-dnspython libnss-myhostname
 
 	# Descargamos los paquetes de Guadalinex que necesitamos
 	# ---
