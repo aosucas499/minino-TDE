@@ -196,14 +196,39 @@ function instalarSigala {
 	sudo dpkg -i /tmp/cga-hga_0.1-19_all.deb
 	sudo dpkg -i /tmp/python-sleekxmpp_1.3.1-6cga1_all.deb
 
-	# Aplicamos parche corrige encoding al compartir ficheros
+    # Creamos parche a aplicar
+    # ---
+
+    # Nos aseguramos que no exista el fichero (en caso contrario añadiría 
+    # contenido y daría error al no ser un parche válido)
+
+    rm -f /tmp/sigala-install.patch
+    
+    # Creamos el parche aquí para evitar el fichero tools/sigala-install.patch 
+    # para que funcionen las actualizaciones automáticas de customize-minino 
+    # (hasta que no hagamos un "git pull" no podemos depender de ficheros adicionales)
+
+    cat << EOF >> /tmp/sigala-install.patch
+
+--- /tmp/davclient.py	2021-02-19 19:46:49.711549295 +0100
++++ /tmp/davclient-new.py	2021-02-19 19:49:41.812319843 +0100
+@@ -81,6 +81,9 @@
+         else:
+             raise Exception, 'Unsupported scheme'
+         
++        if '\r' in path:
++            path=path.replace('\r','')
++            
+         self._connection.request(method, path, body, headers)
+             
+         self.response = self._connection.getresponse()
+
+EOF
+
+	# Aplicamos parche que corrige el encoding al compartir ficheros
 	# ---
 
-    # TODO  pasar el patch como EOF y evitar el fichero tools/sigala-install.patch 
-    #       para que funcionen las actualizaciones automáticas actualmente (hasta que
-    #       no hagamos un "git pull" no podemos depender de ficheros adicionales)
-
-	sudo patch /usr/lib/python2.7/dist-packages/hga/controlcompartir/cliente/davclient.py ./tools/sigala-install.patch
+	sudo patch /usr/lib/python2.7/dist-packages/hga/controlcompartir/cliente/davclient.py /tmp/sigala-install.patch
 	
 	# Borramos acceso directo (cambiamos el nombre) del menú de aplicaciones hasta que resolvamos el funcionamiento de cga-hga-server
 	# ---
@@ -219,7 +244,7 @@ function instalarSigalaUndo {
     # Se eliminan la mayoría de paquetes respetando aquellos (como curl o vnc) susceptibles de haber sido 
     # instalados por el usuario para otros usos
 
-    sudo apt remove -y 
+    sudo apt remove -y \
             python-avahi python-qt4 python-qt4-dbus python-netifaces \
             python-sleekxmpp python-webdav ejabberd libc-ares2 rlwrap \
             avahi-daemon setcd python-dnspython libnss-myhostname dex \
