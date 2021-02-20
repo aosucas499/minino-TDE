@@ -326,9 +326,76 @@ function getOpcionesDescartadas {
 
 }
 
+#==============================================================================
+# Obtiene de Github la versión más reciente de customize-minino-sh
+#==============================================================================
+
+descargarCustomizeMinino(){
+    wget -q https://raw.githubusercontent.com/aosucas499/minino-TDE/main/customize/customize-minino.sh -O /tmp/new.sh
+}
+
+#==============================================================================
+# Actualizamos el script actualmente en ejecución y lo volvemos a invocar 
+# tras ser actualizado para que se ejecute la nueva versión del mismo
+#==============================================================================
+
+selfUpdate(){
+
+	echo "Procedemos a actualizar customize-minino.sh..."
+
+    # Si no hemos descargado previamente el fichero (o alguien lo ha borrado)
+    # nos hacemos con una copia actualizada de customize-minino.sh
+
+    [[ -f /tmp/new.sh ]] || descargarCustomizeMinino
+
+    # Sustituimos el script actual por la nueva versión
+
+    sudo cp /tmp/new.sh "$0"
+    sudo chmod a+x "$0"
+
+    # Lo ejecutamos
+
+	exec "$0"
+}
+
+#==============================================================================
+# Comprueba si el script no coincide con la versión actual en Github
+#==============================================================================
+
+isUpdated(){
+
+	# Descargamos la última versión de customize-minino.sh
+	#---
+
+	descargarCustomizeMinino
+
+	# Calculamos los hash de este script y del descargado
+	#---
+
+	hashActual=$(md5sum  "$0" | cut -d" " -f1)
+	hashNuevo=$(md5sum  /tmp/new.sh | cut -d" " -f1)
+
+	# Comprobamos si el script está (o no) actualizado
+	#---
+
+   [ $hashActual = $hashNuevo ] && echo "True" || echo "False"
+}
+
 # -----------------------------------------------------------------------------
 # Cuerpo del script
 # -----------------------------------------------------------------------------
+
+# Comprobamos si existe una versión más "moderna" de customize-minino.sh
+# ---
+
+aux=$(isUpdated)
+
+if [[ $aux == "False" ]]; then
+	zenity --question  --text "Existe una nueva versión de CUSTOMIZE-MININO.\n¿Desea que me actualice para disfrutar de las nuevas opciones que ofrece?"
+    if [[ $? = 0 ]]; then
+        selfUpdate;
+    fi
+fi 
 
 # Permitimos seleccionar opciones personalizadas
 # ---
