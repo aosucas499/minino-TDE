@@ -1,0 +1,328 @@
++ Nombre=MININO
+++ uname -r
++ NucleoUsado=3.16.0-5-686-pae
+++ uname -r
+++ awk -F- '{print $1,$2}'
+++ sed 's/ /-/'
++ BaseNucleo=3.16.0-5
+++ uname -r
+++ awk -F- '{print $3}'
++ RefNucleo=686
++ kernel=vmlinuz-3.16.0-5-686-pae
++ initrd=initrd.img-3.16.0-5-686-pae
+++ pwd
+++ cut -d/ -f3
++ USUARIO=usuario
+++ cat /home/usuario/.config/user-dirs.dirs
+++ cut -d/ -f2
+++ cut '-d"' -f2
+++ cut -d= -f2
+++ grep DESKTOP
++ escritorio=Escritorio
++ clear
++ echo ''
++ echo -e 'Esculli el seu idioma.  Per  \033[1;31mcatalà CA\033[0m escrigui:  \033[1;31m ca \033[0m'
++ echo -e 'Escolla o seu idioma.   Para \033[1;32mgalego GL\033[0m escriba:   \033[1;32m gl \033[0m'
++ echo -e 'Hautatu zure hizkuntza. \033[1;33mEuskerarako EU\033[0m idatzi:    \033[1;33m eu \033[0m'
++ echo -e 'Escoja su idioma.       Para \033[1;34mespañol ES\033[0m escriba:  \033[1;34m es \033[0m'
++ echo -e 'Choose your language.   For  \033[1;35menglish US\033[0m write:    \033[1;35m en \033[0m'
++ echo ''
++ '[' void == void ']'
++ read -p ': ' idioma
+: + echo -n ''
++ case $idioma in
++ LANG=es_ES.UTF-8
++ export LANG
++ echo 'LANG="es_ES.UTF-8"'
++ '[' es == void ']'
++ clear
++ case $LANG in
++ MSG1='\033[1;33m ## Instalación de GALPon MiniNo «Queiles» ##\033[0m'
++ MSG2='Para instalar el sistema es necesaria una partición Linux (ext4)'
++ MSG3='y es recomendable una partición de intercambio SWAP.'
++ MSG4='Si ya tiene particionado el disco duro responda no, « n »'
++ MSG5='a la siguiente pregunta.'
++ MSG6='¿Quiere particionar el disco duro?'
++ MSG7='A continuación se muestran las particiones Linux disponibles.'
++ MSG8='\033[1;32mEscriba\033[0m la partición donde se va a instalar GALPon MiniNo: '
++ MSG9='Por ejemplo, sda1: '
++ MSG10='\033[1;31m ## ¡¡¡ PRECAUCIÓN !!! ## \033[0m'
++ MSG11='Esta operación no tiene vuelta atrás, al formatear se'
++ MSG12='perderán todos los datos de las particiones en cuestión.'
++ MSG13='Así ha quedado la tabla de particiones: '
++ MSG14='Se va a \033[1;31mformatear\033[0m la partición'
++ MSG15='para el sistema'
++ MSG16='y la partición'
++ MSG17='\033[1;42m interna en archivo «swapfile» \033[0m para el área de intercambio swap.'
++ MSG18='para el área de intercambio swap.'
++ MSG19='¿Está conforme?'
++ MSG20='¿Continuar la instalació*)n SIN formatear las particiones?'
++ MSG21='Se continúa la instalación'
++ MSG22='sin formatear la partición'
++ MSG23='\033[1;42m Copia de GALPon MiniNo realizándose en \033[0m '
++ MSG24='\033[1;42m sea paciente...                        \033[0m '
++ MSG25='\033[1;42m Se ha completado la instalación.                              \033[0m '
++ MSG26='\033[1;42m Acuérdese de extraer el CD/USB antes de reiniciar el sistema. \033[0m '
++ MSG27='Opción incorrecta.'
++ MSG28='(s/n): '
++ MSG40='Puede optar por una instalación normal o una instalación automática:'
++ MSG41='En la instalación normal tendrá la posibilidad de particionar el'
++ MSG41a='disco a su gusto.'
++ MSG42='En la instalación automática (desatendida) no se le preguntará absolutamente'
++ MSG42a='nada, automáticamente borrará \033[1;31mTODO\033[0m el contenido del primer disco'
++ MSG43='rígido y al finalizar \033[1;31mÚNICAMENTE\033[0m quedará en su ordenador el sistema operativo'
++ MSG44='GALPon MiniNo.'
++ MSG45='¿Desea una instalación \033[1;32mm\033[0manual o \033[1;32ma\033[0mutomática?'
++ MSG46='(m/a)'
++ MSG47='No hay suficiente espacio en disco para instalar GALPon MiniNo'
++ MSG48='\033[1;31mAVISO:\033[0m'
++ MSG49='Se va a \033[1;31mformatear totalmente\033[0m el disco'
++ MSG50='y se \033[1;31mborrarán\033[0m todos los datos'
++ MSG51='Confirma que quiere hacer una instalación automática? escriba «\033[1;32mSi\033[0m»'
++ MSG52='(respetando la mayúscula inicial y sin tilde)'
++ MSG53='Para hacer una instalación manual escriba «\033[1;32mm\033[0m»'
++ MSG54='(Si/m)'
+++ grep '^/dev' /proc/swaps
+++ paste -s '-d '
+++ awk '{print $1}'
++ swapoff
+
+Modo de empleo:
+ swapoff [options] [<spec>]
+
+Opciones:
+ -a, --all              disable all swaps from /proc/swaps
+ -v, --verbose          verbose mode
+
+ -h, --help     muestra esta ayuda y sale
+ -V, --version  muestra información de versión y sale
+
+The <spec> parameter:
+ -L <label>             LABEL of device to be used
+ -U <uuid>              UUID of device to be used
+ LABEL=<label>          LABEL of device to be used
+ UUID=<uuid>            UUID of device to be used
+ <device>               name of device to be used
+ <file>                 name of file to be used
+
+Para más detalles véase swapoff(8).
++ clear
++ escojeModoInstal
++ echo ' '
++ echo -e '\033[1;33m' '##' Instalación de GALPon MiniNo «Queiles» '##\033[0m'
++ echo ' '
++ echo -e Puede optar por una instalación normal o una instalación automática:
++ echo -e En la instalación normal tendrá la posibilidad de particionar el
++ echo -e disco a su gusto.
++ echo -e En la instalación automática '(desatendida)' no se le preguntará absolutamente
++ echo -e nada, automáticamente borrará '\033[1;31mTODO\033[0m' el contenido del primer disco
++ echo -e rígido y al finalizar '\033[1;31mÚNICAMENTE\033[0m' quedará en su ordenador el sistema operativo
++ echo -e GALPon MiniNo.
++ echo ' '
++ echo -e ¿Desea una instalación '\033[1;32mm\033[0manual' o '\033[1;32ma\033[0mutomática?'
++ echo -n '(m/a)'
++ '[' void == void ']'
++ read -p ': ' instalacion
+: + echo ''
++ case "$instalacion" in
++ dpkg-reconfigure tzdata
+
+Current default time zone: 'Europe/Madrid'
+Local time is now:      Mon Feb 22 13:51:30 CET 2021.
+Universal Time is now:  Mon Feb 22 12:51:30 UTC 2021.
+
++ particiona
++ echo ' '
++ echo -e '\033[1;33m' '##' Instalación de GALPon MiniNo «Queiles» '##\033[0m'
++ echo ' '
++ echo Para instalar el sistema es necesaria una partición Linux '(ext4)'
++ echo y es recomendable una partición de intercambio SWAP.
++ echo Si ya tiene particionado el disco duro responda no, « n »
++ echo a la siguiente pregunta.
++ echo ' '
++ echo -n ¿Quiere particionar el disco 'duro?'
++ '[' void == void ']'
++ read -p '(s/n): ' particionar
+(s/n): + echo ''
++ case "$particionar" in
++ '[' n == void ']'
++ clear
++ echo ' '
++ echo A continuación se muestran las particiones Linux disponibles.
++ echo ' '
++ echo
++ fdisk -l
++ read disco tamanho tipo
++ awk '{print $1 " " $4 " " $6}'
++ tr -d '*+'
++ grep '^/dev'
++ grep -v 'Linux swap / Solaris'
++ disco=sda1
++ '[' 0 -ge 1 ']'
++ '[' 3 -ge 1 ']'
+++ echo 'scale = 2 ; 3420416 / ( 1024 * 1024 )'
+++ bc
++ tamanho='3.26 MiB'
++ echo -e 'sda1\t3.26 MiB\t17'
++ read disco tamanho tipo
++ disco=sdb1
++ '[' 0 -ge 1 ']'
++ '[' 223 -ge 1 ']'
+++ echo 'scale = 2 ; 234439600 / ( 1024 * 1024 )'
+++ bc
++ tamanho='223.57 MiB'
++ echo -e 'sdb1\t223.57 MiB\t83'
++ read disco tamanho tipo
++ particiones=($(fdisk -l | grep '^/dev' | grep -v "Linux swap / Solaris" | tr -d '*+' | awk '{print $1}' | sed 's/^.dev.//' | paste -s))
+++ fdisk -l
+++ paste -s
+++ awk '{print $1}'
+++ grep -v 'Linux swap / Solaris'
+++ grep '^/dev'
+++ sed 's/^.dev.//'
+++ tr -d '*+'
++ echo ' '
++ echo ' '
++ echo -e '\033[1;32mEscriba\033[0m' la partición donde se va a instalar GALPon MiniNo:
++ '[' void == void ']'
++ read -p 'Por ejemplo, sda1: ' partidestino
+Por ejemplo, sda1: + echo ''
++ for testdisco in '${particiones[@]}'
++ '[' sda1 == sdb1 ']'
++ for testdisco in '${particiones[@]}'
++ '[' sdb1 == sdb1 ']'
++ particion=ok
++ break
++ '[' ok == void ']'
++ '[' sdb1 == void ']'
++ discoduro=sdb
+++ fdisk -l /dev/sdb
+++ grep swap
+++ sed 's/.*\(.$\)/\1/'
+++ awk '{print $1}'
++ swap=
++ clear
++ echo -e '\033[1;31m' '##' ¡¡¡ PRECAUCIÓN '!!!' '##' '\033[0m'
++ echo ' '
++ echo Esta operación no tiene vuelta atrás, al formatear se
++ echo perderán todos los datos de las particiones en cuestión.
++ echo Así ha quedado la tabla de particiones:
++ echo ' '
++ echo ' '
++ echo ' '
++ echo -e Se va a '\033[1;31mformatear\033[0m' la partición
++ echo -e '\033[1;42m sdb1 \033[0mpara' el sistema
++ echo y la partición
++ '[' void == void ']'
++ echo -e '\033[1;42m' interna en archivo «swapfile» '\033[0m' para el área de intercambio swap.
++ echo ¿Está 'conforme?'
++ '[' void == void ']'
++ read -p '(s/n): ' borra
+(s/n): + echo ' '
++ case "$borra" in
++ borra=s
++ '[' s == void ']'
++ '[' s == s ']'
++ mkfs.ext4 /dev/sdb1
+mke2fs 1.42.12 (29-Aug-2014)
++ e2label /dev/sdb1 MININO
++ '[' void '!=' void ']'
++ copia
++ echo ' '
++ echo -e '\033[1;42m' Copia de GALPon MiniNo realizándose en '\033[0m' 'sdb1 '
++ echo -e '\033[1;42m' sea paciente... '\033[0m'
++ echo ' '
++ sleep 4
++ mount -t auto -o rw /dev/sdb1 /mnt/
++ rsync -acvxHAXRS '--exclude=/var/run/*' '--exclude=/var/tmp/*' '--exclude=/var/log/*' '--exclude=/tmp/*' '--exclude=/live/*' '--exclude=/proc/*' '--exclude=/sys/*' '--exclude=/dev/*' / /mnt/
++ rm -R /mnt/var/lib/sudo
++ rm /mnt/etc/sudoers.d/live
++ rm /mnt/var/lib/polkit-1/localauthority/10-vendor.d/10-live-cd.pkla
+++ cat /home/usuario/.config/user-dirs.dirs
+++ grep DESKTOP
+++ cut -d= -f2
+++ cut -d/ -f2
+++ cut '-d"' -f2
++ escritorio=Escritorio
++ sed -i -e 's/#NotShowIn=LXDE;/NotShowIn=LXDE;/g' /mnt/usr/local/share/applications/minino/minino-installer.desktop
++ rm -r /mnt/home/usuario/.cache/fontconfig /mnt/home/usuario/.cache/lxsession /mnt/home/usuario/.cache/menus /mnt/home/usuario/.cache/openbox
++ rm /mnt/etc/init.d/.legacy-bootordering
+rm: no se puede borrar «/mnt/etc/init.d/.legacy-bootordering»: No existe el fichero o el directorio
++ cp /usr/share/sysvinit/inittab /etc/inittab
++ '[' '' = auto ']'
++ '[' void == void ']'
++ dd if=/dev/zero of=/mnt/swapfile bs=1M count=100
+100+0 registros leídos
+100+0 registros escritos
+104857600 bytes (105 MB) copiados, 1,94188 s, 54,0 MB/s
++ mkswap /mnt/swapfile
++ clear
+++ fdisk -l /dev/sdb
+++ grep swap
+++ cut -f12 -d ' '
+++ cut -c 9
++ swap=
++ '[' void == void ']'
++ swap_line='/swapfile  none  swap  sw  0 0'
++ cat
++ mount --bind /dev /mnt/dev
++ mount -t proc proc /mnt/proc
++ mount -t sysfs sysfs /mnt/sys
++ chroot /mnt dpkg-divert --remove --rename --quiet /usr/sbin/update-initramfs
++ chroot /mnt update-initramfs -u -t
++ chroot /mnt grub-install --force /dev/sdb
+Installing for i386-pc platform.
+Instalación terminada. No se notificó ningún error.
++ chroot /mnt update-grub2
+Generating grub configuration file ...
+Encontrado fondo de pantalla: /usr/local/share/pixmaps/minino-grub.png
+Found background image: /usr/local/share/pixmaps/minino-grub.png
+Encontrada imagen de linux: /boot/vmlinuz-3.16.0-5-686-pae
+Encontrada imagen de memoria inicial: /boot/initrd.img-3.16.0-5-686-pae
+hecho
++ cd /
++ cp /etc/default/locale /mnt/etc/default/
++ sync
++ umount -a
+umount: /mnt: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /run/user/1000: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /run/user/106: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /sys/fs/cgroup: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /tmp: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /run/shm: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /lib/live/mount/overlay: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /lib/live/mount/rootfs/filesystem.squashfs: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /lib/live/mount/medium: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /run: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
+umount: /dev: target is busy
+        (In some cases useful info about processes that
+         use the device is found by lsof(8) or fuser(1).)
++ clear
++ echo ''
++ echo -e '\033[1;42m' Se ha completado la instalación. '\033[0m'
++ echo -e '\033[1;42m' Acuérdese de extraer el CD/USB antes de reiniciar el sistema. '\033[0m'
++ sleep 10
++ '[' m == void ']'
