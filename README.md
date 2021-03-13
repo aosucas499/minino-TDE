@@ -4,9 +4,11 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
 ## Enlace de la última ISO: http://bit.ly/2KOpodK 
 (enlace permanente aunque se actualice la ISO)
 
-## [Creación live ISO](https://github.com/aosucas499/minino-TDE/wiki/Creaci%C3%B3n-Live-ISO)
-## [Instrucciones de instalación](https://github.com/aosucas499/minino-TDE/wiki/Instalaci%C3%B3n)
-# [Uso Synaptics](https://github.com/aosucas499/minino-TDE/wiki/Uso-de-Synaptics)
+ [Creación live ISO](https://github.com/aosucas499/minino-TDE/wiki/Creaci%C3%B3n-Live-ISO)
+ 
+ [Instrucciones de instalación](https://github.com/aosucas499/minino-TDE/wiki/Instalaci%C3%B3n)
+ 
+ [Uso Synaptics](https://github.com/aosucas499/minino-TDE/wiki/Uso-de-Synaptics)
 
 ### Última fecha de generación de ISO: 7 enero 2021
 
