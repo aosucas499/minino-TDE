@@ -174,28 +174,62 @@ function instalarSigala {
 	# Instalamos dependencias
 	# ---
 
-	sudo apt install -y ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc ejabberd curl libc-ares2 rlwrap avahi-daemon setcd python-dnspython libnss-myhostname
+	sudo apt install -y ssh python-avahi python-qt4 python-qt4-dbus python-netifaces python-sleekxmpp python-webdav x11vnc xtightvncviewer xvnc4viewer vlc libc-ares2 rlwrap avahi-daemon setcd python-dnspython libnss-myhostname curl
 
-	# Descargamos los paquetes de Guadalinex que necesitamos
-	# ---
+	#Instalamos repositorios debian stretch e instalamos curl
+	# No es necesario por ahora, podemos usar el de debian jessie, pero dejamos el método por si se necesita descargar algo de debian stretch
 
-	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/d/dex/dex_0.7-2_all.deb -O /tmp/dex_0.7-2_all.deb
-	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/ejabberd-cgaconfig/ejabberd-cgaconfig_0.2-3_all.deb -O /tmp/ejabberd-cgaconfig_0.2-3_all.deb
-	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/e/etherpad-lite/etherpad-lite_1.5.7-5_all.deb -O /tmp/etherpad-lite_1.5.7-5_all.deb
-	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/n/nodejs/nodejs_0.10.37-1_i386.deb -O /tmp/nodejs_0.10.37-1_i386.deb
-	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/c/cga-hga/cga-hga_0.1-19_all.deb -O /tmp/cga-hga_0.1-19_all.deb
-	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/p/python-sleekxmpp/python-sleekxmpp_1.3.1-6cga1_all.deb -O /tmp/python-sleekxmpp_1.3.1-6cga1_all.deb
+	#wget https://raw.githubusercontent.com/aosucas499/sources/main/minino-tde-stretch.list
+	#sudo mv /etc/apt/sources.list /etc/apt/minino-tde-jessie.list
+	#sudo mv minino-tde-stretch.list /etc/apt/sources.list
+	#sudo apt-get update
+	#sudo apt-get install -y curl
 
-	# Instalamos los paquetes de Guadalinex
-	# ---
+	# Instalamos repositorios guadalinex-next
+	#
+	
+	wget https://raw.githubusercontent.com/aosucas499/sources/main/guadalinex-next.list
+	sudo mv /etc/apt/sources.list /etc/apt/minino-tde-jessie.list
+	sudo mv guadalinex-next.list /etc/apt/sources.list
+	wget http://centros.edu.guadalinex.org/Edu/fenix/pool/main/g/guadalinexedu-keyring/guadalinexedu-keyring_0.2-1_all.deb
+	sudo dpkg -i guadalinexedu-keyring_0.2-1_all.deb
+	rm guadalinexedu-keyring_0.2-1_all.deb
+	sudo apt-get update
 
-	sudo dpkg -i /tmp/dex_0.7-2_all.deb 
-	sudo dpkg -i /tmp/ejabberd-cgaconfig_0.2-3_all.deb 
-	sudo dpkg -i /tmp/nodejs_0.10.37-1_i386.deb 
-	sudo dpkg -i /tmp/etherpad-lite_1.5.7-5_all.deb
-	sudo dpkg -i /tmp/cga-hga_0.1-19_all.deb
-	sudo dpkg -i /tmp/python-sleekxmpp_1.3.1-6cga1_all.deb
+	# Instalamos paquetes necesarios sigala desde guadalinex next
+	
+	sudo apt-get install -y ejabberd 
+	sudo apt-get install -y python-sleekxmpp
+	sudo apt-get install -y cga-hga
 
+	# Instalamos repositorios debian jessie y dejamos minino en su punto inicial
+	#
+	
+	sudo mv /etc/apt/minino-tde-jessie.list /etc/apt/sources.list
+	sudo apt-get update
+	
+	# Añadimos permisos sudo a la aplicación para que funcione bien con docker y versiones antiguas de guadalinex
+	#
+	
+	sudo sed -i "s/Exec=/Exec=sudo /g" "/usr/share/applications/cga-hgr-client.desktop"
+	sudo sed -i "s/Exec=/Exec=sudo /g" "/usr/share/applications/cga-hgr-server.desktop"
+	sudo sed -i "s/&&/\&\& sudo /g" /etc/xdg/autostart/hgr-autostart.desktop
+
+	
+	# Añadimos permisos sudo a cualquier usuario del sistema, aunque no tenga derechos de administrador
+	#
+	
+	cd /home/$USER
+	sudo cp /etc/sudoers.d/ejabberd-cgaconfig .
+	sudo rm /etc/sudoers.d/ejabberd-cgaconfig
+	sudo chown $USER:$USER ejabberd-cgaconfig 
+	sudo chmod 765 ejabberd-cgaconfig
+	sudo echo "ALL     ALL=NOPASSWD:/usr/bin/cga-hgr-client" >> ejabberd-cgaconfig
+	sudo echo "ALL     ALL=NOPASSWD:/usr/bin/cga-hgr-server" >> ejabberd-cgaconfig
+	sudo chown root:root ejabberd-cgaconfig
+	sudo chmod 0440 ejabberd-cgaconfig
+	sudo mv ejabberd-cgaconfig /etc/sudoers.d/
+	
     # Creamos parche a aplicar
     # ---
 
@@ -230,10 +264,6 @@ EOF
 
 	sudo patch /usr/lib/python2.7/dist-packages/hga/controlcompartir/cliente/davclient.py /tmp/sigala-install.patch
 	
-	# Borramos acceso directo (cambiamos el nombre) del menú de aplicaciones hasta que resolvamos el funcionamiento de cga-hga-server
-	# ---
-	
-	sudo mv /usr/share/applications/cga-hgr-server.desktop /usr/share/applications/cga-hgr-server.desktop.save
 }
 
 # Deshace la instalación de HGR-Sigala
