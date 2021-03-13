@@ -6,7 +6,7 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
 
  [Creación USB live](https://github.com/aosucas499/minino-TDE/wiki/1.-Creaci%C3%B3n-USB-Live)
  
- [Instrucciones de instalación](https://github.com/aosucas499/minino-TDE/wiki/Instalaci%C3%B3n)
+ [Instrucciones de instalación](https://github.com/aosucas499/minino-TDE/wiki/2.-Instalaci%C3%B3n)
  
 
 ### Última fecha de generación de ISO: 7 enero 2021
