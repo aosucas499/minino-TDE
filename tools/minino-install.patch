@@ -64,7 +64,7 @@
 +
 +    dst=$( \
 +        zenity \
-+            --title "Disco de destino" \
++            --title "Disco de destino..." \
 +            --text "Seleccione la unidad dónde instalar Minino-TDE" \
 +            --list --radiolist  \
 +            --column "Selec."  \
