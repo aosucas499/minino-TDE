@@ -1,18 +1,16 @@
 --- tools/minino-installer-b	2021-01-30 18:34:28.736707382 +0100
-+++ /tmp/minino-installer-b	2021-03-21 17:39:07.242181319 +0100
-@@ -359,13 +359,19 @@
++++ /tmp/minino-installer-b	2021-03-21 20:32:35.584322803 +0100
+@@ -357,16 +357,86 @@
+ 
+ 
  function partauto(){
++
      tipodeinstalacion=auto
  
 -    ocupado=`mount|grep "/live/image"|cut -d " " -f1`
 +    # Obtenemos información de los discos
 +    # ---
- 
--    if [ "${ocupado}" != "/dev/sda1" ];then
--	discoduro=sda
--    else
--	discoduro=sdb
--    fi
++
 +    # Anotamos los discos existentes en el equipo
 +    lsblk -io KNAME,TYPE,SIZE,MODEL,RM | grep disk | grep "0$" | cut -d" " -f1 | sort > /tmp/disks.lst
 +
@@ -23,6 +21,74 @@
 +    # ---
 +
 +    discoduro=`comm -23 /tmp/disks.lst /tmp/mounts.lst | head -n 1`
++
++    # Extraemos información (nombre, tamaño, path, ...) de los posibles discos a usar
++    # ---
++
++    # Anotamos en fichero los discos candidatos
++
++    lsblk -io RM,SIZE,KNAME,TYPE,MODEL | grep disk | grep "^ 0" | tr -s ' ' > /tmp/disks.lst
++
++    # Preparamos la información para poder mostrarla en el menú de selección
++
++    while IFS= read -r line; do
++        
++        unidad=$(echo $line | cut -d " " -f3)
++        size=$(echo $line | cut -d " " -f2)
++
++        # El nombre puede tener espacios, por eso nos quedamos hasta el final de la línea 
++        # y lo ponemos como la última columna
  
+-    if [ "${ocupado}" != "/dev/sda1" ];then
+-	discoduro=sda
+-    else
+-	discoduro=sdb
++        nombre=$(echo $line | cut -d " " -f5-)" [$size]"
++        
++        # Marcamos como TRUE la unidad que coincida con el disco duro que 
++        # suponemos es el que se debe usar
++
++        selec=$([ $unidad = $discoduro ] && echo "True" || echo "False")
++
++        opciones=("${opciones[@]}" $selec $unidad "/dev/$unidad" "$nombre")
++
++    done < /tmp/disks.lst
++
++    # Eliminamos el fichero auxiliar donde hemos anotado los posibles discos
++
++    rm /tmp/disks.lst
++
++    # Preguntamos (marcando por defecto el disco que consideramos que es el correcto)
++    # dónde desea instalar Minino
++    # ---
++
++    dst=$( \
++        zenity \
++            --title "Disco de destino" \
++            --text "Seleccione la unidad dónde instalar Minino-TDE" \
++            --list --radiolist  \
++            --column "Selec."  \
++            --column "Unidad"  \
++            --column "Ruta"  \
++            --column "Nombre" \
++            --hide-column=2  \
++            --width=500  --height=250  \
++        "${opciones[@]}" \
++    )
++
++    # Si el usuario pulsa "cancelar" abortamos el proceso de instalación
++
++    if [ -z $dst ]; then
++        echo "No te preocupes, revisa bien tu equipo y lo instalamos cuando lo tengas claro ;)"
++        exit 0
+     fi
+ 
++    # Anotamos el disco a usar para que funcione el script original
++    discoduro=$dst
++
++    # AQUÍ SIGUE EL SCRIPT ORIGINAL DE MININO
++    # ===
++
      RAM_QUE_TENGO=`free -mt | grep Mem | tail -1 | awk '{print $2}'`
  
+     if (( ${RAM_QUE_TENGO} >= 256 )); then
