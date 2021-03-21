@@ -1,5 +1,5 @@
---- minino-installer-b	2021-01-30 17:10:31.220647900 +0000
-+++ minino-installer-b-jasv	2021-01-30 17:13:03.507580546 +0000
+--- tools/minino-installer-b	2021-01-30 18:34:28.736707382 +0100
++++ /tmp/minino-installer-b	2021-03-21 17:39:07.242181319 +0100
 @@ -359,13 +359,19 @@
  function partauto(){
      tipodeinstalacion=auto
@@ -14,7 +14,7 @@
 -	discoduro=sdb
 -    fi
 +    # Anotamos los discos existentes en el equipo
-+    lsblk -io KNAME,TYPE,SIZE,MODEL | grep disk | cut -d" " -f1 | sort > /tmp/disks.lst
++    lsblk -io KNAME,TYPE,SIZE,MODEL,RM | grep disk | grep "0$" | cut -d" " -f1 | sort > /tmp/disks.lst
 +
 +    # Anotamos los discos montados actualmente (sin incluir ruta al device ni números de partición)
 +    mount | grep /dev/sd | cut -d " " -f1 | sed -e 's/\([0-9]\+\)//g' | sed -e 's/\/dev\///g' | uniq | sort > /tmp/mounts.lst
