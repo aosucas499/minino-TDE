@@ -230,11 +230,12 @@ function firefox83-system {
 
 	# Eliminamos del sistema la version noroot para el usuario
 	
-	sudo rm -r /home/$USER/firefox
-	sudo rm /home/$USER/Escritorio/Firefox-83
-	sudo rm /home/$USER/.local/share/applications/firefox-noroot.desktop
-	sudo rm -r /home/$USER/Descargas/actualiza-firefox-guadalinex-master
-	sudo rm /home/$USER/Descargas/actualiza-firefox-guadalinex-master.zip
+	sudo rm -rf	/home/$USER/firefox
+	sudo rm -f 	/home/$USER/Escritorio/Firefox-83
+	sudo rm -f 	/home/$USER/.local/share/applications/firefox-noroot.desktop
+	sudo rm -rf /home/$USER/Descargas/actualiza-firefox-guadalinex-master
+	sudo rm -f 	/home/$USER/Descargas/actualiza-firefox-guadalinex-master.zip
+
 	echo -e "${ROJO}Borrado firefox83 de la carpeta usuario${NORMAL}"
 
   	# Instala firefox 83 en el sistema
@@ -259,7 +260,7 @@ function firefox83-system {
 	#Librería necesaria para versiones nuevas de firefox, instalada previamente, pero por si las moscas	
 	
 	sudo apt-get install libatomic1 -y 
-	echo -e "${ROJO}Firefox instaldo en el sistema${NORMAL}"
+	echo -e "${ROJO}Firefox instalado en el sistema${NORMAL}"
     
 }
 
