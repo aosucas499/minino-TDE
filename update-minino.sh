@@ -199,6 +199,18 @@ function showAsterisks {
 # ---
 
 function customize-app {
+
+	# Salimos si ya está aplicado el cambio
+	# ---
+
+	if [[ -f /usr/bin/customize-minino ]]; then
+		echo "Customize-minino ya es una app del sistema"
+		return
+	fi
+
+	# Aplicamos el cambio
+	# ---
+
     sudo cp ./customize/customize-minino.sh /usr/bin/customize-minino
     sudo chmod +x /usr/bin/customize-minino
     sudo cp ./customize/customize-minino.desktop /usr/share/applications
@@ -309,6 +321,9 @@ function prepareIso {
 # Realizamos las opciones por defecto de nuestro script
 # ---
 
+customize-app
+exit 0
+
 delete-matchbox
 ntp-fix
 instalarGit
@@ -319,6 +334,5 @@ showAsterisks
 
 exit 0
 
-customize-app
 firefox83-system
 prepareIso
