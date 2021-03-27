@@ -178,6 +178,20 @@ function corregirImageMagick {
 # ---
 
 function showAsterisks {
+
+	# Comprobamos si muestra asteriscos ya
+	# ---
+
+    ins=$(sudo cat /etc/sudoers | grep pwfeedback | wc -l); 
+
+	if [[ $ins -eq 1 ]]; then
+		echo "El sistema ya muestra asteriscos al introducir contraseñas";
+		return
+	fi
+
+	# Activamos el uso de asteriscos al introducir contraseñas
+	# ---
+
 	sudo sed -i -e 's/env_reset/env_reset,pwfeedback/g' /etc/sudoers
 }
 
@@ -195,7 +209,8 @@ function customize-app {
 function firefox83-system {
 
 	# Eliminamos del sistema la version noroot para el usuario
-    	sudo rm -r /home/$USER/firefox
+	
+	sudo rm -r /home/$USER/firefox
 	sudo rm /home/$USER/Escritorio/Firefox-83
 	sudo rm /home/$USER/.local/share/applications/firefox-noroot.desktop
 	sudo rm -r /home/$USER/Descargas/actualiza-firefox-guadalinex-master
@@ -203,9 +218,10 @@ function firefox83-system {
 	echo -e "${ROJO}Borrado firefox83 de la carpeta usuario${NORMAL}"
 
   	# Instala firefox 83 en el sistema
+
 	echo -e "${AZUL}Descargando Firefox para arquitecturas de 32 bits${NORMAL}"
 	wget $FIREFOX -q --show-progress
-    	echo -e "${AZUL}Firefox se está descomprimiendo en un directorio del sistema...${NORMAL}"
+	echo -e "${AZUL}Firefox se está descomprimiendo en un directorio del sistema...${NORMAL}"
 	sudo tar -xjf firefox*.tar.bz2 -C /usr/lib
 	sudo mv /usr/lib/firefox /usr/lib/firefox-latest
 	echo -e "${AZUL}Creando accesos directos...${NORMAL}"
@@ -215,12 +231,15 @@ function firefox83-system {
 	echo -e "${ROJO}BORRANDO archivos firefox residuales...${NORMAL}"
 	rm $NEWLANZADOR
 	rm firefox*.tar.bz2
+	
 	#Borra el actualizador automático ya que puede que en un futuro las actualizaciones no sean compatibles con el sistema
+	
 	sudo rm /usr/lib/firefox-latest/updat* 
+
 	#Librería necesaria para versiones nuevas de firefox, instalada previamente, pero por si las moscas	
+	
 	sudo apt-get install libatomic1 -y 
 	echo -e "${ROJO}Firefox instaldo en el sistema${NORMAL}"
-
     
 }
 
@@ -296,10 +315,10 @@ instalarGit
 instalarFlorence
 corregirImageMagick
 corregirInstalacionDesatendida
+showAsterisks
 
 exit 0
 
 customize-app
 firefox83-system
-showAsterisks
 prepareIso
