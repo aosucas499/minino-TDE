@@ -8,7 +8,7 @@
      tipodeinstalacion=auto
  
 -    ocupado=`mount|grep "/live/image"|cut -d " " -f1`
-+    # Obtenemos información de los discos
++    # Obtenemos información de los discos...
 +    # ---
 +
 +    # Anotamos los discos existentes en el equipo
