@@ -14,10 +14,44 @@ ROJO="\033[1;31m"
 NORMAL="\033[0m"
 AZUL="\033[1;34m"
 
+# Comprueba si está instalado en el sistema el paquete solicitado
+# ---
+
+function isPackageInstalled {
+
+	# Comprobaciones a realizar 
+	# ---
+
+	# Paquete a comprobar
+	app=$1;
+
+	# Paquete instalado
+    ins=$(dpkg --get-selections | grep $app | grep [^de]install | wc -l); 
+
+	# Situación actual
+	# ---
+
+	[ $ins -eq 1 ] && echo "True" || echo "False";
+}
+
 # Elimina el teclado virtual matchbox
 # ---
 
 function delete-matchbox {
+
+	# Salimos si ya está aplicado el cambio
+	# ---
+
+	aux=$(isPackageInstalled matchbox-keyboard)
+
+	if [[ $aux == "False" ]]; then
+		echo "Matchbox ya estaba eliminado"
+		return
+	fi
+	
+	# Aplicamos el cambio
+	# ---
+
     sudo apt-get purge --remove matchbox-keyboard -y
     sudo rm /usr/local/share/applications/minino/match-keyboard.desktop
 	sudo rm /home/$USER/Escritorio/minino-match-keyboard.desktop
@@ -28,6 +62,18 @@ function delete-matchbox {
 # ---
 
 function ntp-fix {
+
+	# Salimos si ya está aplicado el cambio
+	# ---
+
+	if [[ -f /usr/bin/fix-ntp ]]; then
+		echo "Ya está corregida la hora por NTP"
+		return
+	fi
+	
+	# Aplicamos el cambio
+	# ---
+
     sudo timedatectl set-timezone Europe/Madrid
     sudo cp ./ntp/fix-ntp /usr/bin
     sudo chmod +x /usr/bin/fix-ntp
@@ -53,9 +99,29 @@ function instalarGit {
 
 function instalarFlorence {
 
+	# Salimos si ya está aplicado el cambio
+	# ---
+
+	aux=$(isPackageInstalled florence)
+
+	if [[ $aux == "False" ]]; then
+		echo "Florence ya estaba instalado"
+		return
+	fi
+	
+	# Aplicamos el cambio
+	# ---
+
     # Instala Florence y sus dependencias al sistema
     sudo apt-get install florence at-spi2-core florence -y
 	echo -e "${ROJO}Teclado virtual Florence instalado${NORMAL}"
+}
+
+# Obtiene el SHA1 del último commit
+# ---
+
+function getLatestCommit() {
+	echo $(wget --quiet -O- https://api.github.com/repos/aosucas499/minino-TDE/commits | grep '"sha":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
 }
 
 # Evita que se instale en el pendrive por error
@@ -63,8 +129,26 @@ function instalarFlorence {
 
 function corregirInstalacionDesatendida {
 
+	# Obtenemos la última versión del fichero a descargar
+
+	commit=$(getLatestCommit)
+
+	# Descargamos la versión original de minino-installer-b 
+	# (en lugar de tratar de averiguar qué versión hay en el equipo, partimos siempre de la original)
+
+	sudo wget -q https://raw.githubusercontent.com/aosucas499/minino-TDE/$commit/tools/minino-installer-b -O /usr/local/bin/minino-installer-b
+	
+	# Descargamos el fichero con el parche a aplicar
+
+	wget -q https://raw.githubusercontent.com/aosucas499/minino-TDE/$commit/tools/minino-install.patch -O /tmp/minino-install.patch
+
 	# Aplicamos el parche que modifica el fichero de instalación desantendida
-    sudo patch /usr/local/bin/minino-installer-b ./tools/minino-install.patch
+
+    sudo patch /usr/local/bin/minino-installer-b /tmp/minino-install.patch
+
+	# Eliminamos el fichero del parche
+	
+	rm -f /tmp/minino-install.patch
 }
 
 # Corrige la opción de menú duplicidad para ImageMagick
@@ -72,7 +156,20 @@ function corregirInstalacionDesatendida {
 
 function corregirImageMagick {
 
+
+	# Salimos si ya está aplicado el cambio
+	# ---
+
+	if [[ ! -f /usr/share/applications/display-im6.q16.desktop ]]; then
+		echo "Ya estaba corregido el problema con ImageMagick"
+		return
+	fi
+	
+	# Aplicamos el cambio
+	# ---
+
     # Menú gráficos duplicados en ImageMagik-corregido
+
     sudo rm /usr/share/applications/display-im6.q16.desktop
 	echo -e "${ROJO}corregido duplicidad menú gráficos${NORMAL}"
 }
@@ -188,7 +285,7 @@ function prepareIso {
 # Aseguramos tener el sistema actualizado
 # ---
 
-sudo apt update
+#sudo apt update
 
 # Realizamos las opciones por defecto de nuestro script
 # ---
@@ -199,6 +296,9 @@ instalarGit
 instalarFlorence
 corregirImageMagick
 corregirInstalacionDesatendida
+
+exit 0
+
 customize-app
 firefox83-system
 showAsterisks
