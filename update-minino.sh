@@ -220,6 +220,14 @@ function customize-app {
 
 function firefox83-system {
 
+	# Comprobamos si el cambio ya ha sido aplicado previamente
+	# ---
+
+	if [[ -d /usr/lib/firefox-latest ]]; then
+		echo "Ya tenemos firefox83 en el sistema"
+		return
+	fi
+
 	# Eliminamos del sistema la version noroot para el usuario
 	
 	sudo rm -r /home/$USER/firefox
@@ -321,7 +329,8 @@ function prepareIso {
 # Realizamos las opciones por defecto de nuestro script
 # ---
 
-customize-app
+firefox83-system
+
 exit 0
 
 delete-matchbox
@@ -331,8 +340,8 @@ instalarFlorence
 corregirImageMagick
 corregirInstalacionDesatendida
 showAsterisks
+customize-app
 
 exit 0
 
-firefox83-system
 prepareIso
