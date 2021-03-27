@@ -45,7 +45,7 @@ function delete-matchbox {
 	aux=$(isPackageInstalled matchbox-keyboard)
 
 	if [[ $aux == "False" ]]; then
-		echo "Matchbox ya estaba eliminado"
+		echo -e "${AZUL}Matchbox ya estaba eliminado${NORMAL}"
 		return
 	fi
 	
@@ -67,7 +67,7 @@ function ntp-fix {
 	# ---
 
 	if [[ -f /usr/bin/fix-ntp ]]; then
-		echo "Ya está corregida la hora por NTP"
+		echo -e "${AZUL}Ya está corregida la hora por NTP${NORMAL}"
 		return
 	fi
 	
@@ -91,7 +91,7 @@ function instalarGit {
 
     # Añadir paquete "git" para descargar directamente al sistema desde Github.
     sudo apt-get install git -y
-	echo -e "${ROJO}Git instalado${NORMAL}"
+	echo -e "${AZUL}Git instalado${NORMAL}"
 }
 
 # Instala el tecladro virtual Florece en el sistema
@@ -105,7 +105,7 @@ function instalarFlorence {
 	aux=$(isPackageInstalled florence)
 
 	if [[ $aux == "False" ]]; then
-		echo "Florence ya estaba instalado"
+		echo -e "${AZUL}Florence ya estaba instalado${NORMAL}"
 		return
 	fi
 	
@@ -114,7 +114,7 @@ function instalarFlorence {
 
     # Instala Florence y sus dependencias al sistema
     sudo apt-get install florence at-spi2-core florence -y
-	echo -e "${ROJO}Teclado virtual Florence instalado${NORMAL}"
+	echo -e "${AZUL}Teclado virtual Florence instalado${NORMAL}"
 }
 
 # Obtiene el SHA1 del último commit
@@ -161,7 +161,7 @@ function corregirImageMagick {
 	# ---
 
 	if [[ ! -f /usr/share/applications/display-im6.q16.desktop ]]; then
-		echo "Ya estaba corregido el problema con ImageMagick"
+		echo -e "${AZUL}Ya estaba corregido el problema con ImageMagick${NORMAL}"
 		return
 	fi
 	
@@ -171,7 +171,7 @@ function corregirImageMagick {
     # Menú gráficos duplicados en ImageMagik-corregido
 
     sudo rm /usr/share/applications/display-im6.q16.desktop
-	echo -e "${ROJO}corregido duplicidad menú gráficos${NORMAL}"
+	echo -e "${AZUL}Corregida duplicidad menú gráficos${NORMAL}"
 }
 
 # Muestra asteriscos al introducir passwords en la terminal
@@ -185,7 +185,7 @@ function showAsterisks {
     ins=$(sudo cat /etc/sudoers | grep pwfeedback | wc -l); 
 
 	if [[ $ins -eq 1 ]]; then
-		echo "El sistema ya muestra asteriscos al introducir contraseñas";
+		echo -e "${AZUL}El sistema ya muestra asteriscos al introducir contraseñas${NORMAL}";
 		return
 	fi
 
@@ -204,7 +204,7 @@ function customize-app {
 	# ---
 
 	if [[ -f /usr/bin/customize-minino ]]; then
-		echo "Customize-minino ya es una app del sistema"
+		echo -e "${AZUL}Customize-minino ya es una app del sistema${NORMAL}"
 		return
 	fi
 
@@ -215,7 +215,7 @@ function customize-app {
     sudo chmod +x /usr/bin/customize-minino
     sudo cp ./customize/customize-minino.desktop /usr/share/applications
     sudo cp ./customize/customize-minino.desktop /home/$USER/Escritorio
-	echo -e "${ROJO}Aplicación customize-minino instalada${NORMAL}"
+	echo -e "${AZUL}Aplicación customize-minino instalada${NORMAL}"
 }
 
 function firefox83-system {
@@ -224,7 +224,7 @@ function firefox83-system {
 	# ---
 
 	if [[ -d /usr/lib/firefox-latest ]]; then
-		echo "Ya tenemos firefox83 en el sistema"
+		echo -e "${AZUL}Ya tenemos firefox83 en el sistema${NORMAL}"
 		return
 	fi
 
@@ -236,7 +236,7 @@ function firefox83-system {
 	sudo rm -rf /home/$USER/Descargas/actualiza-firefox-guadalinex-master
 	sudo rm -f 	/home/$USER/Descargas/actualiza-firefox-guadalinex-master.zip
 
-	echo -e "${ROJO}Borrado firefox83 de la carpeta usuario${NORMAL}"
+	echo -e "${AZUL}Borrado firefox83 de la carpeta usuario${NORMAL}"
 
   	# Instala firefox 83 en el sistema
 
@@ -249,7 +249,7 @@ function firefox83-system {
 	wget $LANZADOR -q
 	sudo cp $NEWLANZADOR /usr/share/applications/
 	cp $NEWLANZADOR ~/Escritorio
-	echo -e "${ROJO}BORRANDO archivos firefox residuales...${NORMAL}"
+	echo -e "${AZUL}BORRANDO archivos firefox residuales...${NORMAL}"
 	rm $NEWLANZADOR
 	rm firefox*.tar.bz2
 	
@@ -260,13 +260,13 @@ function firefox83-system {
 	#Librería necesaria para versiones nuevas de firefox, instalada previamente, pero por si las moscas	
 	
 	sudo apt-get install libatomic1 -y 
-	echo -e "${ROJO}Firefox instalado en el sistema${NORMAL}"
+	echo -e "${AZUL}Firefox instalado en el sistema${NORMAL}"
     
 }
 
 function prepareIso {
 	
-	echo -e "${ROJO}Preparando la ISO${NORMAL}"
+	echo -e "${AZUL}Preparando la ISO${NORMAL}"
 	
 	#Borramos archivos innecesarios 
 
@@ -333,7 +333,7 @@ function prepareIso {
 # Aseguramos tener el sistema actualizado
 # ---
 
-#sudo apt update
+sudo apt update
 
 # Realizamos las opciones por defecto de nuestro script
 # ---
