@@ -265,21 +265,28 @@ function firefox83-system {
 }
 
 function prepareIso {
+	
 	echo -e "${ROJO}Preparando la ISO${NORMAL}"
+	
 	#Borramos archivos innecesarios 
-	sudo rm ~/.local/share/applications/appimagekit-balena-etcher-electron.desktop
-	sudo rm -r /home/usuario/Descargas/*
-	sudo rm -r /home/Systemback
+
+	sudo rm -f 	~/.local/share/applications/appimagekit-balena-etcher-electron.desktop
+	sudo rm -rf /home/usuario/Descargas/*
+	sudo rm -rf	/home/Systemback
 
 	#Instalamos refracta que desinstala systemback
+
 	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-base_9.2.2_all.deb
 	wget https://sourceforge.net/projects/refracta/files/tools/older_versions/refractasnapshot-gui_9.2.2_all.deb
+
 	sudo dpkg -i refractasnapshot-base*
 	sudo dpkg -i refractasnapshot-gui*
 	sudo apt-get install -f -y
-	sudo rm refracta*.deb
+	
+	sudo rm -f refracta*.deb
 
 	#modificamos opciones y texto del grub
+
 	sudo cp ./tools/splash.png /usr/lib/refractasnapshot/iso/isolinux/splash.png
 	sudo cp ./tools/splash.png /usr/lib/refractasnapshot/iso/isolinux-refracta/splash.png
 	sudo sed -i "s/GALPon/#TDE/g" "/usr/lib/refractasnapshot/iso/isolinux/isolinux.conf"
@@ -295,6 +302,7 @@ function prepareIso {
 	sudo sed -i "s/Queiles/#TDE/g" "/usr/lib/refractasnapshot/iso/isolinux/menu_gl.conf"
 
 	#modificaciones del instalador
+
 	sudo sed -i '25 s/minino/usuario/g' /usr/local/bin/minino-installer-selector
 	sudo sed -i '62 s/minino/usuario/g' /usr/local/bin/minino-installer-selector
 	sudo sed -i '98 s/minino/usuario/g' /usr/local/bin/minino-installer-selector
@@ -310,7 +318,7 @@ function prepareIso {
 	sudo apt-get update -y
 
 	#borrar repo git
-	cd /home/$USER/ && sudo rm -r minino*
+	cd /home/$USER/ && sudo rm -rf minino*
 
 	echo -e "${AZUL}comandos para generar ISO${NORMAL}"
 	echo "prev-mklive"
@@ -330,10 +338,6 @@ function prepareIso {
 # Realizamos las opciones por defecto de nuestro script
 # ---
 
-firefox83-system
-
-exit 0
-
 delete-matchbox
 ntp-fix
 instalarGit
@@ -342,6 +346,7 @@ corregirImageMagick
 corregirInstalacionDesatendida
 showAsterisks
 customize-app
+firefox83-system
 
 exit 0
 
