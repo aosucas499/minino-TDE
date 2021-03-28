@@ -478,7 +478,13 @@ function getOpcionesDescartadas {
 #==============================================================================
 
 function getLatestRelease() {
-	echo $(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+	
+    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    
+    # NOTA  a pesar de la polémica main/master, a día de hoy Github 
+    #       redirecciona sin problemas usemos la que usemos 
+
+    [ -z $version ] && echo "main" || echo $version
 }
 
 #==============================================================================
