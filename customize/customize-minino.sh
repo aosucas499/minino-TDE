@@ -474,11 +474,20 @@ function getOpcionesDescartadas {
 }
 
 #==============================================================================
+# Obtiene el SHA1 de la última release del proyecto
+#==============================================================================
+
+function getLatestRelease() {
+	echo $(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+}
+
+#==============================================================================
 # Obtiene de Github la versión más reciente de customize-minino-sh
 #==============================================================================
 
 descargarCustomizeMinino(){
-    wget -q https://raw.githubusercontent.com/aosucas499/minino-TDE/main/customize/customize-minino.sh -O /tmp/new.sh
+    versionActual=$(getLatestRelease)
+    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/customize/customize-minino.sh" -O /tmp/new.sh
 }
 
 #==============================================================================
