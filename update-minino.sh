@@ -26,7 +26,7 @@ function isPackageInstalled {
 	app=$1;
 
 	# Paquete instalado
-    ins=$(dpkg --get-selections | grep $app | grep [^de]install | wc -l); 
+    ins=$(dpkg --get-selections | grep ^$app | grep [^de]install | wc -l); 
 
 	# Situación actual
 	# ---
@@ -45,7 +45,7 @@ function delete-matchbox {
 	aux=$(isPackageInstalled matchbox-keyboard)
 
 	if [[ $aux == "False" ]]; then
-		echo -e "${AZUL}Matchbox ya estaba eliminado${NORMAL}"
+		echo -e "${AZUL}Matchbox ya había sido desinstalado previamente${NORMAL}"
 		return
 	fi
 	
@@ -53,9 +53,11 @@ function delete-matchbox {
 	# ---
 
     sudo apt-get purge --remove matchbox-keyboard -y
-    sudo rm /usr/local/share/applications/minino/match-keyboard.desktop
-	sudo rm /home/$USER/Escritorio/minino-match-keyboard.desktop
-	echo -e "${ROJO}matchbox keyboard desinstalado${NORMAL}"
+
+    sudo rm -f /usr/local/share/applications/minino/match-keyboard.desktop
+	sudo rm -f /home/$USER/Escritorio/minino-match-keyboard.desktop
+	
+	echo -e "${AZUL}Matchbox keyboard desinstalado correctamente${NORMAL}"
 }
 
 # Establece la hora al inicio
@@ -67,7 +69,7 @@ function ntp-fix {
 	# ---
 
 	if [[ -f /usr/bin/fix-ntp ]]; then
-		echo -e "${AZUL}Ya está corregida la hora por NTP${NORMAL}"
+		echo -e "${AZUL}Ya estaba corregida la hora por NTP${NORMAL}"
 		return
 	fi
 	
@@ -81,7 +83,8 @@ function ntp-fix {
     sudo chmod 0440 ./ntp/zz-fix-ntp
     sudo cp ./ntp/zz-fix-ntp /etc/sudoers.d/ 
     sudo cp ./ntp/fix-ntp.desktop /etc/xdg/autostart/
-	echo -e "${ROJO}Fix-ntp time instalado${NORMAL}"
+
+	echo -e "${AZUL}Fix-ntp time instalado${NORMAL}"
 }
 
 # Instala GIT en el sistema
@@ -104,8 +107,8 @@ function instalarFlorence {
 
 	aux=$(isPackageInstalled florence)
 
-	if [[ $aux == "False" ]]; then
-		echo -e "${AZUL}Florence ya estaba instalado${NORMAL}"
+	if [[ $aux == "True" ]]; then
+		echo -e "${AZUL}Florence ya había sido instalado previamente${NORMAL}"
 		return
 	fi
 	
@@ -114,7 +117,7 @@ function instalarFlorence {
 
     # Instala Florence y sus dependencias al sistema
     sudo apt-get install florence at-spi2-core florence -y
-	echo -e "${AZUL}Teclado virtual Florence instalado${NORMAL}"
+	echo -e "${AZUL}Instalado teclado virtual Florence correctamente${NORMAL}"
 }
 
 # Obtiene el SHA1 del último commit
@@ -149,6 +152,10 @@ function corregirInstalacionDesatendida {
 	# Eliminamos el fichero del parche
 	
 	rm -f /tmp/minino-install.patch
+
+	# Notificamos el final del proceso
+
+	echo -e "${AZUL}Corregida la instalación desatendida${NORMAL}"
 }
 
 # Corrige la opción de menú duplicidad para ImageMagick
@@ -161,7 +168,7 @@ function corregirImageMagick {
 	# ---
 
 	if [[ ! -f /usr/share/applications/display-im6.q16.desktop ]]; then
-		echo -e "${AZUL}Ya estaba corregido el problema con ImageMagick${NORMAL}"
+		echo -e "${AZUL}Ya había sido corregido el problema con ImageMagick previamente${NORMAL}"
 		return
 	fi
 	
@@ -171,7 +178,7 @@ function corregirImageMagick {
     # Menú gráficos duplicados en ImageMagik-corregido
 
     sudo rm /usr/share/applications/display-im6.q16.desktop
-	echo -e "${AZUL}Corregida duplicidad menú gráficos${NORMAL}"
+	echo -e "${AZUL}Corregida duplicidad de ImageMagick en el menú${NORMAL}"
 }
 
 # Muestra asteriscos al introducir passwords en la terminal
@@ -185,7 +192,7 @@ function showAsterisks {
     ins=$(sudo cat /etc/sudoers | grep pwfeedback | wc -l); 
 
 	if [[ $ins -eq 1 ]]; then
-		echo -e "${AZUL}El sistema ya muestra asteriscos al introducir contraseñas${NORMAL}";
+		echo -e "${AZUL}El sistema ya estaba configurado para mostrar asteriscos al introducir contraseñas${NORMAL}";
 		return
 	fi
 
@@ -193,6 +200,7 @@ function showAsterisks {
 	# ---
 
 	sudo sed -i -e 's/env_reset/env_reset,pwfeedback/g' /etc/sudoers
+	echo -e "${AZUL}Sistema configurado para mostrar asteriscos al introducir contraseñas${NORMAL}"
 }
 
 # Convierte customize script en app del sistema
@@ -204,7 +212,7 @@ function customize-app {
 	# ---
 
 	if [[ -f /usr/bin/customize-minino ]]; then
-		echo -e "${AZUL}Customize-minino ya es una app del sistema${NORMAL}"
+		echo -e "${AZUL}Customize-minino ya era una app del sistema${NORMAL}"
 		return
 	fi
 
@@ -215,7 +223,7 @@ function customize-app {
     sudo chmod +x /usr/bin/customize-minino
     sudo cp ./customize/customize-minino.desktop /usr/share/applications
     sudo cp ./customize/customize-minino.desktop /home/$USER/Escritorio
-	echo -e "${AZUL}Aplicación customize-minino instalada${NORMAL}"
+	echo -e "${AZUL}Aplicación customize-minino instalada como app del sistema${NORMAL}"
 }
 
 function firefox83-system {
@@ -224,7 +232,7 @@ function firefox83-system {
 	# ---
 
 	if [[ -d /usr/lib/firefox-latest ]]; then
-		echo -e "${AZUL}Ya tenemos firefox83 en el sistema${NORMAL}"
+		echo -e "${AZUL}Ya teníamos firefox83 en el sistema${NORMAL}"
 		return
 	fi
 
@@ -236,20 +244,20 @@ function firefox83-system {
 	sudo rm -rf /home/$USER/Descargas/actualiza-firefox-guadalinex-master
 	sudo rm -f 	/home/$USER/Descargas/actualiza-firefox-guadalinex-master.zip
 
-	echo -e "${AZUL}Borrado firefox83 de la carpeta usuario${NORMAL}"
+	echo -e "Borrado firefox83 de la carpeta usuario${NORMAL}"
 
   	# Instala firefox 83 en el sistema
 
-	echo -e "${AZUL}Descargando Firefox para arquitecturas de 32 bits${NORMAL}"
+	echo -e "Descargando Firefox para arquitecturas de 32 bits${NORMAL}"
 	wget $FIREFOX -q --show-progress
-	echo -e "${AZUL}Firefox se está descomprimiendo en un directorio del sistema...${NORMAL}"
+	echo -e "Firefox se está descomprimiendo en un directorio del sistema...${NORMAL}"
 	sudo tar -xjf firefox*.tar.bz2 -C /usr/lib
 	sudo mv /usr/lib/firefox /usr/lib/firefox-latest
-	echo -e "${AZUL}Creando accesos directos...${NORMAL}"
+	echo -e "Creando accesos directos...${NORMAL}"
 	wget $LANZADOR -q
 	sudo cp $NEWLANZADOR /usr/share/applications/
 	cp $NEWLANZADOR ~/Escritorio
-	echo -e "${AZUL}BORRANDO archivos firefox residuales...${NORMAL}"
+	echo -e "BORRANDO archivos firefox residuales...${NORMAL}"
 	rm $NEWLANZADOR
 	rm firefox*.tar.bz2
 	
@@ -260,7 +268,7 @@ function firefox83-system {
 	#Librería necesaria para versiones nuevas de firefox, instalada previamente, pero por si las moscas	
 	
 	sudo apt-get install libatomic1 -y 
-	echo -e "${AZUL}Firefox instalado en el sistema${NORMAL}"
+	echo -e "${AZUL}Firefox 83 instalado correctamente en el sistema${NORMAL}"
     
 }
 
@@ -325,6 +333,17 @@ function prepareIso {
 	echo "sudo makelive"
 }
 
+# Clona el código del proyecto Minino-TDE
+# ---
+
+function descargarMininoTDE(){
+
+git clone https://github.com/aosucas499/minino-TDE.git /tmp/minino
+cd /tmp/minino
+
+echo -e "${AZUL}Actualización de Minino-TDE descargada correctamente${NORMAL}"
+}
+
 
 # -----------------------------------------------------------------------------
 # Cuerpo del script
@@ -335,18 +354,28 @@ function prepareIso {
 
 sudo apt update
 
+# Descargamos nuestro código de github
+# ---
+
+instalarGit
+descargarMininoTDE
+
 # Realizamos las opciones por defecto de nuestro script
 # ---
 
 delete-matchbox
 ntp-fix
-instalarGit
 instalarFlorence
 corregirImageMagick
 corregirInstalacionDesatendida
 showAsterisks
 customize-app
 firefox83-system
+
+# Limpiamos descargas temporales
+# ---
+
+sudo rm -rf /tmp/minino
 
 exit 0
 
