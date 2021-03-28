@@ -9,7 +9,7 @@
  
 -    ocupado=`mount|grep "/live/image"|cut -d " " -f1`
 +    # Obtenemos información de los discos
-+    # ---
++    # ----
 +
 +    # Anotamos los discos existentes en el equipo
 +    lsblk -io KNAME,TYPE,SIZE,MODEL,RM | grep disk | grep "0$" | cut -d" " -f1 | sort > /tmp/disks.lst
