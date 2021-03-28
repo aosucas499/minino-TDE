@@ -127,6 +127,13 @@ function getLatestCommit() {
 	echo $(wget --quiet -O- https://api.github.com/repos/aosucas499/minino-TDE/commits | grep '"sha":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
 }
 
+# Obtiene el SHA1 de la última release del proyecto
+# ---
+
+function getLatestRelease() {
+	echo $(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+}
+
 # Evita que se instale en el pendrive por error
 # ---
 
@@ -348,6 +355,9 @@ echo -e "${AZUL}Actualización de Minino-TDE descargada correctamente${NORMAL}"
 # -----------------------------------------------------------------------------
 # Cuerpo del script
 # -----------------------------------------------------------------------------
+
+getLatestRelease
+exit 0
 
 # Aseguramos tener el sistema actualizado
 # ---
