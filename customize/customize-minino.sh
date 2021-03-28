@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # =============================================================================
-# Script para ejecutar en la iso y dar opción a añadir mejoras.
+# Script para ejecutar en la iso y dar opción a añadir mejoras
 # =============================================================================
 
 # -----------------------------------------------------------------------------
@@ -474,11 +474,26 @@ function getOpcionesDescartadas {
 }
 
 #==============================================================================
+# Obtiene el SHA1 de la última release del proyecto
+#==============================================================================
+
+function getLatestRelease() {
+	
+    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    
+    # NOTA  a pesar de la polémica main/master, a día de hoy Github 
+    #       redirecciona sin problemas usemos la que usemos 
+
+    [ -z $version ] && echo "main" || echo $version
+}
+
+#==============================================================================
 # Obtiene de Github la versión más reciente de customize-minino-sh
 #==============================================================================
 
 descargarCustomizeMinino(){
-    wget -q https://raw.githubusercontent.com/aosucas499/minino-TDE/main/customize/customize-minino.sh -O /tmp/new.sh
+    versionActual=$(getLatestRelease)
+    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/customize/customize-minino.sh" -O /tmp/new.sh
 }
 
 #==============================================================================
@@ -529,7 +544,7 @@ isUpdated(){
 }
 
 # -----------------------------------------------------------------------------
-# Cuerpo del script
+# Cuerpo del script...
 # -----------------------------------------------------------------------------
 
 # Comprobamos si existe una versión más "moderna" de customize-minino.sh
