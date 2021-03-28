@@ -544,7 +544,7 @@ isUpdated(){
 }
 
 # -----------------------------------------------------------------------------
-# Cuerpo del script
+# Cuerpo del script...
 # -----------------------------------------------------------------------------
 
 # Comprobamos si existe una versión más "moderna" de customize-minino.sh
