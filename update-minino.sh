@@ -107,7 +107,7 @@ function autostartUpdateMinino {
 
 	# Creamos el fichero .desktop para el autostart
 
-	sudo cat << EOF >> /etc/xdg/autostart/updateMinino.desktop
+	cat << EOF >> /tmp/updateMinino.desktop
 [Desktop Entry]
 Name=update-minino
 Comment[es]=Script para actualizar el sistema
@@ -117,6 +117,8 @@ Type=Application
 hidden=false
 
 EOF
+
+	sudo mv /tmp/updateMinino.desktop /etc/xdg/autostart
 
 	# Añadimos update-minino.sh como comando del sistema
 
