@@ -118,7 +118,7 @@ hidden=false
 
 EOF
 
-	sudo mv /tmp/updateMinino.desktop /etc/xdg/autostart
+	sudo mv /tmp/updateMinino.desktop /etc/xdg/autostart/update-minino
 
 	# Añadimos update-minino.sh como comando del sistema
 
