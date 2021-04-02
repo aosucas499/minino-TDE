@@ -481,7 +481,7 @@ isUpdated(){
 
 hasSudoRights(){
 
-	res=$(sudo -l | grep \(ALL\) | wc -l)
+	res=$(sudo -l | grep \(ALL | wc -l)
 
    [ $res -eq 1 ] && echo "True" || echo "False"
 }
@@ -489,6 +489,11 @@ hasSudoRights(){
 # -----------------------------------------------------------------------------
 # Cuerpo del script
 # -----------------------------------------------------------------------------
+
+# Sólo permitimos que sea utilizado por usuarios con permisos de administración
+# ---
+
+[[ $(hasSudoRights) == "False" ]] && exit 0
 
 # Comprobamos que no haya un "token" de estar actualizando el script
 
