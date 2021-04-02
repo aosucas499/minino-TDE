@@ -7,6 +7,7 @@
 # -----------------------------------------------------------------------------
 # Definición de las funciones utilizadas en el script
 # -----------------------------------------------------------------------------
+
 FIREFOX=https://download-installer.cdn.mozilla.net/pub/firefox/releases/83.0/linux-i686/es-ES/firefox-83.0.tar.bz2
 LANZADOR=https://raw.githubusercontent.com/aosucas499/actualiza-firefox/master/firefox-latest.desktop
 NEWLANZADOR=firefox-latest.desktop
@@ -358,10 +359,121 @@ cd /tmp/minino
 echo -e "${AZUL}Actualización de Minino-TDE descargada correctamente${NORMAL}"
 }
 
+#==============================================================================
+# Obtiene el SHA1 de la última release del proyecto
+#==============================================================================
+
+function getLatestRelease() {
+	
+    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    
+    # NOTA  a pesar de la polémica main/master, a día de hoy Github 
+    #       redirecciona sin problemas usemos la que usemos 
+
+    [ -z $version ] && echo "main" || echo $version
+}
+
+#==============================================================================
+# Obtiene de Github la versión más reciente de customize-minino-sh
+#==============================================================================
+
+descargarUpdateMinino(){
+    versionActual=$(getLatestRelease)
+    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/update-minino.sh" -O /tmp/new.sh
+}
+
+#==============================================================================
+# Actualizamos el script actualmente en ejecución y lo volvemos a invocar 
+# tras ser actualizado para que se ejecute la nueva versión del mismo
+#==============================================================================
+
+selfUpdate(){
+
+	echo "Procedemos a actualizar update-minino.sh..."
+
+    # Si no hemos descargado previamente el fichero (o alguien lo ha borrado)
+    # nos hacemos con una copia actualizada de update-minino.sh
+
+    [[ -f /tmp/new.sh ]] || descargarUpdateMinino
+
+    # Sustituimos el script actual por la nueva versión
+
+	# TODO quitar esto de aquí (es para no hacer un commit durante las pruebas)
+    #sudo cp /tmp/new.sh "$0"
+    sudo chmod a+x "$0"
+
+    # Lo ejecutamos
+
+	exec "$0"
+}
+
+#==============================================================================
+# Comprueba si el script no coincide con la versión actual en Github
+#==============================================================================
+
+isUpdated(){
+
+	# Descargamos la última versión de customize-minino.sh
+	#---
+
+	descargarUpdateMinino
+
+	# Calculamos los hash de este script y del descargado
+	#---
+
+	hashActual=$(md5sum  "$0" | cut -d" " -f1)
+	hashNuevo=$(md5sum  /tmp/new.sh | cut -d" " -f1)
+
+	# Comprobamos si el script está (o no) actualizado
+	#---
+
+   [ $hashActual = $hashNuevo ] && echo "True" || echo "False"
+}
 
 # -----------------------------------------------------------------------------
 # Cuerpo del script
 # -----------------------------------------------------------------------------
+
+# Comprobamos que no haya un "token" de estar actualizando el script
+
+files=(/tmp/updateminino-*);
+
+if [[ ! -e "${files[0]}" ]]; then
+
+	# Comprobamos si existe una versión más "moderna" de customize-minino.sh
+	# ---
+
+	aux=$(isUpdated)
+
+	if [[ $aux == "False" ]]; then
+
+		zenity --question  --text "Existe una nueva versión de MININO-TDE.\n¿Desea que me actualice para disfrutar de la nueva versión?"
+
+		if [[ $? = 0 ]]; then
+
+			# Creamos token de actualización
+			touch /tmp/updateminino-$(head -3 /dev/urandom | tr -cd '[:alnum:]' | cut -c -5)
+
+			# Actualizamos el script
+			selfUpdate;
+			
+		else
+			echo -e "${AZUL}Sin problemas, ya habrá oportunidad de hacerlo.${NORMAL}"
+		fi
+
+		# Elija lo que elija debemos salir
+
+		exit 0
+	fi 
+
+fi
+
+# Si llegamos aquí es porque había un "token" de estar actualizando
+# Lo eliminamos para que no vuelva a ser usado y procedemos con la actualización
+
+rm -f /tmp/updateminino-*
+
+echo "Y aquí empezaría la actualización de minino"
 
 # Aseguramos tener el sistema actualizado
 # ---
@@ -390,6 +502,7 @@ firefox83-system
 # ---
 
 sudo rm -rf /tmp/minino
+read -rsn1 -p "Pulsa cualquier tecla para finalizar"; echo
 
 exit 0
 
