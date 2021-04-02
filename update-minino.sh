@@ -88,6 +88,46 @@ function ntp-fix {
 	echo -e "${AZUL}Fix-ntp time instalado${NORMAL}"
 }
 
+# Añade update-minino como app de inicio para comprobar 
+# si existen nuevas versiones (rolling release)
+# ---
+
+function autostartUpdateMinino {
+
+	# Salimos si ya está aplicado el cambio
+	# ---
+
+	if [[ -f /etc/xdg/autostart/updateMinino.desktop ]]; then
+		echo -e "${AZUL}Update-minino ya se ejecutaba al iniciar sesión${NORMAL}"
+		return
+	fi
+	
+	# Aplicamos el cambio
+	# ---
+
+	# Creamos el fichero .desktop para el autostart
+
+	sudo cat << EOF >> /etc/xdg/autostart/updateMinino.desktop
+[Desktop Entry]
+Name=update-minino
+Comment[es]=Script para actualizar el sistema
+Exec=xterm -e update-minino
+Terminal=true
+Type=Application
+hidden=false
+
+EOF
+
+	# Añadimos update-minino.sh como comando del sistema
+
+    [[ -f /tmp/new.sh ]] || descargarUpdateMinino
+	sudo cp -f /tmp/new.sh /usr/bin/update-minino
+
+	# Indicamos el final del proceso
+
+	echo -e "${AZUL}Activado update-minino al iniciar sesión${NORMAL}"
+}
+
 # Instala GIT en el sistema
 # ---
 
@@ -398,8 +438,7 @@ selfUpdate(){
 
     # Sustituimos el script actual por la nueva versión
 
-	# TODO quitar esto de aquí (es para no hacer un commit durante las pruebas)
-    #sudo cp /tmp/new.sh "$0"
+    sudo cp /tmp/new.sh "$0"
     sudo chmod a+x "$0"
 
     # Lo ejecutamos
@@ -498,6 +537,8 @@ showAsterisks
 customize-app
 firefox83-system
 
+autostartUpdateMinino
+
 # Limpiamos descargas temporales
 # ---
 
@@ -505,5 +546,8 @@ sudo rm -rf /tmp/minino
 read -rsn1 -p "Pulsa cualquier tecla para finalizar"; echo
 
 exit 0
+
+# IDEA 	crear app específica en los menús de Minino para generar la ISO
+#		para aquellos que puedan necesitarla
 
 prepareIso
