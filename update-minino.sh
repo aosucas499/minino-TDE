@@ -121,7 +121,7 @@ EOF
 	# Añadimos update-minino.sh como comando del sistema
 
     [[ -f /tmp/new.sh ]] || descargarUpdateMinino
-	sudo cp -f /tmp/new.sh /usr/bin/update-minino
+	yes | sudo cp -f /tmp/new.sh /usr/bin/update-minino ; echo
 
 	# Indicamos el final del proceso
 
@@ -543,7 +543,13 @@ autostartUpdateMinino
 # ---
 
 sudo rm -rf /tmp/minino
-read -rsn1 -p "Pulsa cualquier tecla para finalizar"; echo
+
+echo ""
+echo "----------------------------------------------------"
+echo "Pulsa cualquier tecla para finalizar"
+echo "----------------------------------------------------"
+
+read -rsn1 ; echo
 
 exit 0
 
