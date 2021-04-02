@@ -106,7 +106,8 @@ function autostartUpdateMinino {
 	# ---
 
 	# Creamos el fichero .desktop para el autostart
-
+	# ---
+	
 	cat << EOF >> /tmp/updateMinino.desktop
 [Desktop Entry]
 Name=update-minino
@@ -118,12 +119,15 @@ hidden=false
 
 EOF
 
-	sudo mv /tmp/updateMinino.desktop /etc/xdg/autostart/update-minino
+	sudo mv /tmp/updateMinino.desktop /etc/xdg/autostart
 
 	# Añadimos update-minino.sh como comando del sistema
+	# ---
 
     [[ -f /tmp/new.sh ]] || descargarUpdateMinino
+
 	yes | sudo cp -f /tmp/new.sh /usr/bin/update-minino ; echo
+	chmod a+x /usr/bin/update-minino
 
 	# Indicamos el final del proceso
 
@@ -513,8 +517,6 @@ fi
 # Lo eliminamos para que no vuelva a ser usado y procedemos con la actualización
 
 rm -f /tmp/updateminino-*
-
-echo "Y aquí empezaría la actualización de minino"
 
 # Aseguramos tener el sistema actualizado
 # ---
