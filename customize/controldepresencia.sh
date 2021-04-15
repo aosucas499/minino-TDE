@@ -1,9 +1,16 @@
 #! /bin/bash
 
 function controlPresencia {
-	# Abrimos y cerramos firefox en el caso de que nunca se haya abierto 
-    	# ya que necesitamos que se abra para la creación de la carpeta del perfil de usuario
-	/usr/lib/firefox-latest/firefox -CreateProfile default
+	# Si existe el perfil principal, continuamos con el script, en caso contrario 
+	# abrimos y cerramos firefox, ya que necesitamos que se abra para la creación de la carpeta del perfil de usuario
+	# en este caso informamos al usuario de que vuelva a ejecutar la instalación y cierre firefox
+	
+	if [ -d "/home/$USER/.mozilla/firefox/*.default-release-1" ]; then
+			echo "Existe perfil principal de firefox"
+		else	
+			zenity --error --text "Es la primera vez que se ejecuta firefox, ciérrelo y vuelva a ejecutar esta instalación"
+			/usr/lib/firefox-latest/firefox -setDefaultBrowser --no-default-browser-check
+		fi
 	
 	# Borramos del archivo de configuración de firefox la pantalla de bienvenida que se ejecuta la primera vez
 	# Se hace añadiendo esta línea al archivo de configuración
