@@ -8,8 +8,9 @@ function controlPresencia {
 	if [ -d "/home/$USER/.mozilla/firefox/*.default-release-1" ]; then
 			echo "Existe perfil principal de firefox"
 		else	
-			zenity --error --text "Es la primera vez que se ejecuta firefox, ciérrelo y vuelva a ejecutar esta instalación"
+			zenity --error --text "Es la primera vez que se ejecuta firefox, ciérrelo cuando se abra y vuelva a ejecutar esta instalación"
 			/usr/lib/firefox-latest/firefox -setDefaultBrowser --no-default-browser-check
+			exit
 		fi
 	
 	# Borramos del archivo de configuración de firefox la pantalla de bienvenida que se ejecuta la primera vez
