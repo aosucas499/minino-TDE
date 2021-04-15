@@ -11,7 +11,7 @@ function controlPresencia {
 	
     	# Establecemos como página principal la web del control de presencia de Séneca 
     	sed -i '$ i\user_pref("trailhead.firstrun.didSeeAboutWelcome", true);' ~/.mozilla/firefox/*.default-release-1/prefs.js
-	user_pref("trailhead.firstrun.didSeeAboutWelcome", true);
+	
 	# Descargamos y copiamos el ejecutable de firefox en modo kiosk que se ejecutará en cada inicio  
 	# con un retardo para que le dé tiempo al script ntp de corregir la hora
 	wget https://raw.githubusercontent.com/aosucas499/minino-TDE/main/tools/Firefox-latest-sleep30
