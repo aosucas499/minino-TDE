@@ -3,7 +3,7 @@
 function controlPresencia {
 	# Abrimos y cerramos firefox en el caso de que nunca se haya abierto 
     	# ya que necesitamos que se abra para la creación de la carpeta del perfil de usuario
-	/usr/lib/firefox-latest/firefox -setDefaultBrowser &pkill firefox
+	/usr/lib/firefox-latest/firefox -CreateProfile default
 	
 	# Borramos del archivo de configuración de firefox la pantalla de bienvenida que se ejecuta la primera vez
 	# Se hace añadiendo esta línea al archivo de configuración
