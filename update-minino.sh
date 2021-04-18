@@ -127,7 +127,7 @@ EOF
     [[ -f /tmp/new.sh ]] || descargarUpdateMinino
 
 	yes | sudo cp -f /tmp/new.sh /usr/bin/update-minino ; echo
-	chmod a+x /usr/bin/update-minino
+	sudo chmod a+x /usr/bin/update-minino
 
 	# Indicamos el final del proceso
 
