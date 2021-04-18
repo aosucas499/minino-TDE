@@ -486,6 +486,14 @@ hasSudoRights(){
    [ $res -eq 1 ] && echo "True" || echo "False"
 }
 
+# -----------------------------------------------------------------------------
+# Comprueba si hay conexión a Internet
+# -----------------------------------------------------------------------------
+
+function isConnectionAvailable {
+    (echo -n >/dev/tcp/8.8.8.8/53) >/dev/null 2>&1 && echo "True" || echo "False"
+}
+
 # =============================================================================
 # Cuerpo del script
 # =============================================================================
@@ -496,7 +504,22 @@ hasSudoRights(){
 
 [[ $(hasSudoRights) == "False" ]] && exit 0
 
+# Comprobamos si hay internet
+# ---
+
+aux=$(isConnectionAvailable)
+
+if [[ $aux == "False" ]]; then
+	zenity \
+        --warning \
+        --title "Sin conexión a Internet" \
+        --text "Necesitamos conexión a Internet para poder utilizar la mayoría de opciones de 'update-minino'\nPor favor revisa tu conexión y vuelve a lanzar el script cuando vuelva a estar disponible.\nGracias"
+        
+    exit 1;
+fi 
+
 # Comprobamos que no haya un "token" de estar actualizando el script
+# ---
 
 files=(/tmp/updateminino-*);
 
