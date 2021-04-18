@@ -492,9 +492,11 @@ function getLatestRelease() {
 #==============================================================================
 
 descargarCustomizeMinino(){
+    
     versionActual=$(getLatestRelease)
     wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/customize/customize-minino.sh" -O /tmp/new.sh
 }
+
 
 #==============================================================================
 # Actualizamos el script actualmente en ejecución y lo volvemos a invocar 
@@ -544,8 +546,30 @@ isUpdated(){
 }
 
 # -----------------------------------------------------------------------------
+# Comprueba si hay conexión a Internet
+# -----------------------------------------------------------------------------
+
+function isConnectionAvailable {
+    (echo -n >/dev/tcp/8.8.8.8/53) >/dev/null 2>&1 && echo "True" || echo "False"
+}
+
+# -----------------------------------------------------------------------------
 # Cuerpo del script...
 # -----------------------------------------------------------------------------
+
+# Comprobamos si hay internet
+# ---
+
+aux=$(isConnectionAvailable)
+
+if [[ $aux == "False" ]]; then
+	zenity \
+        --warning \
+        --title "Sin conexión a Internet" \
+        --text "Necesitamos conexión a Internet para poder utilizar la mayoría de opciones de 'customize-minino'\nPor favor revisa tu conexión y vuelve a lanzar el script cuando vuelva a estar disponible.\nGracias"
+        
+    exit 1;
+fi 
 
 # Comprobamos si existe una versión más "moderna" de customize-minino.sh
 # ---
