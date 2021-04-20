@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Firefox-latest
 Comment=Navegador web Firefox
-Exec=sh -c "sleep 40 &&/usr/lib/firefox-latest/firefox --kiosk --no-default-browser-check -setDefaultBrowser"
+Exec=sh -c "sleep 40 &&/usr/lib/firefox-latest/firefox --kiosk -setDefaultBrowser"
 Icon=firefox-nightly
 Terminal=false
 Type=Application
