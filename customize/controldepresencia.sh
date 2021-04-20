@@ -18,7 +18,8 @@ function controlPresencia {
 	sed -i '$ i\user_pref("trailhead.firstrun.didSeeAboutWelcome", true);' ~/.mozilla/firefox/*.default-release-1/prefs.js
 	
     	# Establecemos como página principal la web del control de presencia de Séneca 
-    	sed -i '$ i\user_pref("browser.startup.homepage", "https://seneca.juntadeandalucia.es/controldepresencia/");' ~/.mozilla/firefox/*.default-release-1/prefs.js
+	# No necesario pues se la pasa la web en cada inicio al comando --kiosk de firefox
+    	#sed -i '$ i\user_pref("browser.startup.homepage", "https://seneca.juntadeandalucia.es/controldepresencia/");' ~/.mozilla/firefox/*.default-release-1/prefs.js
 	
 	# Descargamos y copiamos el ejecutable de firefox en modo kiosk que se ejecutará en cada inicio  
 	# con un retardo para que le dé tiempo al script ntp de corregir la hora
