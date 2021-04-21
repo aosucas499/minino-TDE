@@ -7,10 +7,6 @@
 # ---
 
 function controlPresencia {
-
-	## Activa el autologin para el usuario "usuario"
-	# ---
-	activarAutoLogin 
 	
 	# Si existe el perfil principal, continuamos con el script, en caso contrario 
 	# abrimos y cerramos firefox, ya que necesitamos que se abra para la creación de la carpeta del perfil de usuario
@@ -46,6 +42,10 @@ function controlPresencia {
 	#---
 	zenity --info --text="El control de presencia de Séneca se encuentra instalado en el sistema. Reinicie el sistema para que los cambios tengan efecto."
 	zenity --info --text="Recuerde que el navegador tardará unos 40 segundo en iniciarse en cada inicio."
+	
+	## Activa el autologin para el usuario "usuario"
+	# ---
+	activarAutoLogin 
 }
 
 # Desactiva el control de presencia de Séneca en cada inicio
