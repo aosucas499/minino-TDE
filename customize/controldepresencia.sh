@@ -24,7 +24,6 @@ function controlPresencia {
 	# Descargamos y copiamos el ejecutable de firefox en modo kiosk que se ejecutará en cada inicio  
 	# con un retardo para que le dé tiempo al script ntp de corregir la hora
 	wget https://raw.githubusercontent.com/aosucas499/minino-TDE/main/tools/Firefox-latest-sleep30
-	zenity --info --text="Introduzca la contraseña de usuario en la terminal cuando cierre esta ventana."
     	sudo cp Firefox-latest-sleep30 /etc/xdg/autostart/Firefox-latest-sleep30.desktop
 	zenity --info --text="El control de presencia de Séneca se encuentra instalado en el sistema. Reinicie el sistema para que los cambios tengan efecto."
 	zenity --info --text="Recuerde que el navegador tardará unos 40 segundo en iniciarse en cada inicio."
