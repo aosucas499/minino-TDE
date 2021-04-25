@@ -41,7 +41,7 @@ function controlPresencia {
 	## Informa al usuario de varios aspectos a tener en cuenta
 	#---
 	zenity --info --text="El control de presencia de Séneca se encuentra instalado en el sistema. Reinicie el sistema para que los cambios tengan efecto."
-	zenity --info --text="Recuerde que el navegador tardará unos 40 segundo en iniciarse en cada inicio."
+	zenity --info --text="Recuerde que el navegador tardará unos 40 segundos en iniciarse en cada inicio."
 	
 	## Activa el autologin para el usuario "usuario"
 	# ---
