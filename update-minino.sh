@@ -465,11 +465,9 @@ isUpdated(){
 
 	# Calculamos los hash de este script y del descargado
 	#---
-
-	mininoPath=$(which update-minino)
 	
-	hashActual=$(md5sum  $mininoPath | cut -d" " -f1)
-	hashNuevo=$(md5sum  /tmp/new.sh | cut -d" " -f1)
+	hashActual=$(md5sum "$0" | cut -d" " -f1)
+	hashNuevo=$(md5sum /tmp/new.sh | cut -d" " -f1)
 
 	# Comprobamos si el script está (o no) actualizado
 	#---
