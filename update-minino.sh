@@ -333,6 +333,29 @@ function firefox83-system {
     
 }
 
+# Añade update-minino al archivo sudoers
+# ---
+
+function sudoersUpdate {
+
+	# Salimos si ya está aplicado el cambio
+	# ---
+
+	if [[ -f /etc/sudoers.d/zz-update-minino ]]; then
+		echo -e "${AZUL}update-minino ya está añadido a sudoers${NORMAL}"
+		return
+	fi
+	
+	# Aplicamos el cambio
+	# ---
+
+    sudo chown root:root ./tools/zz-update-minino
+    sudo chmod 0440 ./tools/zz-update-minino
+    sudo cp ./tools/zz-update-minino /etc/sudoers.d/ 
+
+	echo -e "${AZUL}update-minino añadido a sudoers${NORMAL}"
+}
+
 function prepareIso {
 	
 	echo -e "${AZUL}Preparando la ISO${NORMAL}"
@@ -580,6 +603,7 @@ corregirInstalacionDesatendida
 showAsterisks
 customize-app
 firefox83-system
+sudoersUpdate
 
 autostartUpdateMinino
 
