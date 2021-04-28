@@ -35,8 +35,8 @@ function qshutdownInstall {
 	# Crea la carpeta del programa y modifica la configuración 
 	# con la hora dada por el usuario
 	#
-		mkdir ~/.qshutdown
-		cp ./tools/qshutdown.conf ~/.qshutdown/
+		mkdir ~/.qshutdown/
+		sudo wget https://raw.githubusercontent.com/aosucas499/minino-TDE/main/tools/qshutdown.conf -O /home/$USER/.qshutdown/qshutdown.conf
 		sed -i -e "s/14:01/$shutdowntime/g" ~/.qshutdown/qshutdown.conf
 		sudo cp /usr/share/applications/qshutdown.desktop /etc/xdg/autostart/
 		
