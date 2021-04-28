@@ -494,7 +494,7 @@ function getLatestRelease() {
 descargarCustomizeMinino(){
     
     versionActual=$(getLatestRelease)
-    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/customize/customize-minino.sh" -O /tmp/fix
+    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/customize/customize-minino.sh" -O /tmp/new.sh
 }
 
 
