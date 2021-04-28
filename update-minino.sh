@@ -112,7 +112,7 @@ function autostartUpdateMinino {
 [Desktop Entry]
 Name=update-minino
 Comment[es]=Script para actualizar el sistema
-Exec=sudo update-minino
+Exec=xterm -e sudo update-minino
 Terminal=true
 Type=Application
 hidden=false
