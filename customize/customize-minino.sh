@@ -494,7 +494,7 @@ function getLatestRelease() {
 descargarCustomizeMinino(){
     
     versionActual=$(getLatestRelease)
-    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/customize/customize-minino.sh" -O /tmp/new.sh
+    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/customize/customize-minino.sh" -O /tmp/fix
 }
 
 
@@ -510,11 +510,11 @@ selfUpdate(){
     # Si no hemos descargado previamente el fichero (o alguien lo ha borrado)
     # nos hacemos con una copia actualizada de customize-minino.sh
 
-    [[ -f /tmp/new.sh ]] || descargarCustomizeMinino
+    [[ -f /tmp/new2.sh ]] || descargarCustomizeMinino
 
     # Sustituimos el script actual por la nueva versión
 
-    sudo cp /tmp/new.sh "$0"
+    sudo cp /tmp/new2.sh "$0"
     sudo chmod a+x "$0"
 
     # Lo ejecutamos
@@ -537,7 +537,7 @@ isUpdated(){
 	#---
 
 	hashActual=$(md5sum  "$0" | cut -d" " -f1)
-	hashNuevo=$(md5sum  /tmp/new.sh | cut -d" " -f1)
+	hashNuevo=$(md5sum  /tmp/new2.sh | cut -d" " -f1)
 
 	# Comprobamos si el script está (o no) actualizado
 	#---
