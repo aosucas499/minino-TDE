@@ -463,11 +463,22 @@ isUpdated(){
 
 	descargarUpdateMinino
 
+	# Obtenemos la ruta al update-minino cuyo hash debemos calcular
+	#---
+
+	# Damos más importancia al del sistema
+
+	mininoPath=$(which update-minino)
+
+	# Si no existe update-minino en el sistema, usamos la ruta al script actualmente en ejecución
+
+	if [[ -z $mininoPath ]]; then
+		mininoPath=$0
+	fi
+	
 	# Calculamos los hash de este script y del descargado
 	#---
 
-	mininoPath=$(which update-minino)
-	
 	hashActual=$(md5sum  $mininoPath | cut -d" " -f1)
 	hashNuevo=$(md5sum  /tmp/new.sh | cut -d" " -f1)
 
