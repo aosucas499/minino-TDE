@@ -428,7 +428,7 @@ function getLatestRelease() {
 
 descargarUpdateMinino(){
     versionActual=$(getLatestRelease)
-    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/update-minino.sh" -O /tmp/new.sh
+    wget -q "https://raw.githubusercontent.com/$REPO_GITHUB/$versionActual/update-minino.sh" -O /tmp/new.sh
 }
 
 #==============================================================================
