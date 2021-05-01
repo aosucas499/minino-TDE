@@ -5,12 +5,15 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Definición de las funciones utilizadas en el script
+# Definición de las constantes utilizadas en el script
 # -----------------------------------------------------------------------------
+
+REPO_GITHUB=aosucas499/minino-TDE
 
 FIREFOX=https://download-installer.cdn.mozilla.net/pub/firefox/releases/83.0/linux-i686/es-ES/firefox-83.0.tar.bz2
 LANZADOR=https://raw.githubusercontent.com/aosucas499/actualiza-firefox/master/firefox-latest.desktop
 NEWLANZADOR=firefox-latest.desktop
+
 ROJO="\033[1;31m"
 NORMAL="\033[0m"
 AZUL="\033[1;34m"
@@ -171,7 +174,7 @@ function instalarFlorence {
 # ---
 
 function getLatestCommit() {
-	echo $(wget --quiet -O- https://api.github.com/repos/aosucas499/minino-TDE/commits | grep '"sha":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+	echo $(wget --quiet -O- "https://api.github.com/repos/$REPO_GITHUB/commits" | grep '"sha":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
 }
 
 #==============================================================================
@@ -180,7 +183,7 @@ function getLatestCommit() {
 
 function getLatestRelease() {
 	
-    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$REPO_GITHUB/releases" | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
     
     # NOTA  a pesar de la polémica main/master, a día de hoy Github 
     #       redirecciona sin problemas usemos la que usemos 
@@ -399,7 +402,7 @@ function prepareIso {
 
 function descargarMininoTDE(){
 
-git clone https://github.com/aosucas499/minino-TDE.git /tmp/minino
+git clone "https://github.com/$REPO_GITHUB.git" /tmp/minino
 cd /tmp/minino
 
 echo -e "${AZUL}Actualización de Minino-TDE descargada correctamente${NORMAL}"
@@ -411,7 +414,7 @@ echo -e "${AZUL}Actualización de Minino-TDE descargada correctamente${NORMAL}"
 
 function getLatestRelease() {
 	
-    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$REPO_GITHUB/releases" | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
     
     # NOTA  a pesar de la polémica main/master, a día de hoy Github 
     #       redirecciona sin problemas usemos la que usemos 
