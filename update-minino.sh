@@ -517,6 +517,11 @@ function isConnectionAvailable {
 
 [[ $(hasSudoRights) == "False" ]] && exit 0
 
+# Evitamos colisiones con otros scripts
+# ---
+
+rm -f /tmp/new.sh
+
 # Comprobamos si hay internet
 # ---
 
