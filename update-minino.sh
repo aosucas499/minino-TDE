@@ -101,7 +101,10 @@ function autostartUpdateMinino {
 	# Salimos si ya está aplicado el cambio
 	# ---
 
-	if [[ -f /etc/xdg/autostart/updateMinino.desktop ]]; then
+	# Para asegurar que se coloque update-minino como comando del sistema comprobamos 
+	# tanto el .desktop como el script en /usr/bin
+	
+	if [[ -f /etc/xdg/autostart/updateMinino.desktop ]] && [[ -f /usr/bin/update-minino ]]; then
 		echo -e "${AZUL}Update-minino ya se ejecutaba al iniciar sesión${NORMAL}"
 		return
 	fi
