@@ -8,6 +8,7 @@
 # Definición de las constantes utilizadas en el script
 # -----------------------------------------------------------------------------
 
+# TODO devolver a aosucas499/minino-TDE cuando acaben las pruebas
 REPO_GITHUB=jasvazquez/minino-TDE
 
 FIREFOX=https://download-installer.cdn.mozilla.net/pub/firefox/releases/83.0/linux-i686/es-ES/firefox-83.0.tar.bz2
@@ -567,10 +568,11 @@ if [[ ! -e "${files[0]}" ]]; then
 			echo -e "${AZUL}Sin problemas, ya habrá oportunidad de hacerlo.${NORMAL}"
 		fi
 
-		# Elija lo que elija debemos salir
-
-		exit 0
 	fi 
+
+	# Elija lo que elija el usuario, debemos salir
+
+	exit 0
 
 fi
 
