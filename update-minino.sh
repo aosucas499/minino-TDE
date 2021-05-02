@@ -5,12 +5,19 @@
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Definición de las funciones utilizadas en el script
+# Definición de las constantes utilizadas en el script
 # -----------------------------------------------------------------------------
+
+# NOTA cambiar de aosucas499/minino-TDE a jasvazquez/minino-TDE para poder hacer
+# pruebas sin que el cambio de "release" afecte a los usuarios que ya tenga
+# autoupdate en Minino
+
+REPO_GITHUB=aosucas499/minino-TDE
 
 FIREFOX=https://download-installer.cdn.mozilla.net/pub/firefox/releases/83.0/linux-i686/es-ES/firefox-83.0.tar.bz2
 LANZADOR=https://raw.githubusercontent.com/aosucas499/actualiza-firefox/master/firefox-latest.desktop
 NEWLANZADOR=firefox-latest.desktop
+
 ROJO="\033[1;31m"
 NORMAL="\033[0m"
 AZUL="\033[1;34m"
@@ -97,7 +104,10 @@ function autostartUpdateMinino {
 	# Salimos si ya está aplicado el cambio
 	# ---
 
-	if [[ -f /etc/xdg/autostart/updateMinino.desktop ]]; then
+	# Para asegurar que se coloque update-minino como comando del sistema comprobamos 
+	# tanto el .desktop como el script en /usr/bin
+
+	if [[ -f /etc/xdg/autostart/updateMinino.desktop ]] && [[ -f /usr/bin/update-minino ]]; then
 		echo -e "${AZUL}Update-minino ya se ejecutaba al iniciar sesión${NORMAL}"
 		return
 	fi
@@ -171,7 +181,7 @@ function instalarFlorence {
 # ---
 
 function getLatestCommit() {
-	echo $(wget --quiet -O- https://api.github.com/repos/aosucas499/minino-TDE/commits | grep '"sha":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+	echo $(wget --quiet -O- "https://api.github.com/repos/$REPO_GITHUB/commits" | grep '"sha":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
 }
 
 #==============================================================================
@@ -180,7 +190,7 @@ function getLatestCommit() {
 
 function getLatestRelease() {
 	
-    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$REPO_GITHUB/releases" | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
     
     # NOTA  a pesar de la polémica main/master, a día de hoy Github 
     #       redirecciona sin problemas usemos la que usemos 
@@ -422,7 +432,7 @@ function prepareIso {
 
 function descargarMininoTDE(){
 
-git clone https://github.com/aosucas499/minino-TDE.git /tmp/minino
+git clone "https://github.com/$REPO_GITHUB.git" /tmp/minino
 cd /tmp/minino
 
 echo -e "${AZUL}Actualización de Minino-TDE descargada correctamente${NORMAL}"
@@ -434,7 +444,7 @@ echo -e "${AZUL}Actualización de Minino-TDE descargada correctamente${NORMAL}"
 
 function getLatestRelease() {
 	
-    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$REPO_GITHUB/releases" | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
     
     # NOTA  a pesar de la polémica main/master, a día de hoy Github 
     #       redirecciona sin problemas usemos la que usemos 
@@ -448,7 +458,7 @@ function getLatestRelease() {
 
 descargarUpdateMinino(){
     versionActual=$(getLatestRelease)
-    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/update-minino.sh" -O /tmp/new.sh
+    wget -q "https://raw.githubusercontent.com/$REPO_GITHUB/$versionActual/update-minino.sh" -O /tmp/new.sh
 }
 
 #==============================================================================
@@ -486,11 +496,24 @@ isUpdated(){
 
 	descargarUpdateMinino
 
+	# Obtenemos la ruta al update-minino cuyo hash debemos calcular
+	#---
+
+	# Damos más importancia al del sistema
+
+	mininoPath=$(which update-minino)
+
+	# Si no existe update-minino en el sistema, usamos la ruta al script actualmente en ejecución
+
+	if [[ -z $mininoPath ]]; then
+		mininoPath=$0
+	fi
+	
 	# Calculamos los hash de este script y del descargado
 	#---
-	
-	hashActual=$(md5sum "$0" | cut -d" " -f1)
-	hashNuevo=$(md5sum /tmp/new.sh | cut -d" " -f1)
+
+	hashActual=$(md5sum  $mininoPath | cut -d" " -f1)
+	hashNuevo=$(md5sum  /tmp/new.sh | cut -d" " -f1)
 
 	# Comprobamos si el script está (o no) actualizado
 	#---
@@ -526,6 +549,11 @@ function isConnectionAvailable {
 # -----------------------------------------------------------------------------
 
 [[ $(hasSudoRights) == "False" ]] && exit 0
+
+# Evitamos colisiones con otros scripts
+# ---
+
+rm -f /tmp/new.sh
 
 # Comprobamos si hay internet
 # ---
@@ -569,10 +597,11 @@ if [[ ! -e "${files[0]}" ]]; then
 			echo -e "${AZUL}Sin problemas, ya habrá oportunidad de hacerlo.${NORMAL}"
 		fi
 
-		# Elija lo que elija debemos salir
-
-		exit 0
 	fi 
+
+	# Elija lo que elija el usuario, debemos salir
+
+	exit 0
 
 fi
 

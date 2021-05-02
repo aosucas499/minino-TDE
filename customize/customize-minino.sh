@@ -702,6 +702,11 @@ function isConnectionAvailable {
 # Cuerpo del script...
 # -----------------------------------------------------------------------------
 
+# Evitamos colisiones con otros scripts
+# ---
+
+rm -f /tmp/new.sh
+
 # Comprobamos si hay internet
 # ---
 
