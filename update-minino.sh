@@ -8,8 +8,11 @@
 # Definición de las constantes utilizadas en el script
 # -----------------------------------------------------------------------------
 
-# TODO devolver a aosucas499/minino-TDE cuando acaben las pruebas
-REPO_GITHUB=jasvazquez/minino-TDE
+# NOTA cambiar de aosucas499/minino-TDE a jasvazquez/minino-TDE para poder hacer
+# pruebas sin que el cambio de "release" afecte a los usuarios que ya tenga
+# autoupdate en Minino
+
+REPO_GITHUB=aosucas499/minino-TDE
 
 FIREFOX=https://download-installer.cdn.mozilla.net/pub/firefox/releases/83.0/linux-i686/es-ES/firefox-83.0.tar.bz2
 LANZADOR=https://raw.githubusercontent.com/aosucas499/actualiza-firefox/master/firefox-latest.desktop
@@ -103,7 +106,7 @@ function autostartUpdateMinino {
 
 	# Para asegurar que se coloque update-minino como comando del sistema comprobamos 
 	# tanto el .desktop como el script en /usr/bin
-	
+
 	if [[ -f /etc/xdg/autostart/updateMinino.desktop ]] && [[ -f /usr/bin/update-minino ]]; then
 		echo -e "${AZUL}Update-minino ya se ejecutaba al iniciar sesión${NORMAL}"
 		return
