@@ -705,7 +705,7 @@ function isConnectionAvailable {
 # Evitamos colisiones con otros scripts
 # ---
 
-rm -f /tmp/new.sh
+rm -f /tmp/new2.sh
 
 # Comprobamos si hay internet
 # ---
