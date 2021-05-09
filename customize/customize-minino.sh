@@ -12,6 +12,12 @@
 
 readonly DEBUG='n'
 
+# NOTA cambiar de aosucas499/minino-TDE a jasvazquez/minino-TDE para poder hacer
+# pruebas sin que el cambio de "release" afecte a los usuarios que ya tenga
+# autoupdate en Minino
+
+REPO_GITHUB=aosucas499/minino-TDE
+
 # -----------------------------------------------------------------------------
 # Definición de las funciones utilizadas en el script
 # -----------------------------------------------------------------------------
@@ -54,7 +60,7 @@ function controlPresencia {
 	# Descargamos y copiamos el ejecutable de firefox en modo kiosk que se ejecutará en cada inicio  
 	# con un retardo para que le dé tiempo al script ntp de corregir la hora
 	#---
-	wget https://raw.githubusercontent.com/aosucas499/minino-TDE/main/tools/Firefox-latest-sleep30
+	wget "https://raw.githubusercontent.com/$REPO_GITHUB/main/tools/Firefox-latest-sleep30"
     	sudo mv Firefox-latest-sleep30 /etc/xdg/autostart/Firefox-latest-sleep30.desktop
 
 	## Informa al usuario de varios aspectos a tener en cuenta
@@ -171,7 +177,7 @@ function qshutdown {
 	# con la hora dada por el usuario
 	#
 	mkdir ~/.qshutdown/
-	wget https://raw.githubusercontent.com/aosucas499/minino-TDE/main/tools/qshutdown.conf -O /home/$USER/.qshutdown/qshutdown.conf
+	wget "https://raw.githubusercontent.com/$REPO_GITHUB/main/tools/qshutdown.conf" -O /home/$USER/.qshutdown/qshutdown.conf
 	sed -i -e "s/14:01/$shutdowntime/g" ~/.qshutdown/qshutdown.conf
 	sudo cp /usr/share/applications/qshutdown.desktop /etc/xdg/autostart/	
 }
@@ -624,7 +630,7 @@ function getOpcionesDescartadas {
 
 function getLatestRelease() {
 	
-    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/aosucas499/minino-TDE/releases | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
+    version=$(wget --quiet -O- -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$REPO_GITHUB/releases" | grep '"tag_name":' | head -n 1 | sed -E 's/.*"([^"]+)".*/\1/')
     
     # NOTA  a pesar de la polémica main/master, a día de hoy Github 
     #       redirecciona sin problemas usemos la que usemos 
@@ -639,7 +645,7 @@ function getLatestRelease() {
 descargarCustomizeMinino(){
     
     versionActual=$(getLatestRelease)
-    wget -q "https://raw.githubusercontent.com/aosucas499/minino-TDE/$versionActual/customize/customize-minino.sh" -O /tmp/new2.sh
+    wget -q "https://raw.githubusercontent.com/$REPO_GITHUB/$versionActual/customize/customize-minino.sh" -O /tmp/new2.sh
 }
 
 
@@ -705,7 +711,7 @@ function isConnectionAvailable {
 # Evitamos colisiones con otros scripts
 # ---
 
-rm -f /tmp/new.sh
+rm -f /tmp/new2.sh
 
 # Comprobamos si hay internet
 # ---
