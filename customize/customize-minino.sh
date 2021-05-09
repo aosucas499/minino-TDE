@@ -16,7 +16,7 @@ readonly DEBUG='n'
 # pruebas sin que el cambio de "release" afecte a los usuarios que ya tenga
 # autoupdate en Minino
 
-REPO_GITHUB=jasvazquez/minino-TDE
+REPO_GITHUB=aosucas499/minino-TDE
 
 # -----------------------------------------------------------------------------
 # Definición de las funciones utilizadas en el script
