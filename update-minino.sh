@@ -320,21 +320,21 @@ function firefox83-system {
   	# Instala firefox 83 en el sistema
 
 	echo -e "Descargando Firefox para arquitecturas de 32 bits${NORMAL}"
-	wget $FIREFOX -q --show-progress
+	wget $FIREFOX -q --show-progress -O /tmp/firefox-latest.tar.bz2
 	echo -e "Firefox se está descomprimiendo en un directorio del sistema...${NORMAL}"
-	sudo tar -xjf firefox*.tar.bz2 -C /usr/lib
+	sudo tar -xjf /tmp/firefox-latest.tar.bz2 -C /usr/lib
 	sudo mv /usr/lib/firefox /usr/lib/firefox-latest
 	echo -e "Creando accesos directos...${NORMAL}"
-	wget $LANZADOR -q
-	sudo cp $NEWLANZADOR /usr/share/applications/
-	cp $NEWLANZADOR ~/Escritorio
+	wget $LANZADOR -q -O /tmp/$NEWLANZADOR
+	sudo cp /tmp/$NEWLANZADOR /usr/share/applications/
+	cp /tmp/$NEWLANZADOR /home/$USER/Escritorio
 	echo -e "BORRANDO archivos firefox residuales...${NORMAL}"
-	rm $NEWLANZADOR
-	rm firefox*.tar.bz2
+	rm /tmp/$NEWLANZADOR
+	rm /tmp/firefox-latest.tar.bz2
 	
 	#Borra el actualizador automático ya que puede que en un futuro las actualizaciones no sean compatibles con el sistema
 	
-	sudo rm /usr/lib/firefox-latest/updat* 
+	sudo rm -f /usr/lib/firefox-latest/updat* 
 
 	#Librería necesaria para versiones nuevas de firefox, instalada previamente, pero por si las moscas	
 	
