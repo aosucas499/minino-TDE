@@ -537,7 +537,7 @@ hasSudoRights(){
 # -----------------------------------------------------------------------------
 
 function isConnectionAvailable {
-    (echo -n >/dev/tcp/8.8.8.8/53) >/dev/null 2>&1 && echo "True" || echo "False"
+    echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1 && echo "True" || echo "False"
 }
 
 # =============================================================================
