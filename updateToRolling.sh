@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Borra el icono de la instalación en el escritorio
+# en caso de que exista
+rm /home/$USER/Escritorio/minino-installer.desktop
+
 # -----------------------------------------------------------------------------
 # Comprueba si hay conexión a Internet
 # -----------------------------------------------------------------------------
