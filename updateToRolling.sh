@@ -32,7 +32,7 @@ if [[ $aux == "False" ]]; then
     exit 1;
 fi 
 
-# Descargamos el proyecto y entramos en la carpeta
+# Entramos al proyecto
 #
 	git clone https://github.com/aosucas499/minino-tde
 	cd /home/$USER/minino-tde
