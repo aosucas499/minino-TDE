@@ -117,10 +117,19 @@ Plugin {
   type=launchbar
   Config {
     Button {
+      id=menu://applications/System/lxterminal.desktop
+    }
+    Button {
       id=pcmanfm.desktop
     }
     Button {
-      id=lxde-x-www-browser.desktop
+      id=menu://applications/Internet/firefox-latest.desktop
+    }
+    Button {
+      id=menu://applications/Graphics/minino-screenshot.desktop
+    }
+    Button {
+      id=menu://applications/Universal Access/florence.desktop
     }
   }
 }
@@ -256,17 +265,17 @@ show_documents=1
 show_trash=1
 show_mounts=1
 
-[minino-installer.desktop]
-x=173
-y=22
+[firefox-latest.desktop]
+x=24
+y=181
 
 [customize-minino.desktop]
-x=693
-y=333
+x=14
+y=466
 
 [system-config-printer.desktop]
-x=559
-y=97
+x=594
+y=96
 
 [firefox-esr.desktop]
 x=18
@@ -277,28 +286,28 @@ x=12
 y=368
 
 [tuxpaint.desktop]
-x=388
-y=589
+x=429
+y=579
 
 [tuxmath.desktop]
-x=471
-y=587
+x=533
+y=574
 
 [gcompris.desktop]
-x=553
-y=586
+x=641
+y=577
 
 [childsplay.desktop]
-x=292
-y=584
+x=323
+y=579
 
 [libreoffice-impress.desktop]
-x=475
+x=483
 y=96
 
 [libreoffice-writer.desktop]
-x=366
-y=99
+x=371
+y=92
 
 [Documentos]
 x=20
