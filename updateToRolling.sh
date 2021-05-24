@@ -1,0 +1,329 @@
+#!/bin/bash
+
+# -----------------------------------------------------------------------------
+# Comprueba si hay conexión a Internet
+# -----------------------------------------------------------------------------
+
+function isConnectionAvailable {
+    echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1 && echo "True" || echo "False"
+}
+
+# =============================================================================
+# Cuerpo del script
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Sólo permitimos que sea utilizado por usuarios con permisos de administración
+# -----------------------------------------------------------------------------
+
+[[ $(hasSudoRights) == "False" ]] && exit 0
+
+# Comprobamos si hay internet
+# ---
+
+aux=$(isConnectionAvailable)
+
+if [[ $aux == "False" ]]; then
+	zenity \
+        --warning \
+        --title "Sin conexión a Internet" \
+        --text "Necesitamos conexión a Internet para poder utilizar la mayoría de opciones de 'update-minino'\nPor favor revisa tu conexión y vuelve a lanzar el script cuando vuelva a estar disponible.\nGracias"
+        
+    exit 1;
+fi 
+
+# Descargamos el proyecto y entramos en la carpeta
+#
+	git clone https://github.com/aosucas499/minino-tde
+	cd /home/$USER/minino-tde
+
+# Cambiamos a una versión previa/etiqueta del proyecto 
+# o no hará nada al comprobar que está actualizado
+#
+	git checkout tags/1.3.0
+	sudo cp ./customize/customize-minino.sh /usr/bin/customize-minino
+	sudo cp update-minino.sh /usr/bin/update-minino
+	
+# Procedemos a actualizar el sistema
+# Pedirtá contraseña root y habrá que aceptar el mensaje 
+# de actualizar a la nueva versión
+#	
+	sudo update-minino	
+	
+# Creamos y copiamos los ficheros de configuración de la barra inferios de tareas,
+# los iconos del escritorio y el fondo de pantalla tal como están en la versión rolling.
+# De esta manera se quedan para cualquier usuario default, pensando en un cambio futuro
+# del instalador.
+#
+	# Copiamos el fondo de escritorio TDE al predeterminado del sistema	
+		sudo cp /home/$USER/Imágenes/logo_TDE.png /usr/local/share/backgrounds/170863-2.jpg
+
+	# Creamos el fichero de la barra de tareas como la versión rolling y lo copiamos
+	# como predeterminado del sistema.
+		cat << EOF >> /tmp/bottom
+
+# lxpanel <profile> config file. Manually editing is not recommended.
+# Use preference dialog in lxpanel to adjust config when you can.
+
+Global {
+  edge=bottom
+  allign=left
+  margin=0
+  widthtype=percent
+  width=100
+  height=26
+  transparent=1
+  tintcolor=#a4a4a4
+  alpha=178
+  autohide=0
+  heightwhenhidden=2
+  setdocktype=1
+  setpartialstrut=1
+  usefontcolor=0
+  fontsize=10
+  fontcolor=#ffffff
+  usefontsize=0
+  background=0
+  backgroundfile=/usr/share/lxpanel/images/background.png
+  iconsize=24
+}
+Plugin {
+  type=menu
+  Config {
+    image=/usr/local/share/icons/minino-icon.png
+    system {
+    }
+    separator {
+    }
+    item {
+      image=applications-system
+      command=run
+    }
+    separator {
+    }
+    item {
+      image=gnome-logout
+      command=logout
+    }
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=3
+  }
+}
+Plugin {
+  type=launchbar
+  Config {
+    Button {
+      id=pcmanfm.desktop
+    }
+    Button {
+      id=lxde-x-www-browser.desktop
+    }
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=4
+  }
+}
+Plugin {
+  type=wincmd
+  Config {
+    image=desktop
+    Button1=iconify
+    Button2=shade
+    Toggle=1
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=4
+  }
+}
+Plugin {
+  type=pager
+  Config {
+  }
+}
+Plugin {
+  type=space
+  Config {
+    Size=4
+  }
+}
+Plugin {
+  type=taskbar
+  expand=1
+  Config {
+    tooltips=1
+    IconsOnly=0
+    ShowAllDesks=0
+    UseMouseWheel=1
+    UseUrgencyHint=1
+    FlatButton=0
+    MaxTaskWidth=150
+    spacing=1
+    GroupedTasks=0
+  }
+}
+Plugin {
+  type=monitors
+  Config {
+    DisplayCPU=1
+    DisplayRAM=1
+    CPUColor=#0000FF
+    RAMColor=#FF0000
+  }
+}
+Plugin {
+  type=batt
+  Config {
+    HideIfNoBattery=0
+    AlarmCommand=minino-xmsglowbatt
+    AlarmTime=5
+    BackgroundColor=black
+    BorderWidth=1
+    ChargingColor1=#28f200
+    ChargingColor2=#22cc00
+    DischargingColor1=#ffee00
+    DischargingColor2=#d9ca00
+    Size=20
+    ShowExtendedInformation=0
+  }
+}
+Plugin {
+  type=tray
+  Config {
+  }
+}
+Plugin {
+  type=launchbar
+  Config {
+    Button {
+      id=/usr/local/share/applications/minino/minino-keyboard.desktop
+    }
+  }
+}
+Plugin {
+  type=volumealsa
+  Config {
+  }
+}
+Plugin {
+  type=dclock
+  Config {
+    ClockFmt=%R
+    TooltipFmt=%A %x
+    BoldFont=1
+    IconOnly=0
+    CenterText=0
+  }
+}
+Plugin {
+  type=launchbar
+  Config {
+    Button {
+      id=lxde-logout.desktop
+    }
+  }
+}
+
+			EOF
+
+		sudo mv /tmp/bottom /etc/skel/.config/lxpanel/LXDE/panels
+
+	# Creamos el fichero de los iconos del escritorio de la versión rolling y lo copiamos
+	# como predeterminado del sistema.
+
+		cat << EOF >> /tmp/desktop-items-1.conf
+
+[*]
+wallpaper_mode=center
+wallpaper_common=1
+wallpaper=/usr/local/share/backgrounds/170863-2.jpg
+desktop_bg=#ffffff
+desktop_fg=#0c0507
+desktop_shadow=#ffffff
+desktop_font=Arial 10
+show_wm_menu=0
+sort=mtime;ascending;
+show_documents=1
+show_trash=1
+show_mounts=1
+
+[minino-installer.desktop]
+x=173
+y=22
+
+[customize-minino.desktop]
+x=693
+y=333
+
+[system-config-printer.desktop]
+x=559
+y=97
+
+[firefox-esr.desktop]
+x=18
+y=279
+
+[Chromium con flash]
+x=12
+y=368
+
+[tuxpaint.desktop]
+x=388
+y=589
+
+[tuxmath.desktop]
+x=471
+y=587
+
+[gcompris.desktop]
+x=553
+y=586
+
+[childsplay.desktop]
+x=292
+y=584
+
+[libreoffice-impress.desktop]
+x=475
+y=96
+
+[libreoffice-writer.desktop]
+x=366
+y=99
+
+[Documentos]
+x=20
+y=92
+
+[trash:///]
+x=15
+y=2
+
+
+			EOF
+		
+		sudo mv /tmp/desktop-items-1.conf /etc/skel/.config/pcmanfm/LXDE
+
+# Borramos la carpeta del proyecto
+#
+	sudo rm -r /home/$USER/minino-tde
+
+# Reiniciamos el sistema
+# 
+	echo ""
+	echo "Se va a reiniciar el sistema"
+	echo ""
+	echo "Si quiere evitarlo, pulse las teclas Control y c"
+	echo ""
+	echo sleep 5
+	sudo reboot
+
