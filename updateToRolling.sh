@@ -37,11 +37,11 @@ fi
 	#git clone https://github.com/aosucas499/minino-tde
 	cd /home/$USER/minino-tde
 
-# Cambiamos a una versión previa/etiqueta del proyecto 
-# o no hará nada al comprobar que está actualizado
+# Copiamos customize-minino de la última release y cambiamos a una versión 
+# previa/etiqueta del proyecto o no hará update-minino nada al comprobar que está actualizado
 #
-	git checkout tags/1.3.0
 	sudo cp ./customize/customize-minino.sh /usr/bin/customize-minino
+	git checkout tags/1.3.0
 	sudo cp update-minino.sh /usr/bin/update-minino
 	
 # Procedemos a actualizar el sistema
@@ -317,7 +317,7 @@ y=2
 EOF
 		
 		sudo cp /tmp/desktop-items-1.conf /etc/skel/.config/pcmanfm/LXDE
-		/tmp/desktop-items-1.conf /home/$USER/.config/pcmanfm/LXDE/desktop-items-0.conf
+		mv /tmp/desktop-items-1.conf /home/$USER/.config/pcmanfm/LXDE/desktop-items-0.conf
 
 # Borramos la carpeta del proyecto
 #
