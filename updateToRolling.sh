@@ -34,7 +34,7 @@ fi
 
 # Entramos al proyecto
 #
-	git clone https://github.com/aosucas499/minino-tde
+	#git clone https://github.com/aosucas499/minino-tde
 	cd /home/$USER/minino-tde
 
 # Cambiamos a una versión previa/etiqueta del proyecto 
