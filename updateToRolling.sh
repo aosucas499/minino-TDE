@@ -4,6 +4,17 @@
 # en caso de que exista
 rm /home/$USER/Escritorio/minino-installer.desktop
 
+#==============================================================================
+# Comprueba si tiene permisos de sudo
+#==============================================================================
+
+hasSudoRights(){
+
+	res=$(sudo -l | grep \(ALL | wc -l)
+
+   [ $res -eq 1 ] && echo "True" || echo "False"
+}
+
 # -----------------------------------------------------------------------------
 # Comprueba si hay conexión a Internet
 # -----------------------------------------------------------------------------
