@@ -2,7 +2,11 @@
 
 # Borra el icono de la instalación en el escritorio
 # en caso de que exista
-rm /home/$USER/Escritorio/minino-installer.desktop
+	if [ -f "/home/$USER/Escritorio/minino-installer.desktop" ]; then
+		rm -f /home/$USER/Escritorio/minino-installer.desktop
+	else
+	echo "Nada que borrar en el escritorio"
+fi
 
 #==============================================================================
 # Comprueba si tiene permisos de sudo
