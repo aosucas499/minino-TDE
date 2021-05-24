@@ -242,7 +242,8 @@ Plugin {
 }
 EOF
 
-		sudo mv /tmp/bottom /etc/skel/.config/lxpanel/LXDE/panels
+		sudo cp /tmp/bottom /etc/skel/.config/lxpanel/LXDE/panels
+		mv /tmp/bottom /home/$USER/.config/lxpanel/LXDE/panels
 
 	# Creamos el fichero de los iconos del escritorio de la versión rolling y lo copiamos
 	# como predeterminado del sistema.
@@ -315,7 +316,8 @@ x=15
 y=2
 EOF
 		
-		sudo mv /tmp/desktop-items-1.conf /etc/skel/.config/pcmanfm/LXDE
+		sudo cp /tmp/desktop-items-1.conf /etc/skel/.config/pcmanfm/LXDE
+		/tmp/desktop-items-1.conf /home/$USER/.config/pcmanfm/LXDE/desktop-items-0.conf
 
 # Borramos la carpeta del proyecto
 #
@@ -328,6 +330,6 @@ EOF
 	echo ""
 	echo "Si quiere evitarlo, pulse las teclas Control y c"
 	echo ""
-	sleep 5
+	sleep 9
 	sudo reboot
 
