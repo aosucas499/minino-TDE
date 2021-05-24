@@ -328,6 +328,6 @@ EOF
 	echo ""
 	echo "Si quiere evitarlo, pulse las teclas Control y c"
 	echo ""
-	echo sleep 5
+	sleep 5
 	sudo reboot
 
