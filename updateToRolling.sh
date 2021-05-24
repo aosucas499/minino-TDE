@@ -61,7 +61,6 @@ fi
 	# Creamos el fichero de la barra de tareas como la versión rolling y lo copiamos
 	# como predeterminado del sistema.
 		cat << EOF >> /tmp/bottom
-
 # lxpanel <profile> config file. Manually editing is not recommended.
 # Use preference dialog in lxpanel to adjust config when you can.
 
@@ -241,8 +240,7 @@ Plugin {
     }
   }
 }
-
-			EOF
+EOF
 
 		sudo mv /tmp/bottom /etc/skel/.config/lxpanel/LXDE/panels
 
@@ -250,7 +248,6 @@ Plugin {
 	# como predeterminado del sistema.
 
 		cat << EOF >> /tmp/desktop-items-1.conf
-
 [*]
 wallpaper_mode=center
 wallpaper_common=1
@@ -316,9 +313,7 @@ y=92
 [trash:///]
 x=15
 y=2
-
-
-			EOF
+EOF
 		
 		sudo mv /tmp/desktop-items-1.conf /etc/skel/.config/pcmanfm/LXDE
 
