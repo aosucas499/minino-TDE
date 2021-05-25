@@ -652,5 +652,6 @@ exit 0
 
 # IDEA 	crear app específica en los menús de Minino para generar la ISO
 #		para aquellos que puedan necesitarla
+#
 
 prepareIso
