@@ -34,7 +34,7 @@ hasSudoRights(){
 # previa/etiqueta del proyecto o no hará update-minino nada al comprobar que está actualizado
 #
 	sudo cp ./customize/customize-minino.sh /usr/bin/customize-minino
-	git checkout tags/1.3.0
+	git checkout tags/1.3.2
 	sudo cp update-minino.sh /usr/bin/update-minino
 	
 # Procedemos a actualizar el sistema
