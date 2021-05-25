@@ -20,36 +20,10 @@ hasSudoRights(){
 }
 
 # -----------------------------------------------------------------------------
-# Comprueba si hay conexión a Internet
-# -----------------------------------------------------------------------------
-
-function isConnectionAvailable {
-    echo -e "GET http://google.com HTTP/1.0\n\n" | nc google.com 80 > /dev/null 2>&1 && echo "True" || echo "False"
-}
-
-# =============================================================================
-# Cuerpo del script
-# =============================================================================
-
-# -----------------------------------------------------------------------------
 # Sólo permitimos que sea utilizado por usuarios con permisos de administración
 # -----------------------------------------------------------------------------
 
 [[ $(hasSudoRights) == "False" ]] && exit 0
-
-# Comprobamos si hay internet
-# ---
-
-aux=$(isConnectionAvailable)
-
-if [[ $aux == "False" ]]; then
-	zenity \
-        --warning \
-        --title "Sin conexión a Internet" \
-        --text "Necesitamos conexión a Internet para poder utilizar la mayoría de opciones de 'update-minino'\nPor favor revisa tu conexión y vuelve a lanzar el script cuando vuelva a estar disponible.\nGracias"
-        
-    exit 1;
-fi 
 
 # Entramos al proyecto
 #
@@ -64,12 +38,12 @@ fi
 	sudo cp update-minino.sh /usr/bin/update-minino
 	
 # Procedemos a actualizar el sistema
-# Pedirtá contraseña root y habrá que aceptar el mensaje 
+# Pedirá contraseña root y habrá que aceptar el mensaje 
 # de actualizar a la nueva versión
 #	
 	sudo update-minino	
 	
-# Creamos y copiamos los ficheros de configuración de la barra inferios de tareas,
+# Creamos y copiamos los ficheros de configuración de la barra inferior de tareas,
 # los iconos del escritorio y el fondo de pantalla tal como están en la versión rolling.
 # De esta manera se quedan para cualquier usuario default, pensando en un cambio futuro
 # del instalador.
