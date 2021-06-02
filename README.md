@@ -4,6 +4,8 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
 ## Enlace de la última ISO rolling: https://bit.ly/3bjdD8R
 (enlace permanente aunque se actualice la ISO)
 
+![](https://user-images.githubusercontent.com/72696244/120541114-c253cc00-c3e9-11eb-932f-02dc697c117c.png)
+
  [Creación USB live](https://github.com/aosucas499/minino-TDE/wiki/1.-Creaci%C3%B3n-USB-Live)
  
  [Instrucciones de instalación](https://github.com/aosucas499/minino-TDE/wiki/2.-Instalaci%C3%B3n)
@@ -32,6 +34,9 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
  +  Aplicaciones educativas
 
  +  Conexión automática a la red Andared
+
+### FAQs 
+[Enlace](https://github.com/aosucas499/minino-TDE/wiki/FAQs) (Recuperar panel inferior y actualizar desde una versión anterior sin instalar nueva ISO)
 
  ## Filtros de tareas
  
