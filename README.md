@@ -38,8 +38,12 @@ ISO modificada del sistema operativo Minino Queiles 3.1 (minino.galpon.org) para
 ### FAQs 
 [Enlace](https://github.com/aosucas499/minino-TDE/wiki/FAQs) (Recuperar panel inferior y actualizar desde una versión anterior sin instalar nueva ISO)
 
- ## Filtros de tareas
- 
- Para simplificar la búsqueda de tareas en el proyecto se recomiendan los siguientes filtros de contenido
- 
- + [Trabajo pendiente](https://github.com/aosucas499/minino-TDE/issues?q=is%3Aissue+is%3Aopen+-label%3AIDEA+-label%3ADUDA)
+
+Si este proyecto te ayuda, puedes invitarme a un café.
+
+
+If this project helps you,  you can give me a cup of coffee .
+
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=FUMT27MVTRTHJ&no_recurring=0&item_name=Proyectos+TIC+Andaluc%C3%ADa&currency_code=EUR)
+
