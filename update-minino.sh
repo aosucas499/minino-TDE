@@ -366,6 +366,20 @@ function sudoersUpdate {
 	echo -e "${AZUL}update-minino añadido a sudoers${NORMAL}"
 }
 
+function fixmultimediaSource {
+
+	if [ -f "/etc/apt/sources.list.d/multimedia.list" ]; then 
+		echo -e "${AZUL}Corrigiendo multimedia sources${NORMAL}"
+        	sudo mv /etc/apt/sources.list.d/multimedia.list /etc/apt/sources.list.d/multimedia2.list
+        	sudo echo deb http://archive.deb-multimedia.org/ jessie non-free main > /etc/apt/sources.list.d/multimedia2.list
+        	sudo apt-get update
+	else
+	echo -e "${AZUL}Multimedia sources actualizado${NORMAL}"
+
+fi
+
+}
+
 function prepareIso {
 	
 	echo -e "${AZUL}Preparando la ISO${NORMAL}"
@@ -634,6 +648,7 @@ showAsterisks
 customize-app
 firefox83-system
 sudoersUpdate
+fixmultimediaSource
 
 autostartUpdateMinino
 
