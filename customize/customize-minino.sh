@@ -16,12 +16,74 @@ readonly DEBUG='n'
 # pruebas sin que el cambio de "release" afecte a los usuarios que ya tenga
 # autoupdate en Minino
 
-REPO_GITHUB=aosucas499/minino-TDE
+REPO_GITHUB=aosucas499/minino-testing
+
+#Actualizamos si quiere el usuario el sistema con update-minino por si es necesario algún paquete para customize-minino 
+update-minino
 
 # -----------------------------------------------------------------------------
 # Definición de las funciones utilizadas en el script
 # -----------------------------------------------------------------------------
 
+#==============================================================================
+# Gestión del control del brillo en sistemas con gráfica intel
+#==============================================================================
+
+# Instala la aplicación cga-brillo.
+# ---
+
+function cga-brillo {
+
+	# Instala la aplicación cga-brillo
+	#    
+    	sudo apt-get update -y
+	
+	wget "https://github.com/$REPO_GITHUB/raw/main/cga-brillo/cga-indicator-brightness_0.1-8_all.deb" -O /tmp/cga-indicator-brightness_0.1-8_all.deb
+	
+	wget "https://github.com/$REPO_GITHUB/raw/main/cga-brillo/indicator-applet-complete_0.5.0-0ubuntu1_i386.deb" -O /tmp/indicator-applet-complete_0.5.0-0ubuntu1_i386.deb
+	
+	wget "https://github.com/$REPO_GITHUB/raw/main/cga-brillo/libnotify-bin_0.7.5-1_i386.deb" -O /tmp/libnotify-bin_0.7.5-1_i386.deb
+	
+	wget "https://github.com/$REPO_GITHUB/raw/main/cga-brillo/notify-osd-icons_0.7_all.deb" -O /tmp/notify-osd-icons_0.7_all.deb
+	
+	wget "https://github.com/$REPO_GITHUB/raw/main/cga-brillo/notify-osd_0.9.34-0ubuntu2_i386.deb" -O /tmp/notify-osd_0.9.34-0ubuntu2_i386.deb
+	
+	sudo dpkg -i /tmp/indicator-applet-complete_0.5.0-0ubuntu1_i386.deb
+	sudo dpkg -i /tmp/libnotify-bin_0.7.5-1_i386.deb
+	sudo dpkg -i /tmp/notify-osd_0.9.34-0ubuntu2_i386.deb
+	sudo dpkg -i /tmp/notify-osd-icons_0.7_all.deb
+	sudo dpkg -i /tmp/cga-indicator-brightness_0.1-8_all.deb
+        sudo apt-get install -f -y
+	sudo rm /tmp/*.deb
+}
+
+# Desactiva el apagado automático del equipo
+# ---
+
+function cga-brilloUndo {
+
+	sudo apt-get purge --remove cga-indicator-brightness -y
+}
+
+# Comprueba si está activa la aplicación cga-brillo
+# ---
+
+function cga-brilloCheck {
+
+	# Comprobaciones a realizar 
+	# ---
+
+	# Paquete a comprobar
+	app=cga-indicator-brightness;
+
+	# Paquete instalado
+    ins=$(dpkg --get-selections | grep $app | grep [^de]install | wc -l); 
+
+	# Situación actual
+	# ---
+
+	[ $ins -eq 1 ] && echo "True" || echo "False";
+}
 
 #==============================================================================
 # Gestión de la instalación del control de presencia de Séneca
@@ -751,6 +813,7 @@ opciones=("${opciones[@]}" `navegacionPrivadaCheck` navegacionPrivada "Navegaci�
 opciones=("${opciones[@]}" `accesoSSHCheck` accesoSSH "Permitir conexión por SSH")
 opciones=("${opciones[@]}" `instalarSigalaCheck` instalarSigala "Instalar HGR-Sigala")
 opciones=("${opciones[@]}" `soundProblemCheck` soundProblem "Corregir audio NB500/N100SP")
+opciones=("${opciones[@]}" `cga-brilloCheck` cga-brillo "Control de brillo en portátiles")
 
 # Mostramos las opciones personalizables
 
@@ -763,8 +826,8 @@ opc=$( \
         --column="funcionAEjecutar" \
         --column="Descripción" \
         --hide-column=2 \
-        --width=500 \
-        --height=250 \
+        --width=550 \
+        --height=300 \
    "${opciones[@]}" \
 )
 
