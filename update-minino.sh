@@ -12,7 +12,7 @@
 # pruebas sin que el cambio de "release" afecte a los usuarios que ya tenga
 # autoupdate en Minino
 
-REPO_GITHUB=aosucas499/minino-testing
+REPO_GITHUB=aosucas499/minino-TDE
 
 FIREFOX=https://download-installer.cdn.mozilla.net/pub/firefox/releases/83.0/linux-i686/es-ES/firefox-83.0.tar.bz2
 LANZADOR=https://raw.githubusercontent.com/aosucas499/actualiza-firefox/master/firefox-latest.desktop
