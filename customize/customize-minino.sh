@@ -16,7 +16,7 @@ readonly DEBUG='n'
 # pruebas sin que el cambio de "release" afecte a los usuarios que ya tenga
 # autoupdate en Minino
 
-REPO_GITHUB=aosucas499/minino-testing
+REPO_GITHUB=aosucas499/minino-TDE
 
 #Actualizamos si quiere el usuario el sistema con update-minino por si es necesario algún paquete para customize-minino 
 update-minino
