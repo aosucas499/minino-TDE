@@ -149,6 +149,7 @@ function controlPresencia {
 function controlPresenciaUndo {
 
     sudo rm /etc/xdg/autostart/Firefox-latest-sleep30.desktop
+    sed -i '/^@xset/s/^/#/' ~/.config/lxsession/LXDE/autostart
     
 }
 
