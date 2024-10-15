@@ -125,11 +125,21 @@ function controlPresencia {
 	wget "https://raw.githubusercontent.com/$REPO_GITHUB/main/tools/Firefox-latest-sleep30"
     	sudo mv Firefox-latest-sleep30 /etc/xdg/autostart/Firefox-latest-sleep30.desktop
 
+	# Preguntar al usuario si desea instalar la opción de pantalla siempre encendida
+	respuesta=$(zenity --question --title="Pantalla siempre encendida" --text="¿Deseas instalar la opción de pantalla siempre encendida?" --ok-label="Sí" --cancel-label="No")
+
+	# Si el usuario selecciona "Sí"
+	if [[ $? -eq 0 ]]; then
+    	# Quitar los # de las dos últimas líneas
+     	sed -i '/^#@xset/s/^#//' ~/.config/lxsession/LXDE/autostart
+     	zenity --info --text="Desde el próximo arranque el dispositivo permanecerá con la pantall siempre encendida"
+	fi
+
 	## Informa al usuario de varios aspectos a tener en cuenta
 	#---
 	zenity --info --text="El control de presencia de Séneca se encuentra instalado en el sistema. Reinicie el sistema para que los cambios tengan efecto."
 	zenity --info --text="Recuerde que el navegador tardará unos 40 segundos en iniciarse en cada inicio."
-zenity --info --text="Quizás le interese instalar el 'Inicio de sesión automático', para que no se necesite introducir usuario y contraseña en cada inicio."
+	zenity --info --text="Quizás le interese instalar el 'Inicio de sesión automático', para que no se necesite introducir usuario y contraseña en cada inicio."
 	
 }
 
