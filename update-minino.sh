@@ -12,7 +12,7 @@
 # pruebas sin que el cambio de "release" afecte a los usuarios que ya tenga
 # autoupdate en Minino
 
-REPO_GITHUB=aosucas499/minino-testing
+REPO_GITHUB=aosucas499/minino-TDE
 
 FIREFOX=https://ftp.mozilla.org/pub/firefox/releases/144.0/linux-i686/es-ES/firefox-144.0.tar.xz
 LANZADOR=https://raw.githubusercontent.com/aosucas499/actualiza-firefox/master/firefox-latest.desktop
